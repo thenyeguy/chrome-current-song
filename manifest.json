@@ -1,0 +1,9 @@
+{
+  "manifest_version": 2,
+
+  "name": "Current song",
+  "description": "Shares the currently playing song to the outside world",
+  "version": "0.1",
+
+  "permissions": []
+}
