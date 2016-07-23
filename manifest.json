@@ -15,5 +15,14 @@
   },
   "browser_action": {
     "default_popup": "popup/popup.html"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://play.google.com/music/*"],
+      "js": [
+        "third_party/jquery-3.1.0.slim.js",
+        "content/gpm.js"
+      ]
+    }
+  ]
 }
