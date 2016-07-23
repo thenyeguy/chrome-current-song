@@ -12,7 +12,7 @@ Engine.prototype.handleConnection = function(port) {
 }
 
 Engine.prototype.handleMessage = function(msg, sender) {
-    console.log("Got message from " + sender.name + ":\n%O", msg);
+    msg.source = sender.name;
     this.lastMessage = msg;
 }
 

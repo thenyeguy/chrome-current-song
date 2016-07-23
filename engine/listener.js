@@ -6,7 +6,6 @@ function Listener(adapter) {
 }
 
 Listener.prototype.handleRequest = function(request) {
-    console.log("Got request: %O", request);
     if (request.type === "getCurrentSong") {
         this.port.postMessage({
             "type": "currentSong",

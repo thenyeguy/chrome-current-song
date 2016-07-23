@@ -15,5 +15,4 @@ GpmAdapter.prototype.getCurrentSong = function() {
 $(document).ready(function() {
     console.log("Starting GPM listener...");
     new Listener(new GpmAdapter()).start();
-    console.log(new GpmAdapter().getCurrentSong());
 });
