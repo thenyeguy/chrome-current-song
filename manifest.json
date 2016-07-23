@@ -7,6 +7,12 @@
 
   "permissions": [],
 
+  "background": {
+    "scripts": [
+      "third_party/jquery-3.1.0.slim.js",
+      "background/background.js"
+    ]
+  },
   "browser_action": {
     "default_popup": "popup/popup.html"
   }
