@@ -5,5 +5,9 @@
   "description": "Shares the currently playing song to the outside world",
   "version": "0.1",
 
-  "permissions": []
+  "permissions": [],
+
+  "browser_action": {
+    "default_popup": "popup/popup.html"
+  }
 }
