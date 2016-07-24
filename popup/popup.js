@@ -1,7 +1,6 @@
 "use strict";
 
-$(document).ready(function() {
-    console.log("ready!");
+function update() {
     var background = chrome.extension.getBackgroundPage();
     var msg = background.engine.getLastMessage();
     console.log(msg);
@@ -10,4 +9,9 @@ $(document).ready(function() {
     $("#artist").text(msg.artist);
     $("#album").text(msg.album);
     $("#state").text(msg.playing ? "playing" : "paused");
+    setTimeout(update, 1000);
+}
+
+$(document).ready(function() {
+    update();
 });
