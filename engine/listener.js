@@ -6,10 +6,14 @@ function Listener(adapter) {
 }
 
 Listener.prototype.handleRequest = function(request) {
-    if (request.type === "getCurrentSong") {
+    if (request.type === "player_state") {
         this.port.postMessage({
-            "type": "currentSong",
-            "song": this.adapter.getCurrentSong(),
+            "type": "player_state",
+            "source": this.adapter.name,
+            "title": this.adapter.title() || null,
+            "artist": this.adapter.artist() || null,
+            "album": this.adapter.album() || null,
+            "playing": this.adapter.playing() || false,
         });
     }
 }

@@ -4,12 +4,22 @@ function GpmAdapter() {
     this.name = "Google Play Music";
 }
 
-GpmAdapter.prototype.getCurrentSong = function() {
-    return {
-        "title": $("#currently-playing-title").text(),
-        "artist": $("#player-artist").text(),
-        "album": $(".player-album").text(),
-    }
+GpmAdapter.prototype = new Adapter();
+
+GpmAdapter.prototype.title = function() {
+    return $("#currently-playing-title").text();
+}
+
+GpmAdapter.prototype.artist = function() {
+    return $("#player-artist").text();
+}
+
+GpmAdapter.prototype.album = function() {
+    return $(".player-album").text();
+}
+
+GpmAdapter.prototype.playing = function() {
+    return $('#player *[data-id="play-pause"]').hasClass('playing');
 }
 
 $(document).ready(function() {

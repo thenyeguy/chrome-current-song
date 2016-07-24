@@ -23,6 +23,7 @@
       "js": [
         "third_party/jquery-3.1.0.slim.js",
         "engine/listener.js",
+        "adapters/adapter.js",
         "adapters/gpm.js"
       ]
     }

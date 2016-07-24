@@ -12,7 +12,6 @@ Engine.prototype.handleConnection = function(port) {
 }
 
 Engine.prototype.handleMessage = function(msg, sender) {
-    msg.source = sender.name;
     this.lastMessage = msg;
 }
 
@@ -22,7 +21,7 @@ Engine.prototype.getLastMessage = function() {
 
 Engine.prototype.update = function() {
     for(var key in this.ports) {
-        this.ports[key].postMessage({ "type": "getCurrentSong" });
+        this.ports[key].postMessage({ "type": "player_state" });
     }
     setTimeout(this.update.bind(this), 1000);
 }
