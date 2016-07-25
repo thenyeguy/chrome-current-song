@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
 import json
+import os
 import struct
 import sys
+
+SONG_FILE = os.path.join(os.environ["HOME"], ".currentsong")
 
 def send_message(message):
     """Sends a message back to the Chrome extension.
@@ -31,9 +34,20 @@ def read_input():
 
 def main():
     log("Starting native host...")
+    log("Writing to: " + SONG_FILE)
     for message in read_input():
         if "echo" in message:
             log(message["echo"])
+        elif "song" in message:
+            title = message["song"].get("title", "")
+            artist = message["song"].get("artist", "")
+            playing = message["song"].get("playing", True)
+            state = "playing" if playing else "paused"
+            try:
+                with open(SONG_FILE, "w") as f:
+                    f.write("{}\t{}\t{}\n".format(title, artist, state))
+            except Exception as e:
+                log("Write song failed: " + str(e))
     log("Exiting native host...")
     return 0
 

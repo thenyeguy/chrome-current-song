@@ -14,6 +14,7 @@ Engine.prototype.handleConnection = function(port) {
 
 Engine.prototype.handleMessage = function(msg, sender) {
     this.lastMessage = msg;
+    this.native_host.writeSong(msg)
 }
 
 Engine.prototype.getLastMessage = function() {
@@ -29,8 +30,6 @@ Engine.prototype.update = function() {
 
 Engine.prototype.start = function() {
     this.native_host.connect();
-    this.native_host.sendMessage({ "echo": "hello world" });
-
     chrome.runtime.onConnect.addListener(this.handleConnection.bind(this));
     this.update();
 }

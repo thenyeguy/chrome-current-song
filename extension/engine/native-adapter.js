@@ -25,6 +25,10 @@ NativeHostAdapater.prototype.sendMessage = function(msg) {
     }
 }
 
+NativeHostAdapater.prototype.writeSong = function(song) {
+    this.sendMessage({ "song": song })
+}
+
 NativeHostAdapater.prototype.connect = function() {
     console.log("Connecting to native host...");
     this.native_port = chrome.runtime.connectNative(NATIVE_HOST);
