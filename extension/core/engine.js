@@ -63,9 +63,9 @@ Engine.prototype.update = function() {
 
     // Update the native host
     if (this.activePlayer) {
-        this.nativeHost.writeSong(this.activePlayer.state);
+        this.nativeHost.update(this.activePlayer.state);
     } else {
-        this.nativeHost.writeSong({});
+        this.nativeHost.update(null);
     }
 
     // Trigger another round of state updates.

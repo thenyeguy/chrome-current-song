@@ -32,22 +32,34 @@ def read_input():
         text_length = struct.unpack('i', text_length_bytes)[0]
         yield json.loads(sys.stdin.read(text_length).decode('utf-8'))
 
+def write_song(song):
+    title = song.get("title", "")
+    artist = song.get("artist", "<Unknown>")
+    playing = song.get("playing", True)
+    state = "playing" if playing else "paused"
+    try:
+        with open(SONG_FILE, "w") as f:
+            f.write("{}\t{}\t{}\n".format(title, artist, state))
+    except Exception as e:
+        log("Write song failed: " + str(e))
+
+def clear_song():
+    try:
+        os.remove(SONG_FILE)
+    except Exception:
+        pass
+
 def main():
     log("Starting native host...")
     log("Writing to: " + SONG_FILE)
     for message in read_input():
         if "echo" in message:
             log(message["echo"])
-        elif "song" in message:
-            title = message["song"].get("title", "")
-            artist = message["song"].get("artist", "")
-            playing = message["song"].get("playing", True)
-            state = "playing" if playing else "paused"
-            try:
-                with open(SONG_FILE, "w") as f:
-                    f.write("{}\t{}\t{}\n".format(title, artist, state))
-            except Exception as e:
-                log("Write song failed: " + str(e))
+        elif "write" in message:
+            write_song(message["write"])
+        elif "clear" in message:
+            if message["clear"]:
+                clear_song()
     log("Exiting native host...")
     return 0
 

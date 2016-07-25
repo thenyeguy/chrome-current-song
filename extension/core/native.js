@@ -25,8 +25,12 @@ NativeHostAdapater.prototype.sendMessage = function(msg) {
     }
 }
 
-NativeHostAdapater.prototype.writeSong = function(song) {
-    this.sendMessage({ "song": song })
+NativeHostAdapater.prototype.update = function(song) {
+    if (song) {
+        this.sendMessage({ "write": song })
+    } else {
+        this.sendMessage({ "clear": true });
+    }
 }
 
 NativeHostAdapater.prototype.connect = function() {
