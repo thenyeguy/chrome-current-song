@@ -1,5 +1,18 @@
 "use strict";
 
+function toSeconds(playtime) {
+    var match = playtime.match(/(\d+):(\d+)/);
+    var intValue = parseInt(playtime);
+    if(match.length === 3) {
+        var minutes = parseInt(match[1]);
+        var seconds = parseInt(match[2]);
+        return 60*minutes + seconds;
+    } else if (intValue) {
+        return intValue;
+    }
+    return null;
+}
+
 function Listener(adapter) {
     this.adapter = adapter;
     this.port = null;
@@ -14,6 +27,8 @@ Listener.prototype.handleRequest = function(request) {
             "artist": this.adapter.artist() || null,
             "album": this.adapter.album() || null,
             "playing": this.adapter.playing() || false,
+            "playtime": toSeconds(this.adapter.playtime()),
+            "length": toSeconds(this.adapter.length()),
         });
     }
 }

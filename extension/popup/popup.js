@@ -8,6 +8,7 @@ function update() {
     $("#song").text(msg.title);
     $("#artist").text(msg.artist);
     $("#album").text(msg.album);
+    $("#playtime").text(msg.playtime + "/" + msg.length);
     $("#state").text(msg.playing ? "playing" : "paused");
     setTimeout(update, 1000);
 }
