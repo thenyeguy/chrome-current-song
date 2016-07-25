@@ -10,9 +10,10 @@
   "background": {
     "scripts": [
       "third_party/jquery-3.1.0.slim.js",
-      "engine/native-adapter.js",
-      "engine/engine.js",
-      "background/background.js"
+      "third_party/require.js",
+      "core/engine.js",
+      "core/native.js",
+      "background/main.js"
     ]
   },
   "browser_action": {
@@ -23,9 +24,10 @@
       "matches": ["*://play.google.com/music/*"],
       "js": [
         "third_party/jquery-3.1.0.slim.js",
-        "engine/listener.js",
-        "adapters/adapter.js",
-        "adapters/gpm.js"
+        "third_party/require.js",
+        "core/listener.js",
+        "core/scraper.js",
+        "scrapers/gpm.js"
       ]
     }
   ]

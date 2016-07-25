@@ -13,8 +13,8 @@ function toSeconds(playtime) {
     return null;
 }
 
-function Listener(adapter) {
-    this.adapter = adapter;
+function Listener(scraper) {
+    this.scraper = scraper;
     this.port = null;
 }
 
@@ -22,18 +22,18 @@ Listener.prototype.handleRequest = function(request) {
     if (request.type === "player_state") {
         this.port.postMessage({
             "type": "player_state",
-            "source": this.adapter.name,
-            "title": this.adapter.title() || null,
-            "artist": this.adapter.artist() || null,
-            "album": this.adapter.album() || null,
-            "playing": this.adapter.playing() || false,
-            "playtime": toSeconds(this.adapter.playtime()),
-            "length": toSeconds(this.adapter.length()),
+            "source": this.scraper.name,
+            "title": this.scraper.title() || null,
+            "artist": this.scraper.artist() || null,
+            "album": this.scraper.album() || null,
+            "playing": this.scraper.playing() || false,
+            "playtime": toSeconds(this.scraper.playtime()),
+            "length": toSeconds(this.scraper.length()),
         });
     }
 }
 
 Listener.prototype.start = function() {
-    this.port = chrome.runtime.connect({name: this.adapter.name});
+    this.port = chrome.runtime.connect({name: this.scraper.name});
     this.port.onMessage.addListener(this.handleRequest.bind(this));
 }

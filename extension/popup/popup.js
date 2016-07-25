@@ -1,9 +1,9 @@
 "use strict";
 
+var engineApi = chrome.extension.getBackgroundPage().engineApi;
+
 function update() {
-    var background = chrome.extension.getBackgroundPage();
-    var msg = background.engine.getLastMessage();
-    console.log(msg);
+    var msg = engineApi.getLastMessage();
     $("#source").text(msg.source);
     $("#song").text(msg.title);
     $("#artist").text(msg.artist);

@@ -1,36 +1,36 @@
 "use strict";
 
-function GpmAdapter() {
+function GpmScraper() {
     this.name = "Google Play Music";
 }
 
-GpmAdapter.prototype = new Adapter();
+GpmScraper.prototype = new Scraper();
 
-GpmAdapter.prototype.title = function() {
+GpmScraper.prototype.title = function() {
     return $("#currently-playing-title").text();
 }
 
-GpmAdapter.prototype.artist = function() {
+GpmScraper.prototype.artist = function() {
     return $("#player-artist").text();
 }
 
-GpmAdapter.prototype.album = function() {
+GpmScraper.prototype.album = function() {
     return $(".player-album").text();
 }
 
-GpmAdapter.prototype.playing = function() {
+GpmScraper.prototype.playing = function() {
     return $('#player *[data-id="play-pause"]').hasClass('playing');
 }
 
-GpmAdapter.prototype.playtime = function() {
+GpmScraper.prototype.playtime = function() {
     return $('#time_container_current').text();
 }
 
-GpmAdapter.prototype.length = function() {
+GpmScraper.prototype.length = function() {
     return $('#time_container_duration').text();
 }
 
 $(document).ready(function() {
     console.log("Starting GPM listener...");
-    new Listener(new GpmAdapter()).start();
+    new Listener(new GpmScraper()).start();
 });
