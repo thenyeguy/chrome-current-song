@@ -6,28 +6,33 @@ function GpmScraper() {
 
 GpmScraper.prototype = new Scraper();
 
+GpmScraper.prototype.enable = function() {
+    return $('#playerSongInfo').is(":visible") || null;
+}
+
 GpmScraper.prototype.title = function() {
-    return $("#currently-playing-title").text();
+    return this.enable() && $("#currently-playing-title").text();
 }
 
 GpmScraper.prototype.artist = function() {
-    return $("#player-artist").text();
+    return this.enable() && $("#player-artist").text();
 }
 
 GpmScraper.prototype.album = function() {
-    return $(".player-album").text();
+    return this.enable() && $(".player-album").text();
 }
 
 GpmScraper.prototype.playing = function() {
-    return $('#player *[data-id="play-pause"]').hasClass('playing');
+    return this.enable() &&
+        $('#player *[data-id="play-pause"]').hasClass('playing');
 }
 
 GpmScraper.prototype.playtime = function() {
-    return $('#time_container_current').text();
+    return this.enable() && $('#time_container_current').text();
 }
 
 GpmScraper.prototype.length = function() {
-    return $('#time_container_duration').text();
+    return this.enable() && $('#time_container_duration').text();
 }
 
 $(document).ready(function() {

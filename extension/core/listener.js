@@ -1,6 +1,9 @@
 "use strict";
 
 function toSeconds(playtime) {
+    if (!playtime) {
+        return null;
+    }
     var match = playtime.match(/(\d+):(\d+)/);
     var intValue = parseInt(playtime);
     if(match && match.length === 3) {

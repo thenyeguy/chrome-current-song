@@ -12,6 +12,7 @@ Engine.prototype.handleConnect = function(port) {
     this.players[id] = {
         connected: true,
         id: id,
+        name: port.name,
         port: port,
         state: {}
     }
@@ -50,11 +51,15 @@ Engine.prototype.update = function() {
     }
 
     // Update the active player.
+    if (this.activePlayer && !this.activePlayer.state.title) {
+        console.log("Active player stopped: " + this.activePlayer.name);
+        this.activePlayer = null;
+    }
     if (!this.activePlayer || !this.activePlayer.state.playing) {
         for (var id in this.players) {
             var player = this.players[id];
             if (player.state.playing) {
-                console.log("Active player is now: " + player.port.name);
+                console.log("Active player is now: " + player.name);
                 this.activePlayer = player;
                 break;
             }
