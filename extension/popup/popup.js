@@ -3,13 +3,15 @@
 var engineApi = chrome.extension.getBackgroundPage().engineApi;
 
 function update() {
-    var msg = engineApi.getLastMessage();
-    $("#source").text(msg.source);
-    $("#song").text(msg.title);
-    $("#artist").text(msg.artist);
-    $("#album").text(msg.album);
-    $("#playtime").text(msg.playtime + "/" + msg.length);
-    $("#state").text(msg.playing ? "playing" : "paused");
+    var state = engineApi.getPlayerState();
+    if(state) {
+        $("#source").text(state.source);
+        $("#song").text(state.title);
+        $("#artist").text(state.artist);
+        $("#album").text(state.album);
+        $("#playtime").text(state.playtime + "/" + state.length);
+        $("#state").text(state.playing ? "playing" : "paused");
+    }
     setTimeout(update, 1000);
 }
 

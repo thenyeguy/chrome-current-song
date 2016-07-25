@@ -18,18 +18,22 @@ function Listener(scraper) {
     this.port = null;
 }
 
+Listener.prototype.sendPlayerState = function() {
+    this.port.postMessage({
+        "type": "player_state",
+        "source": this.scraper.name,
+        "title": this.scraper.title() || null,
+        "artist": this.scraper.artist() || null,
+        "album": this.scraper.album() || null,
+        "playing": this.scraper.playing() || false,
+        "playtime": toSeconds(this.scraper.playtime()),
+        "length": toSeconds(this.scraper.length()),
+    });
+}
+
 Listener.prototype.handleRequest = function(request) {
     if (request.type === "player_state") {
-        this.port.postMessage({
-            "type": "player_state",
-            "source": this.scraper.name,
-            "title": this.scraper.title() || null,
-            "artist": this.scraper.artist() || null,
-            "album": this.scraper.album() || null,
-            "playing": this.scraper.playing() || false,
-            "playtime": toSeconds(this.scraper.playtime()),
-            "length": toSeconds(this.scraper.length()),
-        });
+        this.sendPlayerState();
     }
 }
 

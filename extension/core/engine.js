@@ -1,35 +1,82 @@
 "use strict";
 
 function Engine() {
-    this.native_host = new NativeHostAdapater();
-    this.ports = {};
-    this.lastMessage = {};
+    this.activePlayer = null;
+    this.players = {};
+    this.nativeHost = new NativeHostAdapater();
 }
 
-Engine.prototype.handleConnection = function(port) {
-    console.log("Opened connection from port: " + port.name);
-    this.ports[port.name] = port;
+Engine.prototype.handleConnect = function(port) {
+    console.log("Opened connection to: " + port.name);
+    var id = port.sender.id;
+    this.players[id] = {
+        connected: true,
+        id: id,
+        port: port,
+        state: {}
+    }
     port.onMessage.addListener(this.handleMessage.bind(this));
+    port.onDisconnect.addListener(this.handleDisconnect.bind(this));
 }
 
-Engine.prototype.handleMessage = function(msg, sender) {
-    this.lastMessage = msg;
-    this.native_host.writeSong(msg)
+Engine.prototype.handleDisconnect = function(port) {
+    console.log("Closed connection to: " + port.name);
+    var id = port.sender.id;
+    this.players[id].connected = false;
 }
 
-Engine.prototype.getLastMessage = function() {
-    return this.lastMessage;
+
+Engine.prototype.handleMessage = function(msg, port) {
+    var id = port.sender.id;
+    if(msg.type === "player_state") {
+        delete msg["type"];
+        this.players[id].state = msg;
+    }
+}
+
+Engine.prototype.getPlayerState = function() {
+    return this.activePlayer && this.activePlayer.state;
 }
 
 Engine.prototype.update = function() {
-    for(var key in this.ports) {
-        this.ports[key].postMessage({ "type": "player_state" });
+    // Prune any disconnected players.
+    for (var id in this.players) {
+        if (!this.players[id].connected) {
+            if (this.activePlayer && this.activePlayer.id === id) {
+                this.activePlayer = null;
+            }
+            delete this.players[id];
+        }
+    }
+
+    // Update the active player.
+    if (!this.activePlayer || !this.activePlayer.state.playing) {
+        for (var id in this.players) {
+            var player = this.players[id];
+            if (player.state.playing) {
+                console.log("Active player is now: " + player.port.name);
+                this.activePlayer = player;
+                break;
+            }
+        }
+    }
+
+    // Update the native host
+    if (this.activePlayer) {
+        this.nativeHost.writeSong(this.activePlayer.state);
+    } else {
+        this.nativeHost.writeSong({});
+    }
+
+    // Trigger another round of state updates.
+    for(var id in this.players) {
+        this.players[id].port.postMessage({ "type": "player_state" });
     }
     setTimeout(this.update.bind(this), 1000);
 }
 
 Engine.prototype.start = function() {
-    this.native_host.connect();
-    chrome.runtime.onConnect.addListener(this.handleConnection.bind(this));
+    this.nativeHost.connect();
+    chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
     this.update();
 }
