@@ -1,6 +1,7 @@
 "use strict";
 
 function Engine() {
+    this.native_host = new NativeHostAdapater();
     this.ports = {};
     this.lastMessage = {};
 }
@@ -27,6 +28,9 @@ Engine.prototype.update = function() {
 }
 
 Engine.prototype.start = function() {
+    this.native_host.connect();
+    this.native_host.sendMessage({ "echo": "hello world" });
+
     chrome.runtime.onConnect.addListener(this.handleConnection.bind(this));
     this.update();
 }

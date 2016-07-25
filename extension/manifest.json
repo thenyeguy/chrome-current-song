@@ -5,11 +5,12 @@
   "description": "Shares the currently playing song to the outside world",
   "version": "0.1",
 
-  "permissions": [],
+  "permissions": ["nativeMessaging"],
 
   "background": {
     "scripts": [
       "third_party/jquery-3.1.0.slim.js",
+      "engine/native-adapter.js",
       "engine/engine.js",
       "background/background.js"
     ]
