@@ -76,10 +76,14 @@ Engine.prototype.update = function() {
         }
     }
 
-    // Update the native host
+    // Update our hosts.
     if (this.activePlayer) {
+        var msg = this.activePlayer.state;
+        msg.type = "player_state";
+        chrome.extension.sendMessage(msg);
         this.nativeHost.update(this.activePlayer.state);
     } else {
+        chrome.extension.sendMessage({});
         this.nativeHost.update(null);
     }
 
@@ -87,6 +91,7 @@ Engine.prototype.update = function() {
     for(var id in this.players) {
         this.players[id].port.postMessage({ "type": "player_state" });
     }
+
     setTimeout(this.update.bind(this), 1000);
 }
 

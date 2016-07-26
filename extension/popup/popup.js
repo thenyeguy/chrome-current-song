@@ -37,8 +37,7 @@ function updateControls(playing) {
     }
 }
 
-function update() {
-    var state = window.engineApi.getPlayerState();
+function update(state) {
     if (state) {
         $("#nothing").hide();
         $("#nowplaying").show();
@@ -58,7 +57,15 @@ function update() {
         $("#nothing").show();
         $("#nowplaying").hide();
     }
-    setTimeout(update, 1000);
+}
+
+function handleMessage(msg, sender, sendResponse) {
+    console.log(msg);
+    if (msg.type === "player_state") {
+        update(msg);
+    } else {
+        console.log("Unknown message: %O", msg);
+    }
 }
 
 function setUpControls() {
@@ -75,6 +82,7 @@ function setUpControls() {
 
 $(document).ready(function() {
     window.engineApi = chrome.extension.getBackgroundPage().engineApi;
+    chrome.extension.onMessage.addListener(handleMessage);
+    update(window.engineApi.getPlayerState());
     setUpControls();
-    update();
 });
