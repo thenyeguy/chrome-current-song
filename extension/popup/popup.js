@@ -27,6 +27,16 @@ function drawPlaybar(playtime, length) {
     $("#playbar .progress-bar").css("width", width+"%");
 }
 
+function updateControls(playing) {
+    if (playing) {
+        $("#play-pause").removeClass("glyphicon-play");
+        $("#play-pause").addClass("glyphicon-pause");
+    } else {
+        $("#play-pause").addClass("glyphicon-play");
+        $("#play-pause").removeClass("glyphicon-pause");
+    }
+}
+
 function update() {
     var state = window.engineApi.getPlayerState();
     if (state) {
@@ -43,6 +53,7 @@ function update() {
 
         drawArt(state.art_uri);
         drawPlaybar(state.playtime, state.length);
+        updateControls(state.playing);
     } else {
         $("#nothing").show();
         $("#nowplaying").hide();
@@ -50,7 +61,20 @@ function update() {
     setTimeout(update, 1000);
 }
 
+function setUpControls() {
+    $("#prev-song").click(function (event) {
+        window.engineApi.prevSong();
+    });
+    $("#play-pause").click(function (event) {
+        window.engineApi.playPause();
+    });
+    $("#next-song").click(function (event) {
+        window.engineApi.nextSong();
+    });
+}
+
 $(document).ready(function() {
     window.engineApi = chrome.extension.getBackgroundPage().engineApi;
+    setUpControls();
     update();
 });
