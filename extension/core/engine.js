@@ -33,6 +33,7 @@ Engine.prototype.handleMessage = function(msg, port) {
         delete msg["type"];
         this.players[id].state = msg;
     }
+    this.update()
 }
 
 Engine.prototype.getPlayerState = function() {
@@ -86,18 +87,11 @@ Engine.prototype.update = function() {
         chrome.extension.sendMessage({});
         this.nativeHost.update(null);
     }
-
-    // Trigger another round of state updates.
-    for(var id in this.players) {
-        this.players[id].port.postMessage({ "type": "player_state" });
-    }
-
-    setTimeout(this.update.bind(this), 1000);
 }
+
 
 Engine.prototype.start = function() {
     this.nativeHost.connect();
     chrome.commands.onCommand.addListener(this.handleControl.bind(this));
     chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
-    this.update();
 }

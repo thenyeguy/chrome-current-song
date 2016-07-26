@@ -18,10 +18,9 @@ function toSeconds(playtime) {
     return null;
 }
 
-function Listener(adapter, verbose) {
+function Listener(adapter) {
     this.adapter = adapter;
-    this.port = null;
-    this.verbose = verbose || false;
+    this.port = chrome.runtime.connect({name: this.adapter.name});
 }
 
 Listener.prototype.getPlayerState = function() {
@@ -37,18 +36,16 @@ Listener.prototype.getPlayerState = function() {
     };
 }
 
+Listener.prototype.sendPlayerState = function() {
+    var msg = this.getPlayerState();
+    msg["type"] = "player_state";
+    this.port.postMessage(msg);
+}
+
 Listener.prototype.handleRequest = function(request) {
     if (request.type === "player_state") {
-        var msg = this.getPlayerState();
-        msg["type"] = "player_state";
-        if (this.verbose) {
-            console.log(msg);
-        }
-        this.port.postMessage(msg);
+        this.sendPlayerState();
     } else if (request.type === "control") {
-        if (this.verbose) {
-            console.log(request);
-        }
         if (request.control === "play_pause") {
             this.adapter.playPause();
         } else if (request.control === "next_song") {
@@ -59,7 +56,12 @@ Listener.prototype.handleRequest = function(request) {
     }
 }
 
+Listener.prototype.doPoll = function(timeout_ms) {
+    this.sendPlayerState();
+    setTimeout(this.doPoll.bind(this, timeout_ms), timeout_ms);
+}
+
 Listener.prototype.start = function() {
-    this.port = chrome.runtime.connect({name: this.adapter.name});
     this.port.onMessage.addListener(this.handleRequest.bind(this));
+    this.doPoll(1000);
 }
