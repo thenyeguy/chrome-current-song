@@ -34,6 +34,11 @@ GpmAdapter.prototype.getLength = function() {
     return this.enable() && $("#time_container_duration").text();
 }
 
+GpmAdapter.prototype.getArtUri = function() {
+    var art = $("#playerBarArt");
+    return this.enable() && art && art[0].src;
+}
+
 GpmAdapter.prototype.playPause = function() {
     $("[data-id=play-pause]").click();
 }

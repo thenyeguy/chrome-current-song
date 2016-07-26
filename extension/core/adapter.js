@@ -22,6 +22,10 @@ Adapter.prototype.getPlaytime = function() {
     return "";
 }
 
+Adapter.prototype.getArtUri = function() {
+    return "";
+}
+
 Adapter.prototype.getLength = function() {
     return "";
 }

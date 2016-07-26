@@ -30,6 +30,7 @@ Listener.prototype.getPlayerState = function() {
         "playing": this.adapter.getPlaying() || false,
         "playtime": toSeconds(this.adapter.getPlaytime()),
         "length": toSeconds(this.adapter.getLength()),
+        "art_uri": this.adapter.getArtUri() || null,
     };
 }
 
