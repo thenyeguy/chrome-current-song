@@ -39,9 +39,12 @@ Engine.prototype.getPlayerState = function() {
     return this.activePlayer && this.activePlayer.state;
 }
 
-Engine.prototype.playPause = function() {
+Engine.prototype.sendControl = function(control) {
     if (this.activePlayer) {
-        this.activePlayer.port.postMessage({ "type": "play_pause" });
+        this.activePlayer.port.postMessage({
+            "type": "control",
+            "control": control,
+        });
     }
 }
 

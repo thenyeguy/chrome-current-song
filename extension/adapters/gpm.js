@@ -38,6 +38,14 @@ GpmAdapter.prototype.playPause = function() {
     $("[data-id=play-pause]").click();
 }
 
+GpmAdapter.prototype.nextSong = function() {
+    $("[data-id=forward]").click();
+}
+
+GpmAdapter.prototype.prevSong = function() {
+    $("[data-id=rewind]").click();
+}
+
 $(document).ready(function() {
     console.log("Starting GPM listener...");
     new Listener(new GpmAdapter()).start();

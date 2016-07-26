@@ -9,7 +9,15 @@ EngineApi.prototype.getPlayerState = function() {
 }
 
 EngineApi.prototype.playPause = function() {
-    this.engine.playPause();
+    this.engine.sendControl("play_pause");
+}
+
+EngineApi.prototype.nextSong = function() {
+    this.engine.sendControl("next_song");
+}
+
+EngineApi.prototype.prevSong = function() {
+    this.engine.sendControl("prev_song");
 }
 
 $(document).ready(function() {

@@ -29,3 +29,11 @@ Adapter.prototype.getLength = function() {
 Adapter.prototype.playPause = function() {
     return;
 }
+
+Adapter.prototype.nextSong = function() {
+    return;
+}
+
+Adapter.prototype.prevSong = function() {
+    return;
+}

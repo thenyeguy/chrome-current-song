@@ -38,8 +38,14 @@ Listener.prototype.handleRequest = function(request) {
         var msg = this.getPlayerState();
         msg["type"] = "player_state";
         this.port.postMessage(msg);
-    } else if (request.type === "play_pause") {
-        this.adapter.playPause();
+    } else if (request.type === "control") {
+        if (request.control === "play_pause") {
+            this.adapter.playPause();
+        } else if (request.control === "next_song") {
+            this.adapter.nextSong();
+        } else if (request.control === "prev_song") {
+            this.adapter.prevSong();
+        }
     }
 }
 
