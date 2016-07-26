@@ -25,9 +25,9 @@
       "js": [
         "third_party/jquery-3.1.0.slim.js",
         "third_party/require.js",
+        "core/adapter.js",
         "core/listener.js",
-        "core/scraper.js",
-        "scrapers/gpm.js"
+        "adapters/gpm.js"
       ]
     }
   ]

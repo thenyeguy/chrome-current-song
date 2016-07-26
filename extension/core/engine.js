@@ -39,6 +39,12 @@ Engine.prototype.getPlayerState = function() {
     return this.activePlayer && this.activePlayer.state;
 }
 
+Engine.prototype.playPause = function() {
+    if (this.activePlayer) {
+        this.activePlayer.port.postMessage({ "type": "play_pause" });
+    }
+}
+
 Engine.prototype.update = function() {
     // Prune any disconnected players.
     for (var id in this.players) {

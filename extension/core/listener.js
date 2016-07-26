@@ -16,20 +16,20 @@ function toSeconds(playtime) {
     return null;
 }
 
-function Listener(scraper) {
-    this.scraper = scraper;
+function Listener(adapter) {
+    this.adapter = adapter;
     this.port = null;
 }
 
 Listener.prototype.getPlayerState = function() {
     return {
-        "source": this.scraper.name,
-        "title": this.scraper.title() || null,
-        "artist": this.scraper.artist() || null,
-        "album": this.scraper.album() || null,
-        "playing": this.scraper.playing() || false,
-        "playtime": toSeconds(this.scraper.playtime()),
-        "length": toSeconds(this.scraper.length()),
+        "source": this.adapter.name,
+        "title": this.adapter.getTitle() || null,
+        "artist": this.adapter.getArtist() || null,
+        "album": this.adapter.getAlbum() || null,
+        "playing": this.adapter.getPlaying() || false,
+        "playtime": toSeconds(this.adapter.getPlaytime()),
+        "length": toSeconds(this.adapter.getLength()),
     };
 }
 
@@ -38,10 +38,12 @@ Listener.prototype.handleRequest = function(request) {
         var msg = this.getPlayerState();
         msg["type"] = "player_state";
         this.port.postMessage(msg);
+    } else if (request.type === "play_pause") {
+        this.adapter.playPause();
     }
 }
 
 Listener.prototype.start = function() {
-    this.port = chrome.runtime.connect({name: this.scraper.name});
+    this.port = chrome.runtime.connect({name: this.adapter.name});
     this.port.onMessage.addListener(this.handleRequest.bind(this));
 }
