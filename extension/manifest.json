@@ -20,6 +20,29 @@
   "browser_action": {
     "default_popup": "popup/popup.html"
   },
+  "commands": {
+    "play_pause": {
+      "suggested_key": {
+        "default": "MediaPlayPause"
+      },
+      "description": "Play/Pause",
+      "global": true
+    },
+    "next_song": {
+      "suggested_key": {
+        "default": "MediaNextTrack"
+      },
+      "description": "Next Song",
+      "global": true
+    },
+    "prev_song": {
+      "suggested_key": {
+        "default": "MediaPrevTrack"
+      },
+      "description": "Previous Song",
+      "global": true
+    }
+  },
   "content_scripts": [
     {
       "matches": ["*://play.google.com/music/*"],

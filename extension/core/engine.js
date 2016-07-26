@@ -39,7 +39,8 @@ Engine.prototype.getPlayerState = function() {
     return this.activePlayer && this.activePlayer.state;
 }
 
-Engine.prototype.sendControl = function(control) {
+Engine.prototype.handleControl = function(control) {
+    console.log("Got control request: " + control);
     if (this.activePlayer) {
         this.activePlayer.port.postMessage({
             "type": "control",
@@ -91,6 +92,7 @@ Engine.prototype.update = function() {
 
 Engine.prototype.start = function() {
     this.nativeHost.connect();
+    chrome.commands.onCommand.addListener(this.handleControl.bind(this));
     chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
     this.update();
 }
