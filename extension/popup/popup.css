@@ -1,3 +1,70 @@
 body {
-    width: 300px;
+    width: 550px;
+    margin: 0px;
+    padding: 0px;
+    background: #fff;
+    font-size: 16px;
+}
+
+#nothing {
+    margin: 20px;
+    text-align: center;
+}
+
+#art {
+    position: relative;
+    margin: 0px;
+    padding: 0px;
+}
+
+#art .object {
+    display: block;
+    width: 180px;
+    height: 180px;
+}
+
+#art #art-icon {
+    padding-top: 30px;
+    font-size: 120px;
+    text-align: center;
+    color: #aaa;
+    background: #ddd;
+}
+
+#info {
+    position: relative;
+    margin: 0px;
+    padding: 1em;
+    vertical-align: middle;
+}
+
+#state-artist, #state-album {
+    display: block;
+    margin-left: 1.2em;
+    text-indent: -0.7em;
+}
+
+#source {
+    position: absolute;
+    bottom: 0.2em;
+    left: 1em;
+    font-size: 0.8em;
+    color: #999;
+}
+
+#playtime {
+    position: absolute;
+    bottom: 0.2em;
+    right: 0.5em;
+    font-size: 0.8em;
+    color: #999;
+}
+
+#playbar {
+    margin: 0px;
+    border-radius: 0px;
+}
+
+#playbar .progress-bar {
+    background-color: #555;
 }
