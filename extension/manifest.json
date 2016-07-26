@@ -11,6 +11,7 @@
     "scripts": [
       "third_party/jquery-3.1.0.slim.js",
       "third_party/require.js",
+      "core/api.js",
       "core/engine.js",
       "core/native.js",
       "background/main.js"
