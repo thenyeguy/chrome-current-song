@@ -98,4 +98,5 @@ body {
 
 #playbar .progress-bar {
     background-color: #555;
+    transition-duration: 0s;
 }
