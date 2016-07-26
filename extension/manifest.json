@@ -10,16 +10,17 @@
   "background": {
     "scripts": [
       "third_party/jquery-3.1.0.slim.js",
-      "third_party/require.js",
       "core/api.js",
       "core/engine.js",
       "core/native.js",
       "background/main.js"
     ]
   },
+
   "browser_action": {
     "default_popup": "popup/popup.html"
   },
+
   "commands": {
     "play_pause": {
       "suggested_key": {
@@ -43,15 +44,24 @@
       "global": true
     }
   },
+
   "content_scripts": [
     {
       "matches": ["*://play.google.com/music/*"],
       "js": [
         "third_party/jquery-3.1.0.slim.js",
-        "third_party/require.js",
         "core/adapter.js",
         "core/listener.js",
         "adapters/gpm.js"
+      ]
+    },
+    {
+      "matches": ["*://*.soundcloud.com/*"],
+      "js": [
+        "third_party/jquery-3.1.0.slim.js",
+        "core/adapter.js",
+        "core/listener.js",
+        "adapters/soundcloud.js"
       ]
     }
   ]

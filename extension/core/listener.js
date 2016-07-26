@@ -3,6 +3,8 @@
 function toSeconds(playtime) {
     if (!playtime) {
         return null;
+    } else if (typeof playtime === "number") {
+        return playtime;
     }
     var match = playtime.match(/(\d+):(\d+)/);
     var intValue = parseInt(playtime);
@@ -16,9 +18,10 @@ function toSeconds(playtime) {
     return null;
 }
 
-function Listener(adapter) {
+function Listener(adapter, verbose) {
     this.adapter = adapter;
     this.port = null;
+    this.verbose = verbose || false;
 }
 
 Listener.prototype.getPlayerState = function() {
@@ -38,8 +41,14 @@ Listener.prototype.handleRequest = function(request) {
     if (request.type === "player_state") {
         var msg = this.getPlayerState();
         msg["type"] = "player_state";
+        if (this.verbose) {
+            console.log(msg);
+        }
         this.port.postMessage(msg);
     } else if (request.type === "control") {
+        if (this.verbose) {
+            console.log(request);
+        }
         if (request.control === "play_pause") {
             this.adapter.playPause();
         } else if (request.control === "next_song") {
