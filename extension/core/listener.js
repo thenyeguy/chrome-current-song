@@ -20,7 +20,7 @@ function toSeconds(playtime) {
 
 function Listener(adapter) {
     this.adapter = adapter;
-    this.port = chrome.runtime.connect({name: this.adapter.name});
+    this.port = chrome.runtime.connect(null, {name: this.adapter.name});
 }
 
 Listener.prototype.getPlayerState = function() {
