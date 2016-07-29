@@ -4,6 +4,7 @@ function Engine() {
     this.activePlayer = null;
     this.players = {};
     this.nativeHost = new NativeHostAdapater();
+    this.verbose = false;
 }
 
 Engine.prototype.handleConnect = function(port) {
@@ -28,6 +29,9 @@ Engine.prototype.handleDisconnect = function(port) {
 
 
 Engine.prototype.handleMessage = function(msg, port) {
+    if (this.verbose) {
+        console.log("Got message from port %s: %o", port.name, msg);
+    }
     var id = port.sender.id;
     if(msg.type === "player_state") {
         delete msg["type"];
@@ -89,9 +93,12 @@ Engine.prototype.update = function() {
     }
 }
 
-
 Engine.prototype.start = function() {
     this.nativeHost.connect();
     chrome.commands.onCommand.addListener(this.handleControl.bind(this));
     chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
+}
+
+Engine.prototype.setVerbose = function(verbose) {
+    this.verbose = verbose;
 }

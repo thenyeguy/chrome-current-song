@@ -51,7 +51,9 @@ GpmAdapter.prototype.prevSong = function() {
     $("[data-id=rewind]").click();
 }
 
+var listener = null;
 $(document).ready(function() {
     console.log("Starting GPM listener...");
-    new Listener(new GpmAdapter()).start();
+    listener = new Listener(new GpmAdapter());
+    listener.start();
 });

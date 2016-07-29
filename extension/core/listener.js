@@ -39,10 +39,12 @@ Listener.prototype.getPlayerState = function() {
 Listener.prototype.sendPlayerState = function() {
     var msg = this.getPlayerState();
     msg["type"] = "player_state";
+    if (this.verbose) { console.log("Sending message: %O", msg); }
     this.port.postMessage(msg);
 }
 
 Listener.prototype.handleRequest = function(request) {
+    if (this.verbose) { console.log("Got request: %O", request); }
     if (request.type === "player_state") {
         this.sendPlayerState();
     } else if (request.type === "control") {
