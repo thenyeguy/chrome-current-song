@@ -43,6 +43,7 @@ function update(playerState) {
     if (!playerState) {
         $("#nothing").show();
         $("#nowplaying").hide();
+        return;
     }
     $("#nothing").hide();
     $("#nowplaying").show();

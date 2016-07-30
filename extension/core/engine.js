@@ -26,6 +26,7 @@ Engine.prototype.handleDisconnect = function(port) {
     console.log("Closed connection to: " + port.name);
     var id = port.sender.id;
     this.players[id].connected = false;
+    this.update();
 }
 
 
@@ -40,7 +41,7 @@ Engine.prototype.handleMessage = function(msg, port) {
     if(msg["state"]) {
         this.players[id].state = msg["state"];
     }
-    this.update()
+    this.update();
 }
 
 Engine.prototype.handleControl = function(control) {
