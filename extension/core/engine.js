@@ -48,6 +48,11 @@ Engine.prototype.handleMessage = function(msg, port) {
     }
     if("state" in msg) {
         this.players[id].state = msg["state"];
+        if (msg["state"].playing && this.activePlayer &&
+                id !== this.activePlayer.id) {
+            // Attempt to take control
+            this.handleControl("play_pause");
+        }
     }
     this.update();
 }
