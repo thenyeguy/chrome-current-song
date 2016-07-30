@@ -29,9 +29,11 @@ function drawPlaybar(playtime, length) {
 
 function updateControls(playing) {
     if (playing) {
+        $("#controls").removeClass("visible");
         $("#play-pause").removeClass("glyphicon-play");
         $("#play-pause").addClass("glyphicon-pause");
     } else {
+        $("#controls").addClass("visible");
         $("#play-pause").addClass("glyphicon-play");
         $("#play-pause").removeClass("glyphicon-pause");
     }
