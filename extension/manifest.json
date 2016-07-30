@@ -62,6 +62,7 @@
       "js": [
         "third_party/jquery-3.1.0.slim.js",
         "core/adapter.js",
+        "core/types.js",
         "core/listener.js",
         "adapters/soundcloud.js"
       ]
