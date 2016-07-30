@@ -15,7 +15,8 @@ Engine.prototype.handleConnect = function(port) {
         id: id,
         name: port.name,
         port: port,
-        state: {}
+        track: new Track(),
+        state: new TrackState(),
     }
     port.onMessage.addListener(this.handleMessage.bind(this));
     port.onDisconnect.addListener(this.handleDisconnect.bind(this));
@@ -33,15 +34,13 @@ Engine.prototype.handleMessage = function(msg, port) {
         console.log("Got message from port %s: %o", port.name, msg);
     }
     var id = port.sender.id;
-    if(msg.type === "player_state") {
-        delete msg["type"];
-        this.players[id].state = msg;
+    if(msg["track"]) {
+        this.players[id].track = msg["track"];
+    }
+    if(msg["state"]) {
+        this.players[id].state = msg["state"];
     }
     this.update()
-}
-
-Engine.prototype.getPlayerState = function() {
-    return this.activePlayer && this.activePlayer.state;
 }
 
 Engine.prototype.handleControl = function(control) {
@@ -66,11 +65,11 @@ Engine.prototype.update = function() {
     }
 
     // Update the active player.
-    if (this.activePlayer && !this.activePlayer.state.title) {
+    if (this.activePlayer && !this.activePlayer.track.title) {
         console.log("Active player stopped: " + this.activePlayer.name);
         this.activePlayer = null;
     }
-    if (!this.activePlayer || !this.activePlayer.state.playing) {
+    if (!(this.activePlayer && this.activePlayer.state.playing)) {
         for (var id in this.players) {
             var player = this.players[id];
             if (player.state.playing) {
@@ -82,14 +81,16 @@ Engine.prototype.update = function() {
     }
 
     // Update our hosts.
-    if (this.activePlayer) {
-        var msg = this.activePlayer.state;
-        msg.type = "player_state";
-        chrome.extension.sendMessage(msg);
-        this.nativeHost.update(this.activePlayer.state);
-    } else {
-        chrome.extension.sendMessage({});
-        this.nativeHost.update(null);
+    var state = this.getPlayerState();
+    chrome.extension.sendMessage({ "update": state });
+    this.nativeHost.update(state);
+}
+
+Engine.prototype.getPlayerState = function() {
+    return this.activePlayer && {
+        "source": this.activePlayer.name,
+        "track": this.activePlayer.track,
+        "state": this.activePlayer.state,
     }
 }
 
@@ -97,8 +98,4 @@ Engine.prototype.start = function() {
     this.nativeHost.connect();
     chrome.commands.onCommand.addListener(this.handleControl.bind(this));
     chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
-}
-
-Engine.prototype.setVerbose = function(verbose) {
-    this.verbose = verbose;
 }

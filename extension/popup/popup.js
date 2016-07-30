@@ -37,32 +37,36 @@ function updateControls(playing) {
     }
 }
 
-function update(state) {
-    if (state) {
+function update(playerState) {
+    if (!playerState) {
+        $("#nothing").show();
+        $("#nowplaying").hide();
+    }
+    $("#nothing").hide();
+    $("#nowplaying").show();
+
+    if (playerState.track) {
         $("#nothing").hide();
         $("#nowplaying").show();
 
-        $("#state-title").text(state.title);
-        $("#state-artist").text(state.artist);
-        $("#state-album").text(state.album);
-        $("#state-source").text(state.source);
+        $("#state-title").text(playerState.track.title);
+        $("#state-artist").text(playerState.track.artist);
+        $("#state-album").text(playerState.track.album);
+        $("#state-source").text(playerState.source);
+        drawArt(playerState.track.artUri);
+    }
 
-        $("#state-playtime").text(formatTime(state.playtime));
-        $("#state-length").text(formatTime(state.length));
-
-        drawArt(state.art_uri);
-        drawPlaybar(state.playtime, state.length);
-        updateControls(state.playing);
-    } else {
-        $("#nothing").show();
-        $("#nowplaying").hide();
+    if (playerState.state) {
+        $("#state-playtime").text(formatTime(playerState.state.playtime));
+        $("#state-length").text(formatTime(playerState.state.length));
+        drawPlaybar(playerState.state.playtime, playerState.state.length);
+        updateControls(playerState.state.playing);
     }
 }
 
 function handleMessage(msg, sender, sendResponse) {
-    console.log(msg);
-    if (msg.type === "player_state") {
-        update(msg);
+    if ("update" in msg) {
+        update(msg["update"]);
     } else {
         console.log("Unknown message: %O", msg);
     }
