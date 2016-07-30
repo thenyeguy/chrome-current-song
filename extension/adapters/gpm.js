@@ -1,10 +1,8 @@
 "use strict";
 
-function GpmAdapter() {
-    this.name = "Google Play Music";
-}
+function GpmAdapter() {}
 
-GpmAdapter.prototype = new Adapter();
+GpmAdapter.prototype = new Adapter("Google Play Music");
 
 GpmAdapter.prototype.enable = function() {
     return $("#playerSongInfo").is(":visible") || null;

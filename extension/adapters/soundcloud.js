@@ -1,10 +1,8 @@
 "use strict";
 
-function SoundCloudAdapter() {
-    this.name = "SoundCloud";
-}
+function SoundCloudAdapter() {}
 
-SoundCloudAdapter.prototype = new Adapter();
+SoundCloudAdapter.prototype = new Adapter("SoundCloud");
 
 SoundCloudAdapter.prototype.getTitle = function() {
     return $(".playbackSoundBadge__title").attr("title");

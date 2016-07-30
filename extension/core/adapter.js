@@ -1,6 +1,8 @@
 "use strict";
 
-function Adapter() {}
+function Adapter(name) {
+    this.name = name;
+}
 
 Adapter.prototype.getTitle = function() {
     return "";

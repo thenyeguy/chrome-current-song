@@ -2,7 +2,10 @@
 
 function Listener(adapter) {
     this.adapter = adapter;
-    this.port = chrome.runtime.connect(null, {name: this.adapter.name});
+    this.port = chrome.runtime.connect(null, {
+        name: Math.random().toString(36).substr(2),
+    });
+    this.port.postMessage({ "name": this.adapter.name });
     this.lastTrack = new Track();
     this.lastState = new TrackState();
     this.verbose = false;
@@ -41,6 +44,7 @@ Listener.prototype.update = function() {
     }
 
     if (!$.isEmptyObject(msg)) {
+        msg["source"] = this.adapter.name;
         if (this.verbose) { console.log("Sending message: %O", msg); }
         this.port.postMessage(msg);
     }

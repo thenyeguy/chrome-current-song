@@ -8,12 +8,11 @@ function Engine() {
 }
 
 Engine.prototype.handleConnect = function(port) {
-    console.log("Opened connection to: " + port.name);
-    var id = port.sender.id;
+    var id = port.name;
+    console.log("New connection: " + id);
     this.players[id] = {
-        connected: true,
         id: id,
-        name: port.name,
+        name: id,
         port: port,
         track: new Track(),
         state: new TrackState(),
@@ -23,22 +22,31 @@ Engine.prototype.handleConnect = function(port) {
 }
 
 Engine.prototype.handleDisconnect = function(port) {
-    console.log("Closed connection to: " + port.name);
-    var id = port.sender.id;
-    this.players[id].connected = false;
+    var id = port.name;
+    console.log("Closed connection: %s (%s)", this.players[id].id,
+                this.players[id].name);
+    if (this.activePlayer && id === this.activePlayer.id) {
+        this.activePlayer = null;
+    }
+    delete this.players[id];
     this.update();
 }
 
 
 Engine.prototype.handleMessage = function(msg, port) {
+    var id = port.name;
     if (this.verbose) {
-        console.log("Got message from port %s: %o", port.name, msg);
+        console.log("Got message: %s (%s): %o", this.players[id].id,
+                    this.players[id].name, msg);
     }
-    var id = port.sender.id;
-    if(msg["track"]) {
+    if("name" in msg) {
+        console.log("Identified connection as: " + msg["name"]);
+        this.players[id].name = msg["name"];
+    }
+    if("track" in msg) {
         this.players[id].track = msg["track"];
     }
-    if(msg["state"]) {
+    if("state" in msg) {
         this.players[id].state = msg["state"];
     }
     this.update();
@@ -55,16 +63,6 @@ Engine.prototype.handleControl = function(control) {
 }
 
 Engine.prototype.update = function() {
-    // Prune any disconnected players.
-    for (var id in this.players) {
-        if (!this.players[id].connected) {
-            if (this.activePlayer && this.activePlayer.id === id) {
-                this.activePlayer = null;
-            }
-            delete this.players[id];
-        }
-    }
-
     // Update the active player.
     if (this.activePlayer && !this.activePlayer.track.title) {
         console.log("Active player stopped: " + this.activePlayer.name);
