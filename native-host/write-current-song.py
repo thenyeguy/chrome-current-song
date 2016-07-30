@@ -36,13 +36,13 @@ def write(player_state):
     track = player_state.get("track", {})
     state = player_state.get("state", {})
 
-    title = track.get("title", "")
-    artist = track.get("artist", "<Unknown>")
+    title = track.get("title", None) or ""
+    artist = track.get("artist", None) or ""
     playing = state.get("playing", True)
     state = "playing" if playing else "paused"
     try:
         with open(SONG_FILE, "w") as f:
-            f.write("{}\t{}\t{}\n".format(title, artist, state))
+            f.write("{}\n{}\n{}\n".format(title, artist, state))
     except Exception as e:
         log("Write song failed: " + str(e))
 
