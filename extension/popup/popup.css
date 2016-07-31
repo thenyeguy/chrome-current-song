@@ -28,6 +28,10 @@ body {
     height: 180px;
 }
 
+#art img {
+    object-fit: cover;
+}
+
 #art #art-icon {
     padding-top: 30px;
     font-size: 120px;
