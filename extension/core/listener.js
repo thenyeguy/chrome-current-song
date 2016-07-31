@@ -56,6 +56,7 @@ Listener.prototype.poll = function(timeout_ms) {
 }
 
 Listener.prototype.start = function(verbose) {
+    console.log("Starting %s listener...", this.adapter.name);
     this.verbose = !!verbose;
     this.port.onMessage.addListener(this.handleRequest.bind(this));
     this.poll(500 /* ms */);

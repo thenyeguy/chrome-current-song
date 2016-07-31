@@ -44,7 +44,6 @@ SoundCloudAdapter.prototype.prevSong = function() {
 
 var listener = null;
 $(document).ready(function() {
-    console.log("Starting SoundCloud listener...");
     listener = new Listener(new SoundCloudAdapter());
     listener.start();
 });

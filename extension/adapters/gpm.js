@@ -51,7 +51,6 @@ GpmAdapter.prototype.prevSong = function() {
 
 var listener = null;
 $(document).ready(function() {
-    console.log("Starting GPM listener...");
     listener = new Listener(new GpmAdapter());
     listener.start();
 });
