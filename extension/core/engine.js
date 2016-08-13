@@ -16,6 +16,7 @@ Engine.prototype.handleConnect = function(port) {
         port: port,
         track: new Track(),
         state: new TrackState(),
+        lastActive: 0,
     }
     port.onMessage.addListener(this.handleMessage.bind(this));
     port.onDisconnect.addListener(this.handleDisconnect.bind(this));
@@ -59,8 +60,9 @@ Engine.prototype.handleMessage = function(msg, port) {
 
 Engine.prototype.handleControl = function(control) {
     console.log("Got control request: " + control);
-    if (this.activePlayer) {
-        this.activePlayer.port.postMessage({
+    var player = this.getLastActivePlayer();
+    if (player) {
+        player.port.postMessage({
             "type": "control",
             "control": control,
         });
@@ -79,6 +81,7 @@ Engine.prototype.update = function() {
             if (player.state.playing) {
                 console.log("Active player is now: " + player.name);
                 this.activePlayer = player;
+                player.lastActive = Date.now();
                 break;
             }
         }
@@ -96,6 +99,22 @@ Engine.prototype.getPlayerState = function() {
         "track": this.activePlayer.track,
         "state": this.activePlayer.state,
     }
+}
+
+Engine.prototype.getLastActivePlayer = function() {
+    if (this.activePlayer) {
+        return this.activePlayer;
+    }
+
+    var lastActive = 0;
+    var player = null;
+    for (var id in this.players) {
+        if (this.players[id].lastActive > lastActive) {
+            player = this.players[id];
+            lastActive = player.lastActive;
+        }
+    }
+    return player;
 }
 
 Engine.prototype.start = function() {
