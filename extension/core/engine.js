@@ -1,56 +1,40 @@
 "use strict";
 
 function Engine() {
-    this.activePlayer = null;
-    this.players = {};
+    this.playerMux = new Multiplexer();
     this.nativeHost = new NativeHostAdapater();
     this.verbose = false;
 }
 
 Engine.prototype.handleConnect = function(port) {
-    var id = port.name;
-    console.log("New connection: " + id);
-    this.players[id] = {
-        id: id,
-        name: id,
-        port: port,
-        track: new Track(),
-        state: new TrackState(),
-        lastActive: 0,
-    }
+    console.log("New connection: " + port.name);
+    this.playerMux.addPlayer(port);
     port.onMessage.addListener(this.handleMessage.bind(this));
     port.onDisconnect.addListener(this.handleDisconnect.bind(this));
 }
 
 Engine.prototype.handleDisconnect = function(port) {
-    var id = port.name;
-    console.log("Closed connection: %s (%s)", this.players[id].id,
-                this.players[id].name);
-    if (this.activePlayer && id === this.activePlayer.id) {
-        this.activePlayer = null;
-    }
-    delete this.players[id];
-    this.update();
+    var player = this.playerMux.deletePlayer(port.name);
+    console.log("Closed connection: %s (%s)", player.id, player.name);
 }
-
 
 Engine.prototype.handleMessage = function(msg, port) {
     var id = port.name;
+    var player = this.playerMux.getPlayer(id);
     if (this.verbose) {
-        console.log("Got message: %s (%s): %o", this.players[id].id,
-                    this.players[id].name, msg);
+        console.log("Got message: %s (%s): %o", player.id, player.name, msg);
     }
     if("name" in msg) {
         console.log("Identified connection as: " + msg["name"]);
-        this.players[id].name = msg["name"];
+        player.name = msg["name"];
     }
     if("track" in msg) {
-        this.players[id].track = msg["track"];
+        player.track = msg["track"];
     }
     if("state" in msg) {
-        this.players[id].state = msg["state"];
-        if (msg["state"].playing && this.activePlayer &&
-                id !== this.activePlayer.id) {
+        player.state = msg["state"];
+        var activePlayer = this.playerMux.getActivePlayer();
+        if (msg["state"].playing && activePlayer && id !== activePlayer.id) {
             // Attempt to take control
             this.handleControl("play_pause");
         }
@@ -60,7 +44,7 @@ Engine.prototype.handleMessage = function(msg, port) {
 
 Engine.prototype.handleControl = function(control) {
     console.log("Got control request: " + control);
-    var player = this.getLastActivePlayer();
+    var player = this.playerMux.getActivePlayer();
     if (player) {
         player.port.postMessage({
             "type": "control",
@@ -70,51 +54,19 @@ Engine.prototype.handleControl = function(control) {
 }
 
 Engine.prototype.update = function() {
-    // Update the active player.
-    if (this.activePlayer && !this.activePlayer.track.title) {
-        console.log("Active player stopped: " + this.activePlayer.name);
-        this.activePlayer = null;
-    }
-    if (!(this.activePlayer && this.activePlayer.state.playing)) {
-        for (var id in this.players) {
-            var player = this.players[id];
-            if (player.state.playing) {
-                console.log("Active player is now: " + player.name);
-                this.activePlayer = player;
-                player.lastActive = Date.now();
-                break;
-            }
-        }
-    }
-
-    // Update our hosts.
+    this.playerMux.update();
     var state = this.getPlayerState();
     chrome.extension.sendMessage({ "update": state });
     this.nativeHost.update(state);
 }
 
 Engine.prototype.getPlayerState = function() {
-    return this.activePlayer && {
-        "source": this.activePlayer.name,
-        "track": this.activePlayer.track,
-        "state": this.activePlayer.state,
+    var activePlayer = this.playerMux.getActivePlayer();
+    return activePlayer && {
+        "source": activePlayer.name,
+        "track": activePlayer.track,
+        "state": activePlayer.state,
     }
-}
-
-Engine.prototype.getLastActivePlayer = function() {
-    if (this.activePlayer) {
-        return this.activePlayer;
-    }
-
-    var lastActive = 0;
-    var player = null;
-    for (var id in this.players) {
-        if (this.players[id].lastActive > lastActive) {
-            player = this.players[id];
-            lastActive = player.lastActive;
-        }
-    }
-    return player;
 }
 
 Engine.prototype.start = function() {
