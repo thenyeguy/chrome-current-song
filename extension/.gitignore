@@ -1,2 +1,4 @@
+.tscache
+.*.ts
 node_modules
 target

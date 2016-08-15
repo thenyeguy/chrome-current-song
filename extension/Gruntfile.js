@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
   grunt.initConfig({
-    clean: ["target/"],
+    clean: ["target/", ".tscache", "**/.*.ts"],
     copy: {
       main: {
         expand: true,
@@ -39,18 +39,29 @@ module.exports = function(grunt) {
       },
       popup: "popup/popup.html",
     },
+    ts: {
+      main: {
+        src: "src/**/*.ts",
+        outDir: "target",
+        options: {
+          aluowJs: true,
+          rootDir: "src",
+        },
+      },
+    },
     watch: {
       files: ["Gruntfile.js", "src/**"],
       tasks: ["build"],
     },
   });
 
-  grunt.registerTask("build", ["copy", "manifest"]);
+  grunt.registerTask("build", ["ts", "manifest", "copy"]);
   grunt.registerTask("default", ["build"]);
 
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-watch");
+  grunt.loadNpmTasks("grunt-ts");
 
   grunt.registerTask("manifest", "Generate chrome manifest file.", function() {
     grunt.config.requires("manifest.adapters.deps");
