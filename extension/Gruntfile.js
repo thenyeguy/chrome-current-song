@@ -2,16 +2,37 @@ module.exports = function(grunt) {
   grunt.initConfig({
     clean: ["target/"],
     copy: {
-      manifest: {
-        src: "manifest.json",
-        dest: "target/",
-      },
-      src: {
+      main: {
         expand: true,
         cwd: "src/",
         src: "**",
         dest: "target/",
       },
+    },
+    manifest: {
+      base: "manifest.json",
+      output: "target/manifest.json",
+      adapters: {
+        deps: [
+          "third_party/jquery-3.1.0.slim.js",
+          "core/adapter.js",
+          "core/listener.js",
+          "core/types.js",
+        ],
+        list: "src/adapters/adapters.json",
+      },
+      background: {
+        js: [
+          "third_party/jquery-3.1.0.slim.js",
+          "core/api.js",
+          "core/engine.js",
+          "core/multiplexer.js",
+          "core/native.js",
+          "core/types.js",
+          "background/main.js",
+        ],
+      },
+      popup: "popup/popup.html",
     },
     watch: {
       files: ["Gruntfile.js", "src/**"],
@@ -19,10 +40,49 @@ module.exports = function(grunt) {
     },
   });
 
+  grunt.registerTask("build", ["copy", "manifest"]);
+  grunt.registerTask("default", ["build"]);
+
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-contrib-copy");
   grunt.loadNpmTasks("grunt-contrib-watch");
 
-  grunt.registerTask("build", ["copy"]);
-  grunt.registerTask("default", ["build"]);
+  grunt.registerTask("manifest", "Generate chrome manifest file.", function() {
+    grunt.config.requires("manifest.adapters.deps");
+    grunt.config.requires("manifest.adapters.list");
+    grunt.config.requires("manifest.background");
+    grunt.config.requires("manifest.base");
+    grunt.config.requires("manifest.output");
+    grunt.config.requires("manifest.popup");
+    var config = grunt.config.get("manifest");
+
+    var manifest = grunt.file.readJSON(config.base);
+    grunt.log.writeln("Loaded base manifest:", config.base);
+
+    // Build background script
+    manifest.background = {
+      scripts: config.background.js,
+    };
+
+    // Generate popup page
+    manifest.browser_action = {
+        default_popup: config.popup,
+    };
+
+    // Build content scripts
+    var adapters = grunt.file.readJSON(config.adapters.list);
+    manifest.content_scripts = [];
+    for (var i = 0; i < adapters.length; i++) {
+      manifest.content_scripts.push({
+        matches: [adapters[i].matches],
+        js: config.adapters.deps.concat("adapters/" + adapters[i].script),
+      });
+    }
+    grunt.log.writeln("Generated %d content scripts.", adapters.length);
+
+    // Generate final manifest file, pretty-printed
+    var manifestJson = JSON.stringify(manifest, null, 2);
+    grunt.log.debug("Final manifest:", manifestJson);
+    grunt.file.write(config.output, manifestJson);
+  });
 };

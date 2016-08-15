@@ -1,0 +1,14 @@
+[
+  {
+    "matches": "*://play.google.com/music/*",
+    "script": "gpm.js"
+  },
+  {
+    "matches": "*://*.soundcloud.com/*",
+    "script": "soundcloud.js"
+  },
+  {
+    "matches": "*://*.youtube.com/*",
+    "script": "youtube.js"
+  }
+]

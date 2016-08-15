@@ -7,22 +7,6 @@
 
   "permissions": ["nativeMessaging"],
 
-  "background": {
-    "scripts": [
-      "third_party/jquery-3.1.0.slim.js",
-      "core/api.js",
-      "core/engine.js",
-      "core/multiplexer.js",
-      "core/native.js",
-      "core/types.js",
-      "background/main.js"
-    ]
-  },
-
-  "browser_action": {
-    "default_popup": "popup/popup.html"
-  },
-
   "commands": {
     "play_pause": {
       "suggested_key": {
@@ -45,38 +29,5 @@
       "description": "Previous Song",
       "global": true
     }
-  },
-
-  "content_scripts": [
-    {
-      "matches": ["*://play.google.com/music/*"],
-      "js": [
-        "third_party/jquery-3.1.0.slim.js",
-        "core/adapter.js",
-        "core/types.js",
-        "core/listener.js",
-        "adapters/gpm.js"
-      ]
-    },
-    {
-      "matches": ["*://*.soundcloud.com/*"],
-      "js": [
-        "third_party/jquery-3.1.0.slim.js",
-        "core/adapter.js",
-        "core/types.js",
-        "core/listener.js",
-        "adapters/soundcloud.js"
-      ]
-    },
-    {
-      "matches": ["*://*.youtube.com/*"],
-      "js": [
-        "third_party/jquery-3.1.0.slim.js",
-        "core/adapter.js",
-        "core/types.js",
-        "core/listener.js",
-        "adapters/youtube.js"
-      ]
-    }
-  ]
+  }
 }
