@@ -5,7 +5,12 @@ module.exports = function(grunt) {
       main: {
         expand: true,
         cwd: "src/",
-        src: ["**/*.js", "**/*.html", "**/*.css"],
+        src: [
+            "**/*.js",
+            "**/*.html",
+            "**/*.css",
+            "third_party/bootstrap-3.3.7/fonts/*"
+        ],
         dest: "target/",
       },
     },
