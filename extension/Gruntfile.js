@@ -69,12 +69,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-ts");
 
   grunt.registerTask("manifest", "Generate chrome manifest file.", function() {
-    grunt.config.requires("manifest.adapters.deps");
-    grunt.config.requires("manifest.adapters.list");
-    grunt.config.requires("manifest.background");
-    grunt.config.requires("manifest.base");
-    grunt.config.requires("manifest.output");
-    grunt.config.requires("manifest.popup");
     var config = grunt.config.get("manifest");
 
     var manifest = grunt.file.readJSON(config.base);
@@ -94,9 +88,10 @@ module.exports = function(grunt) {
     var adapters = grunt.file.readJSON(config.adapters.list);
     manifest.content_scripts = [];
     for (var i = 0; i < adapters.length; i++) {
+      var script = adapters[i].script.replace(/.ts$/, ".js");
       manifest.content_scripts.push({
         matches: [adapters[i].matches],
-        js: config.adapters.deps.concat("adapters/" + adapters[i].script),
+        js: config.adapters.deps.concat("adapters/" + script),
       });
     }
     grunt.log.writeln("Generated %d content scripts.", adapters.length);
