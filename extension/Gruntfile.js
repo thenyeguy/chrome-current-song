@@ -1,6 +1,9 @@
 module.exports = function(grunt) {
   grunt.initConfig({
-    clean: ["target/", ".tscache", "**/.*.ts"],
+    clean: {
+      target: ["target/"],
+      typescript: [".tscache", "**/.*.ts"],
+    },
     copy: {
       popup: {
         expand: true,
