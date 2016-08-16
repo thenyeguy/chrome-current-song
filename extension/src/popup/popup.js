@@ -77,19 +77,19 @@ function handleMessage(msg, sender, sendResponse) {
 
 function setUpControls() {
     $("#prev-song").click(function (event) {
-        window.engineApi.prevSong();
+        window.currentSongApi.prevSong();
     });
     $("#play-pause").click(function (event) {
-        window.engineApi.playPause();
+        window.currentSongApi.playPause();
     });
     $("#next-song").click(function (event) {
-        window.engineApi.nextSong();
+        window.currentSongApi.nextSong();
     });
 }
 
 $(document).ready(function() {
-    window.engineApi = chrome.extension.getBackgroundPage().engineApi;
+    window.currentSongApi = chrome.extension.getBackgroundPage().currentSongApi;
     chrome.extension.onMessage.addListener(handleMessage);
-    update(window.engineApi.getPlayerState());
+    update(window.currentSongApi.getPlayerState());
     setUpControls();
 });

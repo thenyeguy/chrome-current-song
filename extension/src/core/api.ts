@@ -1,5 +1,7 @@
 /// <reference path='engine.ts' />
 
+interface Window { currentSongApi: EngineApi; }
+
 class EngineApi {
     private engine: Engine;
 

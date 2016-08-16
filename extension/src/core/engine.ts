@@ -67,7 +67,7 @@ class Engine {
     private update() {
         this.playerMux.update();
         var state = this.getPlayerState();
-        chrome.extension.sendRequest({ "update": state });
+        chrome.runtime.sendMessage({ "update": state });
         this.nativeHost.update(state);
     }
 

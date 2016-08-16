@@ -35,8 +35,8 @@ Listener.prototype.update = function() {
         this.lastTrack = track;
     }
 
-    var state = new TrackState(this.adapter.getPlaytime(),
-                               this.adapter.getLength(),
+    var state = new TrackState(toSeconds(this.adapter.getPlaytime()),
+                               toSeconds(this.adapter.getLength()),
                                this.adapter.getPlaying());
     if (!this.lastState.equals(state)) {
         msg["state"] = state;
