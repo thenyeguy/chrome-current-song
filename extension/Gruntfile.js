@@ -2,14 +2,10 @@ module.exports = function(grunt) {
   grunt.initConfig({
     clean: ["target/", ".tscache", "**/.*.ts"],
     copy: {
-      main: {
+      popup: {
         expand: true,
         cwd: "src/",
-        src: [
-            "**/*.js",
-            "**/*.html",
-            "**/*.css",
-        ],
+        src: ["popup/*.html", "popup/*.css"],
         dest: "target/",
       },
       thirdParty: {
