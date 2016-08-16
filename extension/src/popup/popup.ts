@@ -1,15 +1,16 @@
-"use strict";
+/// <reference path='../core/api.ts' />
+/// <reference path='../typings/index.d.ts' />
 
-function formatTime(time) {
-    var minutes = Math.floor(time / 60);
-    var seconds = time % 60;
-    if (seconds < 10) {
-        seconds = "0"+seconds;
+function formatTime(time: number): string {
+    let minutes = String(Math.floor(time / 60));
+    let seconds = String(time % 60);
+    if (seconds.length == 1) {
+        seconds = "0" + seconds;
     }
     return minutes + ":" + seconds;
 }
 
-function drawArt(artUri) {
+function drawArt(artUri: string) {
     if (artUri) {
         $("#art-icon").hide();
         $("#art-image").show();
@@ -20,14 +21,14 @@ function drawArt(artUri) {
     }
 }
 
-function drawPlaybar(playtime, length) {
-    var width = 100 * playtime / length;
+function drawPlaybar(playtime: number, length: number) {
+    let width = 100 * playtime / length;
     $("#playbar .progress-bar").attr("aria-valuenow", playtime);
     $("#playbar .progress-bar").attr("aria-valuemax", length);
-    $("#playbar .progress-bar").css("width", width+"%");
+    $("#playbar .progress-bar").css("width", String(width)+"%");
 }
 
-function updateControls(playing) {
+function updateControls(playing: boolean) {
     if (playing) {
         $("#controls").removeClass("visible");
         $("#play-pause").removeClass("glyphicon-play");
@@ -39,14 +40,15 @@ function updateControls(playing) {
     }
 }
 
-function update(playerState) {
+function update(playerState: any) {
     if (!playerState) {
         $("#nothing").show();
         $("#nowplaying").hide();
         return;
+    } else {
+      $("#nothing").hide();
+      $("#nowplaying").show();
     }
-    $("#nothing").hide();
-    $("#nowplaying").show();
 
     if (playerState.track) {
         $("#nothing").hide();
@@ -67,7 +69,7 @@ function update(playerState) {
     }
 }
 
-function handleMessage(msg, sender, sendResponse) {
+function handleMessage(msg: any) {
     if ("update" in msg) {
         update(msg["update"]);
     } else {
@@ -89,7 +91,7 @@ function setUpControls() {
 
 $(document).ready(function() {
     window.currentSongApi = chrome.extension.getBackgroundPage().currentSongApi;
-    chrome.extension.onMessage.addListener(handleMessage);
+    chrome.runtime.onMessage.addListener(handleMessage);
     update(window.currentSongApi.getPlayerState());
     setUpControls();
 });
