@@ -1,6 +1,7 @@
 /// <reference path='multiplexer.ts' />
 /// <reference path='native.ts' />
 /// <reference path='types.ts' />
+/// <reference path='../typings/index.d.ts' />
 
 enum ControlType {
     PlayPause, NextSong, PrevSong
@@ -25,13 +26,13 @@ class Engine {
     }
 
     private handleDisconnect(port: chrome.runtime.Port) {
-        var player = this.playerMux.deletePlayer(port.name);
+        let player = this.playerMux.deletePlayer(port.name);
         console.log("Closed connection: %s (%s)", player.id, player.name);
     }
 
     private handleMessage(msg: any, port: chrome.runtime.Port) {
-        var id = port.name;
-        var player = this.playerMux.getPlayer(id);
+        let id = port.name;
+        let player = this.playerMux.getPlayer(id);
         if (this.verbose) {
             console.log("Got message: %s (%s): %o", player.id, player.name, msg);
         }
@@ -44,7 +45,7 @@ class Engine {
         }
         if("state" in msg) {
             player.state = msg["state"];
-            var activePlayer = this.playerMux.getActivePlayer();
+            let activePlayer = this.playerMux.getActivePlayer();
             if (msg["state"].playing && activePlayer && id !== activePlayer.id) {
                 // Attempt to take control
                 this.handleControl("play_pause");
@@ -55,7 +56,7 @@ class Engine {
 
     private handleControl(control: string) {
         console.log("Got control request: " + control);
-        var player = this.playerMux.getActivePlayer();
+        let player = this.playerMux.getActivePlayer();
         if (player) {
             player.port.postMessage({
                 "type": "control",
@@ -66,7 +67,7 @@ class Engine {
 
     private update() {
         this.playerMux.update();
-        var state = this.getPlayerState();
+        let state = this.getPlayerState();
         chrome.runtime.sendMessage({ "update": state });
         this.nativeHost.update(state);
     }
@@ -82,7 +83,7 @@ class Engine {
     }
 
     public getPlayerState() {
-        var activePlayer = this.playerMux.getActivePlayer();
+        let activePlayer = this.playerMux.getActivePlayer();
         return activePlayer && {
             "source": activePlayer.name,
             "track": activePlayer.track,

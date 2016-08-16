@@ -1,4 +1,4 @@
-function toSeconds(playtime) {
+function toSeconds(playtime: any): number {
     if (playtime === null || playtime === undefined) {
         return null;
     }
@@ -7,14 +7,14 @@ function toSeconds(playtime) {
         return playtime;
     }
 
-    var match = playtime.match(/(\d+):(\d+)/);
+    let match = playtime.match(/(\d+):(\d+)/);
     if(match && match.length === 3) {
-        var minutes = parseInt(match[1]);
-        var seconds = parseInt(match[2]);
+        let minutes = parseInt(match[1]);
+        let seconds = parseInt(match[2]);
         return 60*minutes + seconds;
     }
 
-    var intValue = parseInt(playtime);
+    let intValue = parseInt(playtime);
     if (typeof intValue === "number" && intValue != NaN) {
         return intValue;
     }

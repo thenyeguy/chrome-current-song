@@ -1,7 +1,9 @@
+/// <reference path='../typings/index.d.ts' />
+//
 class Player {
     id: string;
     name: string;
-    port;  // chrome port
+    port: chrome.runtime.Port;
     track: Track;
     state: TrackState;
     lastActive: number;  // timestamp
@@ -17,7 +19,7 @@ class Multiplexer {
     }
 
     public addPlayer(port) {
-        var id = port.name;
+        let id = port.name;
         this.players[id] = {
             id: id,
             name: id,
@@ -33,7 +35,7 @@ class Multiplexer {
     }
 
     public deletePlayer(id: string): Player {
-        var player = this.players[id];
+        let player = this.players[id];
         if (this.activePlayer && id === this.activePlayer.id) {
             this.activePlayer = null;
         }
@@ -46,9 +48,9 @@ class Multiplexer {
             return this.activePlayer;
         }
 
-        var lastActive = 0;
-        var player = null;
-        for (var id in this.players) {
+        let lastActive = 0;
+        let player = null;
+        for (let id in this.players) {
             if (this.players[id].lastActive > lastActive) {
                 player = this.players[id];
                 lastActive = player.lastActive;
@@ -64,8 +66,8 @@ class Multiplexer {
             this.activePlayer = null;
         }
         if (!(this.activePlayer && this.activePlayer.state.playing)) {
-            for (var id in this.players) {
-                var player = this.players[id];
+            for (let id in this.players) {
+                let player = this.players[id];
                 if (player.state.playing) {
                     console.log("Active player is now: " + player.name);
                     this.activePlayer = player;

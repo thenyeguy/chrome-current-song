@@ -21,7 +21,7 @@ class NativeHostAdapater {
         }
     }
 
-    public sendMessage(msg) {
+    public sendMessage(msg: any) {
         if (this.native_port) {
             this.native_port.postMessage(msg);
         }
