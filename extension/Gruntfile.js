@@ -9,9 +9,14 @@ module.exports = function(grunt) {
             "**/*.js",
             "**/*.html",
             "**/*.css",
-            "third_party/bootstrap-3.3.7/fonts/*"
         ],
         dest: "target/",
+      },
+      thirdParty: {
+        expand: true,
+        cwd: "src/",
+        src: ["third_party/**"],
+        dest: "target/"
       },
     },
     manifest: {
