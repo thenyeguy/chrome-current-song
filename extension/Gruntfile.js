@@ -37,6 +37,7 @@ module.exports = function(grunt) {
           "core/engine.js",
           "core/multiplexer.js",
           "core/native.js",
+          "core/player.js",
           "core/types.js",
           "background/main.js",
         ],
