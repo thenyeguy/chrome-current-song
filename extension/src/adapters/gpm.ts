@@ -1,5 +1,5 @@
-/// <reference path='../core/adapter.ts' />
-/// <reference path='../core/listener.ts' />
+/// <reference path='adapter.ts' />
+/// <reference path='listener.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class GpmAdapter implements Adapter {

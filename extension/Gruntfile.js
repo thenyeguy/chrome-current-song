@@ -24,8 +24,8 @@ module.exports = function(grunt) {
       adapters: {
         deps: [
           "third_party/jquery-3.1.0.slim.js",
-          "core/adapter.js",
-          "core/listener.js",
+          "adapters/adapter.js",
+          "adapters/listener.js",
           "core/types.js",
         ],
         list: "src/adapters/adapters.json",

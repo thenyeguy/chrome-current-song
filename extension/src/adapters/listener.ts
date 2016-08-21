@@ -1,5 +1,5 @@
 /// <reference path='adapter.ts' />
-/// <reference path='types.ts' />
+/// <reference path='../core/types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 interface Window { listener: Listener }
