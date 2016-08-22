@@ -36,19 +36,19 @@ class Engine {
         if (this.verbose) {
             console.log("Got message: %s (%s): %o", player.id, player.name, msg);
         }
-        if("name" in msg) {
-            console.log("Identified connection as: " + msg["name"]);
-            player.name = msg["name"];
+        if(msg.name) {
+            console.log("Identified connection as: " + msg.name);
+            player.setName(msg.name);
         }
-        if("track" in msg) {
-            player.track = msg["track"];
+        if(msg.track) {
+            player.updateTrack(msg.track);
         }
-        if("state" in msg) {
-            player.state = msg["state"];
+        if(msg.state) {
+            player.updateState(msg.state);
             let activePlayer = this.playerMux.getActivePlayer();
-            if (msg["state"].playing && activePlayer && id !== activePlayer.id) {
-                // Attempt to take control
-                this.handleControl("play_pause");
+            if (activePlayer && player != activePlayer) {
+                // Try to take control.
+                activePlayer.stop();
             }
         }
         this.update();
@@ -58,10 +58,7 @@ class Engine {
         console.log("Got control request: " + control);
         let player = this.playerMux.getActivePlayer();
         if (player) {
-            player.port.postMessage({
-                "type": "control",
-                "control": control,
-            });
+            player.handleControl(control);
         }
     }
 

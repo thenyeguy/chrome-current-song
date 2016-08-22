@@ -1,4 +1,5 @@
 /// <reference path='player.ts' />
+/// <reference path='../typings/index.d.ts' />
 
 class Multiplexer {
     private activePlayer: Player;
@@ -9,16 +10,9 @@ class Multiplexer {
         this.players = {};
     }
 
-    public addPlayer(port) {
-        let id = port.name;
-        this.players[id] = {
-            id: id,
-            name: id,
-            port: port,
-            track: new Track("", "", "", ""),
-            state: new TrackState(0, 0, false),
-            lastActive: 0,
-        };
+    public addPlayer(port: chrome.runtime.Port) {
+        let player = new Player(port);
+        this.players[player.id] = player;
     }
 
     public getPlayer(id: string): Player {
