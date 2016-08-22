@@ -34,7 +34,7 @@ module.exports = function(grunt) {
         js: [
           "third_party/jquery-3.1.0.slim.js",
           "core/api.js",
-          "core/engine.js",
+          "core/dispatcher.js",
           "core/multiplexer.js",
           "core/native.js",
           "core/player.js",

@@ -3,7 +3,7 @@
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
-class Engine {
+class Dispatcher {
     private playerMux: Multiplexer;
     private nativeHost: NativeHostAdapater;
     public verbose: boolean;
@@ -12,6 +12,10 @@ class Engine {
         this.playerMux = new Multiplexer();
         this.nativeHost = new NativeHostAdapater();
         this.verbose = false;
+
+        this.nativeHost.connect();
+        chrome.commands.onCommand.addListener(this.handleControl.bind(this));
+        chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
     }
 
     private handleConnect(port: chrome.runtime.Port) {
@@ -91,11 +95,5 @@ class Engine {
             "track": activePlayer.track,
             "state": activePlayer.state,
         }
-    }
-
-    public start() {
-        this.nativeHost.connect();
-        chrome.commands.onCommand.addListener(this.handleControl.bind(this));
-        chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
     }
 }

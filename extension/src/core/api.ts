@@ -1,39 +1,35 @@
-/// <reference path='engine.ts' />
+/// <reference path='dispatcher.ts' />
 
-interface Window { currentSongApi: EngineApi; }
+interface Window { currentSongApi: CurrentSongApi; }
 
-class EngineApi {
-    private engine: Engine;
+class CurrentSongApi {
+    private dispatcher: Dispatcher;
 
     constructor() {
-        this.engine = new Engine();
+        this.dispatcher = new Dispatcher();
     }
 
     get verbose(): boolean {
-        return this.engine.verbose;
+        return this.dispatcher.verbose;
     }
 
     set verbose(value: boolean) {
-        this.engine.verbose = value;
-    }
-
-    public start() {
-        this.engine.start();
+        this.dispatcher.verbose = value;
     }
 
     public getPlayerState() {
-        return this.engine.getPlayerState();
+        return this.dispatcher.getPlayerState();
     }
 
     public playPause() {
-        this.engine.trigger(ControlType.PlayPause);
+        this.dispatcher.trigger(ControlType.PlayPause);
     }
 
     public nextSong() {
-        this.engine.trigger(ControlType.NextSong);
+        this.dispatcher.trigger(ControlType.NextSong);
     }
 
     public prevSong() {
-        this.engine.trigger(ControlType.PrevSong);
+        this.dispatcher.trigger(ControlType.PrevSong);
     }
 }
