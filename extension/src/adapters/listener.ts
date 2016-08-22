@@ -26,12 +26,12 @@ class Listener {
   private handleRequest(request: any) {
       if (this.verbose) { console.log("Got request: %O", request); }
 
-      if (request.type === "control") {
-          if (request.control === "play_pause") {
+      if (request.type == "control") {
+          if (request.control == ControlType.PlayPause) {
               this.adapter.playPause();
-          } else if (request.control === "next_song") {
+          } else if (request.control == ControlType.NextSong) {
               this.adapter.nextSong();
-          } else if (request.control === "prev_song") {
+          } else if (request.control == ControlType.PrevSong) {
               this.adapter.prevSong();
           }
       }

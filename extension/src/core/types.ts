@@ -22,6 +22,10 @@ function toSeconds(playtime: any): number {
     return null;
 }
 
+enum ControlType {
+    PlayPause, NextSong, PrevSong
+}
+
 class Track {
     constructor(public title: string, public artist: string,
                 public album: string, public artUri: string) {}

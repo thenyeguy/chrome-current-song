@@ -1,3 +1,4 @@
+/// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 enum PlayerState {
@@ -47,11 +48,11 @@ class Player {
     public stop() {
         if (this.playerState == PlayerState.Playing) {
             this.playerState = PlayerState.Stopping;
-            this.handleControl("play_pause");
+            this.handleControl(ControlType.PlayPause);
         }
     }
 
-    public handleControl(control: string) {
+    public handleControl(control: ControlType) {
         this.port.postMessage({
             "type": "control",
             "control": control,

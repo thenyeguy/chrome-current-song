@@ -3,10 +3,6 @@
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
-enum ControlType {
-    PlayPause, NextSong, PrevSong
-}
-
 class Engine {
     private playerMux: Multiplexer;
     private nativeHost: NativeHostAdapater;
@@ -56,9 +52,21 @@ class Engine {
 
     private handleControl(control: string) {
         console.log("Got control request: " + control);
+
+        let control_type;
+        if (control == "play_pause") {
+            control_type = ControlType.PlayPause;
+        } else if (control == "next_song") {
+            control_type = ControlType.NextSong;
+        } else if (control == "prev_song") {
+            control_type = ControlType.PrevSong;
+        } else {
+            return;
+        }
+
         let player = this.playerMux.getActivePlayer();
         if (player) {
-            player.handleControl(control);
+            player.handleControl(control_type);
         }
     }
 
@@ -70,12 +78,9 @@ class Engine {
     }
 
     public trigger(control: ControlType) {
-        if (control == ControlType.PlayPause) {
-            this.handleControl("play_pause");
-        } else if (control == ControlType.NextSong) {
-            this.handleControl("next_song");
-        } else if (control == ControlType.PrevSong) {
-            this.handleControl("prev_song");
+        let player = this.playerMux.getActivePlayer();
+        if (player) {
+            player.handleControl(control);
         }
     }
 
