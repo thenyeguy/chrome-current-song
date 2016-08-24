@@ -29,5 +29,7 @@
       "description": "Previous Song",
       "global": true
     }
-  }
+  },
+
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0qWhCvNdbrwhMo4c8J1pveRJQo10geUcXG0VyWxf3qqVUPDeCaMK8vYfjWy+MQ/Eaje7k4/MYqAGU7ja2WC4xm7AazGW15alVdXryV0dXUDmW+k6Rrh2pkP5MS9/3Twc+KJYcm6fcycvK/z6akhi9rgMlsXmiqKLmnJcpZYzMuuur2DBa0bjcqqDYvDciU4t6+KmulmGIDJHmGGjWSGEPzX28WoBs9yXsKWYjwpfWFVLcO9FpjpuZoCgW8sYvVSFp3zu/xwx4WERkIQDFJM3bB8MixnmFEnO5XjUSifPGaDglj9OhtQdd2Uh134+FpVUJ7q3L1F9DnJVBXaf8QVsOwIDAQAB"
 }

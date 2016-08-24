@@ -1,5 +1,7 @@
+var crx = require("gulp-crx-pack");
 var del = require("del");
 var gulp = require("gulp");
+var fs = require("fs");
 var manifest = require("./manifest");
 var sourcemaps = require("gulp-sourcemaps");
 var ts = require("gulp-typescript");
@@ -33,7 +35,8 @@ gulp.task("manifest", function() {
 });
 
 gulp.task("popup", function() {
-    return gulp.src(["src/popup/*.html", "src/popup/*.css"], globOptions)
+    return gulp.src(["src/popup/*.html", "src/popup/*.css"],
+            globOptions)
         .pipe(gulp.dest("target/"));
 });
 
@@ -49,11 +52,20 @@ gulp.task("scripts", function() {
         .pipe(gulp.dest("target/"));
 });
 
+gulp.task("build", ["manifest", "popup", "scripts", "third_party"]);
+
+gulp.task("package", ["build"], function() {
+    return gulp.src(["target/", "!*.crx"])
+        .pipe(crx({
+            filename: "extension.crx",
+            privateKey: fs.readFileSync("../key.pem", "utf-8"),
+        }))
+        .pipe(gulp.dest("target/"));
+});
+
 gulp.task("clean", function() {
     return del("target/");
 });
-
-gulp.task("build", ["manifest", "popup", "scripts", "third_party"]);
 
 gulp.task("default", ["build"]);
 
