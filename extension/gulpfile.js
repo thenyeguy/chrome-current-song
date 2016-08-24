@@ -64,7 +64,7 @@ gulp.task("package", ["build"], function() {
 });
 
 gulp.task("clean", function() {
-    return del("target/");
+    del.sync("target/");
 });
 
 gulp.task("default", ["build"]);
