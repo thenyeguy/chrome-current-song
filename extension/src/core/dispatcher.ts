@@ -1,16 +1,19 @@
 /// <reference path='multiplexer.ts' />
 /// <reference path='native.ts' />
+/// <reference path='scrobbler.ts' />
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class Dispatcher {
     private playerMux: Multiplexer;
     private nativeHost: NativeHostAdapater;
+    private scrobbler: Scrobbler;
     public verbose: boolean;
 
     constructor() {
         this.playerMux = new Multiplexer();
         this.nativeHost = new NativeHostAdapater();
+        this.scrobbler = new Scrobbler();
         this.verbose = false;
 
         this.nativeHost.connect();
@@ -79,6 +82,7 @@ class Dispatcher {
         let state = this.getPlayerState();
         chrome.runtime.sendMessage({ "update": state });
         this.nativeHost.update(state);
+        this.scrobbler.update(state);
     }
 
     public trigger(control: ControlType) {
