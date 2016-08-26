@@ -80,9 +80,9 @@ class Dispatcher {
     private update() {
         this.playerMux.update();
         let state = this.getPlayerState();
-        chrome.runtime.sendMessage({ "update": state });
         this.nativeHost.update(state);
         this.scrobbler.update(state);
+        chrome.runtime.sendMessage({ "update": true });
     }
 
     public trigger(control: ControlType) {

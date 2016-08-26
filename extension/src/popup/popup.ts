@@ -1,4 +1,5 @@
 /// <reference path='../core/api.ts' />
+/// <reference path='../core/types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 function formatTime(time: number): string {
@@ -49,7 +50,8 @@ function updateScrobble() {
     }
 }
 
-function update(playerState: any) {
+function update() {
+    let playerState = window.currentSongApi.getPlayerState();
     if (!playerState) {
         $("#nothing").show();
         $("#nowplaying").hide();
@@ -81,8 +83,8 @@ function update(playerState: any) {
 }
 
 function handleMessage(msg: any) {
-    if ("update" in msg) {
-        update(msg["update"]);
+    if (msg.update) {
+        update();
     } else {
         console.log("Unknown message: %O", msg);
     }
@@ -103,6 +105,6 @@ function setUpControls() {
 $(document).ready(function() {
     window.currentSongApi = chrome.extension.getBackgroundPage().currentSongApi;
     chrome.runtime.onMessage.addListener(handleMessage);
-    update(window.currentSongApi.getPlayerState());
     setUpControls();
+    update();
 });
