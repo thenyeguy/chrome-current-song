@@ -61,3 +61,8 @@ class TrackState {
                this.playing === other.playing;
     }
 }
+
+class PlayerState {
+    constructor(public source: String, public track: Track,
+                public state: TrackState) {}
+}

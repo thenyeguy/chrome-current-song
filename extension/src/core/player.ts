@@ -1,7 +1,7 @@
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
-enum PlayerState {
+enum InternalPlayerState {
     Playing, Stopping, Stopped
 }
 
@@ -13,7 +13,7 @@ class Player {
     lastActive: number;  // timestamp
 
     private port: chrome.runtime.Port;
-    private playerState: PlayerState;
+    private playerState: InternalPlayerState;
 
     constructor(port: chrome.runtime.Port) {
         this.id = port.name;
@@ -23,7 +23,11 @@ class Player {
         this.lastActive = 0;
 
         this.port = port;
-        this.playerState = PlayerState.Stopped;
+        this.playerState = InternalPlayerState.Stopped;
+    }
+
+    public getState(): PlayerState {
+        return new PlayerState(this.name, this.track, this.state);
     }
 
     public setName(name: string) {
@@ -37,17 +41,17 @@ class Player {
     public updateState(state: TrackState) {
         this.state = state;
         if (state.playing) {
-            if (this.playerState == PlayerState.Stopped) {
-                this.playerState = PlayerState.Playing;
+            if (this.playerState == InternalPlayerState.Stopped) {
+                this.playerState = InternalPlayerState.Playing;
             }
         } else {
-            this.playerState = PlayerState.Stopped;
+            this.playerState = InternalPlayerState.Stopped;
         }
     }
 
     public stop() {
-        if (this.playerState == PlayerState.Playing) {
-            this.playerState = PlayerState.Stopping;
+        if (this.playerState == InternalPlayerState.Playing) {
+            this.playerState = InternalPlayerState.Stopping;
             this.handleControl(ControlType.PlayPause);
         }
     }

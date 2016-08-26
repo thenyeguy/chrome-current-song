@@ -88,12 +88,8 @@ class Dispatcher {
         }
     }
 
-    public getPlayerState() {
+    public getPlayerState(): PlayerState {
         let activePlayer = this.playerMux.getActivePlayer();
-        return activePlayer && {
-            "source": activePlayer.name,
-            "track": activePlayer.track,
-            "state": activePlayer.state,
-        }
+        return activePlayer && activePlayer.getState();
     }
 }
