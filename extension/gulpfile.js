@@ -73,7 +73,7 @@ gulp.task("watch", ["build"], function() {
     gulp.watch([
         "manifest.json",
         "gulpfile.js",
-        "src/adapters/adapters.json"
+        "src/**",
     ], ["manifest"]);
     gulp.watch("src/popup/**", ["popup"]);
     gulp.watch("src/**/*.ts", ["scripts"]);
