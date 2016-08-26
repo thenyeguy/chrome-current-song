@@ -17,8 +17,12 @@ class CurrentSongApi {
         this.dispatcher.verbose = value;
     }
 
-    public getPlayerState() {
+    public getPlayerState(): PlayerState {
         return this.dispatcher.getPlayerState();
+    }
+
+    public getScrobbleState(): ScrobbleState {
+        return this.dispatcher.getScrobbleState();
     }
 
     public playPause() {

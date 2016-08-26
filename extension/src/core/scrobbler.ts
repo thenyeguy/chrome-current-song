@@ -4,10 +4,6 @@ let SCROBBLE_PERCENT: number = 0.5;
 let MINIMUM_DURATION: number = 30;  // 30 seconds
 let MAXIMUM_WAIT_TIME: number = 4*60;  // 4 minutes
 
-enum ScrobbleState {
-    Waiting, Scrobbled
-}
-
 class Scrobbler {
     private scrobbleState: ScrobbleState;
     private playerState: PlayerState;
@@ -15,10 +11,14 @@ class Scrobbler {
     private lastUpdate: number;
 
     constructor() {
-        this.scrobbleState= ScrobbleState.Waiting;
+        this.scrobbleState = ScrobbleState.Waiting;
         this.playerState = null;
         this.listenTime = 0;
         this.lastUpdate = Date.now();
+    }
+
+    public getState(): ScrobbleState {
+        return this.scrobbleState;
     }
 
     public update(newState: PlayerState) {

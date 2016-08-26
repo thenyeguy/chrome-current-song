@@ -96,4 +96,8 @@ class Dispatcher {
         let activePlayer = this.playerMux.getActivePlayer();
         return activePlayer && activePlayer.getState();
     }
+
+    public getScrobbleState(): ScrobbleState {
+        return this.scrobbler.getState();
+    }
 }

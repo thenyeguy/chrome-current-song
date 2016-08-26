@@ -40,6 +40,15 @@ function updateControls(playing: boolean) {
     }
 }
 
+function updateScrobble() {
+    let scrobbleState = window.currentSongApi.getScrobbleState();
+    if (scrobbleState == 1) {
+        $("#state-scrobbled").addClass("glyphicon-ok");
+    } else {
+        $("#state-scrobbled").removeClass("glyphicon-ok");
+    }
+}
+
 function update(playerState: any) {
     if (!playerState) {
         $("#nothing").show();
@@ -67,6 +76,8 @@ function update(playerState: any) {
         drawPlaybar(playerState.state.playtime, playerState.state.length);
         updateControls(playerState.state.playing);
     }
+
+    updateScrobble();
 }
 
 function handleMessage(msg: any) {

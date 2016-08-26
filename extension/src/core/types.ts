@@ -26,6 +26,10 @@ enum ControlType {
     PlayPause, NextSong, PrevSong
 }
 
+enum ScrobbleState {
+    Waiting, Scrobbled
+}
+
 class Track {
     constructor(public title: string, public artist: string,
                 public album: string, public artUri: string) {}
@@ -63,6 +67,6 @@ class TrackState {
 }
 
 class PlayerState {
-    constructor(public source: String, public track: Track,
+    constructor(public source: string, public track: Track,
                 public state: TrackState) {}
 }
