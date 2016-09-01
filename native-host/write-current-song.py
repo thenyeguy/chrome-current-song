@@ -36,8 +36,8 @@ def write(player_state):
     track = player_state.get("track", {})
     state = player_state.get("state", {})
 
-    title = track.get("title", None) or ""
-    artist = track.get("artist", None) or ""
+    title = track.get("title", None).encode("utf8") or ""
+    artist = track.get("artist", None).encode("utf8") or ""
     playing = state.get("playing", True)
     state = "playing" if playing else "paused"
     if title:
