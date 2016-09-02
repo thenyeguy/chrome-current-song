@@ -36,8 +36,8 @@ def write(player_state):
     track = player_state.get("track", {})
     state = player_state.get("state", {})
 
-    title = track.get("title", None).encode("utf8") or ""
-    artist = track.get("artist", None).encode("utf8") or ""
+    title = (track.get("title", None) or "").encode("utf8")
+    artist = (track.get("artist", None) or "").encode("utf8")
     playing = state.get("playing", True)
     state = "playing" if playing else "paused"
     if title:
@@ -70,4 +70,7 @@ def main():
     return 0
 
 if __name__ == "__main__":
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except Exception as e:
+        log("Fatal exception: " + str(e))
