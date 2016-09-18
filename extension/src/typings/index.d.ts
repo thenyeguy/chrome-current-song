@@ -1,3 +1,4 @@
+/// <reference path="globals/bootstrap/index.d.ts" />
 /// <reference path="globals/chrome/index.d.ts" />
 /// <reference path="globals/es6-promise/index.d.ts" />
 /// <reference path="globals/filesystem/index.d.ts" />
