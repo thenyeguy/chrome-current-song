@@ -58,6 +58,12 @@ function content(adapterJson, deps, options) {
     });
 }
 
+function options(options_src) {
+    return jeditor({
+        options_page: options_src
+    });
+}
+
 function popup(popup_src) {
     return jeditor({
         browser_action: {
@@ -69,5 +75,6 @@ function popup(popup_src) {
 module.exports = {
     background: background,
     content: content,
+    options: options,
     popup: popup,
 };

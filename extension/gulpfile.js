@@ -30,7 +30,14 @@ gulp.task("manifest", function() {
             "src/adapters/listener.ts",
             "src/core/types.ts"
         ], globOptions))
+        .pipe(manifest.options("options/options.html"))
         .pipe(manifest.popup("popup/popup.html"))
+        .pipe(gulp.dest("target/"));
+});
+
+gulp.task("options", function() {
+    return gulp.src(["src/options/*.html", "src/options/*.css"],
+            globOptions)
         .pipe(gulp.dest("target/"));
 });
 
@@ -53,7 +60,7 @@ gulp.task("scripts", function() {
         .pipe(gulp.dest("target/"));
 });
 
-gulp.task("build", ["manifest", "popup", "scripts", "third_party"]);
+gulp.task("build", ["manifest", "options", "popup", "scripts", "third_party"]);
 
 gulp.task("package", ["build"], function() {
     return gulp.src(["target/", "!*.crx"])
@@ -72,10 +79,12 @@ gulp.task("default", ["build"]);
 
 gulp.task("watch", ["build"], function() {
     gulp.watch([
+        "manifest.js",
         "manifest.json",
         "gulpfile.js",
         "src/**",
     ], ["manifest"]);
+    gulp.watch("src/options/**", ["options"]);
     gulp.watch("src/popup/**", ["popup"]);
     gulp.watch("src/**/*.ts", ["scripts"]);
     gulp.watch("src/third_party/**", ["third_party"]);
