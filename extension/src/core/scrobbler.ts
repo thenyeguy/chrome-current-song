@@ -34,6 +34,7 @@ class Scrobbler {
             this.scrobbleState = ScrobbleState.Waiting;
             this.playerState = newState;
             this.listenTime = 0;
+            this.lastfm.updateNowPlaying(newState);
         } else {
             let timeElapsed = Date.now() - this.lastUpdate;
             let playtimeDiff =

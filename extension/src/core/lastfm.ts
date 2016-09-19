@@ -15,35 +15,39 @@ class LastFmApi {
         this.session_token = null;
     }
 
-    private signRequest(params: any) {
-        let keys = Object.keys(params).sort();
+    private signRequest(request: any) {
+        let keys = Object.keys(request).sort();
         let signature = "";
         for (let key of keys) {
             if (key == "format") {
                 continue;
             }
             signature += key;
-            signature += params[key];
+            signature += request[key];
         }
         signature += LastFmApi.API_SECRET;
-        params["api_sig"] = md5(signature);
+        request["api_sig"] = md5(signature);
     }
 
-    private issueRequest(method: string, params: any, callback: (any) => void) {
-        let request_params = params || {};
-        request_params["method"] = method;
-        request_params["api_key"] = LastFmApi.API_KEY;
-        request_params["format"] = "json";
+    private buildRequest(method: string, params: any): any {
+        let request = params || {};
+        request["method"] = method;
+        request["api_key"] = LastFmApi.API_KEY;
+        request["format"] = "json";
 
         if (this.settings.lastFmAuthToken) {
-            request_params["sk"] = this.settings.lastFmAuthToken;
+            request["sk"] = this.settings.lastFmAuthToken;
         } else if (this.session_token) {
-            request_params["token"] = this.session_token;
+            request["token"] = this.session_token;
         }
-        this.signRequest(request_params);
+        this.signRequest(request);
+        return request;
+    }
 
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", LastFmApi.API_ENDPOINT + "?" + $.param(request_params));
+    private issueRequest(http_method: string, method: string, params: any,
+                         callback: (any) => void) {
+        let request = this.buildRequest(method, params);
+        let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
@@ -54,11 +58,17 @@ class LastFmApi {
                 }
             }
         };
-        xhr.send();
+        if (http_method == "POST") {
+            xhr.open("POST", LastFmApi.API_ENDPOINT);
+            xhr.send($.param(request));
+        } else { // GET
+            xhr.open("GET", LastFmApi.API_ENDPOINT + "?" + $.param(request));
+            xhr.send();
+        }
     }
 
     private getAuthToken(callback: (string) => void) {
-        this.issueRequest("auth.getToken", {}, (result:any) => {
+        this.issueRequest("GET", "auth.getToken", {}, (result:any) => {
             let token = result.token || null;
             this.session_token = token;
             callback && callback(token);
@@ -75,7 +85,7 @@ class LastFmApi {
     }
 
     public getAuthSession(callback: (string) => void) {
-        this.issueRequest("auth.getSession", {}, (result: any) => {
+        this.issueRequest("GET", "auth.getSession", {}, (result: any) => {
             this.settings.lastFmAuthToken = result.session["key"] || null;
             this.settings.lastFmAuthUser = result.session["name"] || null;
             this.session_token = null;
@@ -86,5 +96,14 @@ class LastFmApi {
     public deauthorize() {
         this.settings.lastFmAuthToken = null;
         this.settings.lastFmAuthUser = null;
+    }
+
+    public updateNowPlaying(state: PlayerState) {
+        this.issueRequest("POST", "track.updateNowPlaying", {
+            artist: state.track.artist,
+            track: state.track.title,
+            album: state.track.album,
+            duration: state.state.length,
+        }, null);
     }
 }
