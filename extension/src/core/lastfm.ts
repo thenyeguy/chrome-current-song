@@ -1,4 +1,5 @@
 /// <reference path='settings.ts' />
+/// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class LastFmApi {

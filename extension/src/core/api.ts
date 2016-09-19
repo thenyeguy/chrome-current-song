@@ -11,9 +11,8 @@ class CurrentSongApi {
 
     constructor() {
         this.settings = new SettingsManager();
-
-        this.dispatcher = new Dispatcher(this.settings);
         this.lastfm = new LastFmApi(this.settings);
+        this.dispatcher = new Dispatcher(this.lastfm, this.settings);
     }
 
     get verbose(): boolean {

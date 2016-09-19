@@ -1,3 +1,4 @@
+/// <reference path='lastfm.ts' />
 /// <reference path='multiplexer.ts' />
 /// <reference path='native.ts' />
 /// <reference path='scrobbler.ts' />
@@ -10,10 +11,10 @@ class Dispatcher {
     private scrobbler: Scrobbler;
     public verbose: boolean;
 
-    constructor(settings: SettingsManager) {
+    constructor(lastfm: LastFmApi, settings: SettingsManager) {
         this.playerMux = new Multiplexer();
         this.nativeHost = new NativeHostAdapater();
-        this.scrobbler = new Scrobbler(settings);
+        this.scrobbler = new Scrobbler(lastfm, settings);
         this.verbose = false;
 
         this.nativeHost.connect();
