@@ -21,6 +21,7 @@ gulp.task("manifest", function() {
     return gulp.src("manifest.json")
         .pipe(manifest.background([
             "src/third_party/jquery-3.1.0.slim.js",
+            "src/third_party/md5.js",
             "src/core/**.ts",
             "src/background/main.ts"
         ], globOptions))

@@ -6,6 +6,7 @@
     "filesystem": "registry:dt/filesystem#0.0.0+20160316155526",
     "filewriter": "registry:dt/filewriter#0.0.0+20160316155526",
     "jquery": "registry:dt/jquery#1.10.0+20160704162008",
+    "js-md5/md5": "registry:dt/js-md5/md5#0.3.0+20160412153444",
     "promise": "registry:dt/promise#7.1.1+20160602154553",
     "webrtc/mediastream": "registry:dt/webrtc/mediastream#0.0.0+20160317120654"
   }
