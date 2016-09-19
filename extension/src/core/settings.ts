@@ -5,6 +5,7 @@ class SettingsManager {
 
     constructor() {
         chrome.storage.onChanged.addListener(this.handleChange);
+        this.loadSettings();
     }
 
     private handleChange(changes: any, area: string) {
@@ -13,6 +14,14 @@ class SettingsManager {
                 this._enableScrobbling = changes[key];
             }
         }
+    }
+
+    private loadSettings() {
+        chrome.storage.sync.get(null, (items) => {
+            console.log(items);
+            this.handleChange(items, "");
+            console.log("Loaded settings.");
+        });
     }
 
     private write(field: string, value: any) {
