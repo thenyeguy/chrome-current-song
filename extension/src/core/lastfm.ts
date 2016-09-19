@@ -1,3 +1,4 @@
+/// <reference path='settings.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class LastFmApi {
@@ -5,37 +6,12 @@ class LastFmApi {
     static API_SECRET = "4597d1a51d2c3657fad9fc0e1c9c5b39";
     static API_ENDPOINT = "https://ws.audioscrobbler.com/2.0/";
 
-    static AUTH_TOKEN_KEY = "lastfm.auth_token";
-    static AUTH_USER_KEY = "lastfm.auth_user";
-
-    private auth_token: string;
-    private auth_user: string;
+    private settings: SettingsManager;
     private session_token: string;
 
-    constructor() {
-        this.auth_token = null;
-        this.auth_user = null;
+    constructor(settings: SettingsManager) {
+        this.settings = settings;
         this.session_token = null;
-        this.maybeLoadSession();
-    }
-
-    private maybeLoadSession() {
-        let keys = [LastFmApi.AUTH_TOKEN_KEY, LastFmApi.AUTH_USER_KEY];
-        chrome.storage.sync.get(keys, (items: any) => {
-            if (LastFmApi.AUTH_TOKEN_KEY in items) {
-                this.auth_token = items[LastFmApi.AUTH_TOKEN_KEY];
-            }
-            if (LastFmApi.AUTH_USER_KEY in items) {
-                this.auth_user = items[LastFmApi.AUTH_USER_KEY];
-            }
-        });
-    }
-
-    private storeSession() {
-        let keys = {};
-        keys[LastFmApi.AUTH_TOKEN_KEY] = this.auth_token;
-        keys[LastFmApi.AUTH_USER_KEY] = this.auth_user;
-        chrome.storage.sync.set(keys);
     }
 
     private signRequest(params: any) {
@@ -58,12 +34,13 @@ class LastFmApi {
         request_params["api_key"] = LastFmApi.API_KEY;
         request_params["format"] = "json";
 
-        if (this.auth_token) {
-            request_params["sk"] = this.auth_token;
+        if (this.settings.lastFmAuthToken) {
+            request_params["sk"] = this.settings.lastFmAuthToken;
         } else if (this.session_token) {
             request_params["token"] = this.session_token;
         }
         this.signRequest(request_params);
+        console.log(request_params);
 
         var xhr = new XMLHttpRequest();
         xhr.open("GET", LastFmApi.API_ENDPOINT + "?" + $.param(request_params));
@@ -99,15 +76,11 @@ class LastFmApi {
 
     public getAuthSession(callback: (string) => void) {
         this.issueRequest("auth.getSession", {}, (result: any) => {
-            this.auth_token = result.session["key"] || null;
-            this.auth_user = result.session["name"] || null;
+            console.log(result);
+            this.settings.lastFmAuthToken = result.session["key"] || null;
+            this.settings.lastFmAuthUser = result.session["name"] || null;
             this.session_token = null;
-            this.storeSession();
-            callback(this.auth_user);
+            callback(this.settings.lastFmAuthUser);
         });
-    }
-
-    public getCurrentUser(): string {
-        return this.auth_user;
     }
 }

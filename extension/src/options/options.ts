@@ -2,11 +2,15 @@
 /// <reference path='../typings/index.d.ts' />
 
 function initSettings(settings: SettingsManager) {
+    console.log(settings);
+
     $("#enable-scrobbling input").prop("checked", settings.enableScrobbling);
     $("#enable-scrobbling input").change(function() {
         console.log("input changed");
         settings.enableScrobbling = this.checked;
     });
+
+    $("#enable-scrobbling .username").text(settings.lastFmAuthUser);
 }
 
 $(document).ready(function() {
@@ -21,8 +25,6 @@ $(document).ready(function() {
         var id = $(event.target).attr("href").substr(1);
         window.location.hash = id;
     });
-
-    $("#scrobbling-enable .username").text(api.getCurrentLastFmUser());
 
     $("#lastfm-authenticate-btn").click(function(event) {
         event.preventDefault();

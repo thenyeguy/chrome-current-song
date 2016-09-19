@@ -10,10 +10,10 @@ class CurrentSongApi {
     private settings: SettingsManager;
 
     constructor() {
-        this.lastfm = new LastFmApi();
         this.settings = new SettingsManager();
 
         this.dispatcher = new Dispatcher(this.settings);
+        this.lastfm = new LastFmApi(this.settings);
     }
 
     get verbose(): boolean {
@@ -46,10 +46,6 @@ class CurrentSongApi {
 
     public prevSong() {
         this.dispatcher.trigger(ControlType.PrevSong);
-    }
-
-    public getCurrentLastFmUser(): string {
-        return this.lastfm.getCurrentUser();
     }
 
     public getLastFmAuthUrl(callback: (string) => void) {
