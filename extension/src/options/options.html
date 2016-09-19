@@ -41,10 +41,13 @@
 
         <div class="option" id="enable-scrobbling">
           <label><input type="checkbox"> Enable scrobbling</label>
-          <p class="authenticate">
-            <a href="#" role="button" id="lastfm-authenticate-btn"> Authenticate</a>
+          <p class="logged-out">
+            <a href="#" role="btn" id="lastfm-authenticate-btn"> Authenticate</a>
           </p>
-          <p class="logged-in"> Logged in as: <span class="username"></span> </p>
+          <p class="logged-in">
+            Logged in as: <span class="username"></span>
+            (<a href="#" role="btn" id="lastfm-logout-btn">logout</a>)
+          </p>
         </div>
       </div>
 

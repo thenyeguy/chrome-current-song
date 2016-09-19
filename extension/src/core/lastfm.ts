@@ -40,7 +40,6 @@ class LastFmApi {
             request_params["token"] = this.session_token;
         }
         this.signRequest(request_params);
-        console.log(request_params);
 
         var xhr = new XMLHttpRequest();
         xhr.open("GET", LastFmApi.API_ENDPOINT + "?" + $.param(request_params));
@@ -76,11 +75,15 @@ class LastFmApi {
 
     public getAuthSession(callback: (string) => void) {
         this.issueRequest("auth.getSession", {}, (result: any) => {
-            console.log(result);
             this.settings.lastFmAuthToken = result.session["key"] || null;
             this.settings.lastFmAuthUser = result.session["name"] || null;
             this.session_token = null;
             callback(this.settings.lastFmAuthUser);
         });
+    }
+
+    public deauthorize() {
+        this.settings.lastFmAuthToken = null;
+        this.settings.lastFmAuthUser = null;
     }
 }

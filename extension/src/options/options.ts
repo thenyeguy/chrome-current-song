@@ -1,22 +1,31 @@
 /// <reference path='../core/api.ts' />
 /// <reference path='../typings/index.d.ts' />
 
-function initSettings(settings: SettingsManager) {
-    console.log(settings);
+function drawSettings() {
+    let settings =
+        chrome.extension.getBackgroundPage().currentSongApi.getSettings();
 
     $("#enable-scrobbling input").prop("checked", settings.enableScrobbling);
     $("#enable-scrobbling input").change(function() {
-        console.log("input changed");
         settings.enableScrobbling = this.checked;
     });
 
-    $("#enable-scrobbling .username").text(settings.lastFmAuthUser);
+    if (settings.lastFmAuthUser) {
+        $("#enable-scrobbling .authenticate").hide();
+        $("#enable-scrobbling .logged-out").hide();
+        $("#enable-scrobbling .logged-in").show();
+        $("#enable-scrobbling .username").text(settings.lastFmAuthUser);
+    } else {
+        $("#enable-scrobbling .logged-out").show();
+        $("#enable-scrobbling .logged-in").hide();
+    }
 }
 
 $(document).ready(function() {
     let api = chrome.extension.getBackgroundPage().currentSongApi;
-    initSettings(api.getSettings());
+    drawSettings();
 
+    // Set up tab selection
     $("#option-tabs a").click(function (event) {
         event.preventDefault();
         $(this).tab("show");
@@ -26,6 +35,11 @@ $(document).ready(function() {
         window.location.hash = id;
     });
 
+    $("#lastfm-logout-btn").click(function(event) {
+        event.preventDefault();
+        api.deauthorizeLastFm();
+        drawSettings();
+    });
     $("#lastfm-authenticate-btn").click(function(event) {
         event.preventDefault();
         $("#authenticate-modal").modal("show");
@@ -47,8 +61,8 @@ $(document).ready(function() {
         $("#authenticate-modal-step-two").hide();
         $("#authenticate-modal-step-three").show();
         api.getLastFmAuthSession(function (username) {
+            drawSettings();
             $("#authenticate-modal").modal("hide");
-            $("#scrobbling-enable .username").text(username);
         });
     });
 

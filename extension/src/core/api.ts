@@ -55,4 +55,8 @@ class CurrentSongApi {
     public getLastFmAuthSession(callback: (string) => void) {
         this.lastfm.getAuthSession(callback);
     }
+
+    public deauthorizeLastFm() {
+        this.lastfm.deauthorize();
+    }
 }

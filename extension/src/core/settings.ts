@@ -32,9 +32,13 @@ class SettingsManager {
     }
 
     private write(field: string, value: any) {
-        let update = {};
-        update[field] = value;
-        chrome.storage.sync.set(update);
+        if (value) {
+            let update = {};
+            update[field] = value;
+            chrome.storage.sync.set(update);
+        } else {
+            chrome.storage.sync.remove(field);
+        }
     }
 
     get enableScrobbling(): boolean {
