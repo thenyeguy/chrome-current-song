@@ -47,10 +47,10 @@ class LastFmApi {
         xhr.onreadystatechange = function() {
             if (xhr.readyState === XMLHttpRequest.DONE) {
                 if (xhr.status === 200) {
-                    callback(JSON.parse(xhr.responseText));
+                    callback && callback(JSON.parse(xhr.responseText));
                 } else {
                     console.log("Request failure:", xhr.responseText);
-                    callback({});
+                    callback && callback({});
                 }
             }
         };
@@ -61,13 +61,13 @@ class LastFmApi {
         this.issueRequest("auth.getToken", {}, (result:any) => {
             let token = result.token || null;
             this.session_token = token;
-            callback(token);
+            callback && callback(token);
         });
     }
 
     public getAuthUrl(callback: (string) => void) {
         this.getAuthToken((token: string) => {
-            callback("http://www.last.fm/api/auth/?" + $.param({
+            callback && callback("http://www.last.fm/api/auth/?" + $.param({
                 "api_key": LastFmApi.API_KEY,
                 "token": token,
             }));
@@ -79,7 +79,7 @@ class LastFmApi {
             this.settings.lastFmAuthToken = result.session["key"] || null;
             this.settings.lastFmAuthUser = result.session["name"] || null;
             this.session_token = null;
-            callback(this.settings.lastFmAuthUser);
+            callback && callback(this.settings.lastFmAuthUser);
         });
     }
 
