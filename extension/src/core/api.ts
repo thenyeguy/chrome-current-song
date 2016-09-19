@@ -24,6 +24,10 @@ class CurrentSongApi {
         this.dispatcher.verbose = value;
     }
 
+    public getSettings(): SettingsManager {
+        return this.settings;
+    }
+
     public getPlayerState(): PlayerState {
         return this.dispatcher.getPlayerState();
     }

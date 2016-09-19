@@ -1,8 +1,17 @@
 /// <reference path='../core/api.ts' />
 /// <reference path='../typings/index.d.ts' />
 
+function initSettings(settings: SettingsManager) {
+    $("#enable-scrobbling input").prop("checked", settings.enableScrobbling);
+    $("#enable-scrobbling input").change(function() {
+        console.log("input changed");
+        settings.enableScrobbling = this.checked;
+    });
+}
+
 $(document).ready(function() {
     let api = chrome.extension.getBackgroundPage().currentSongApi;
+    initSettings(api.getSettings());
 
     $("#option-tabs a").click(function (event) {
         event.preventDefault();

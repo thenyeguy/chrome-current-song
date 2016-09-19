@@ -42,8 +42,9 @@ function updateControls(playing: boolean) {
 }
 
 function updateScrobble() {
+    let enabled = window.currentSongApi.getSettings().enableScrobbling;
     let scrobbleState = window.currentSongApi.getScrobbleState();
-    if (scrobbleState == 1) {
+    if (enabled && scrobbleState == 1) {
         $("#state-scrobbled").addClass("glyphicon-ok");
     } else {
         $("#state-scrobbled").removeClass("glyphicon-ok");

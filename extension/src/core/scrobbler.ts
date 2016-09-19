@@ -56,6 +56,9 @@ class Scrobbler {
     }
 
     private scrobble() {
+        if (!this.settings.enableScrobbling) {
+            return;
+        }
         console.log("Scrobbled:", this.playerState.track);
         this.scrobbleState = ScrobbleState.Scrobbled;
     }
