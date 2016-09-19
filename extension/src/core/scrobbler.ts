@@ -5,12 +5,14 @@ let MINIMUM_DURATION: number = 30;  // 30 seconds
 let MAXIMUM_WAIT_TIME: number = 4*60;  // 4 minutes
 
 class Scrobbler {
+    private settings: SettingsManager;
     private scrobbleState: ScrobbleState;
     private playerState: PlayerState;
     private listenTime: number;
     private lastUpdate: number;
 
-    constructor() {
+    constructor(settings: SettingsManager) {
+        this.settings = settings;
         this.scrobbleState = ScrobbleState.Waiting;
         this.playerState = null;
         this.listenTime = 0;

@@ -10,10 +10,10 @@ class Dispatcher {
     private scrobbler: Scrobbler;
     public verbose: boolean;
 
-    constructor() {
+    constructor(settings: SettingsManager) {
         this.playerMux = new Multiplexer();
         this.nativeHost = new NativeHostAdapater();
-        this.scrobbler = new Scrobbler();
+        this.scrobbler = new Scrobbler(settings);
         this.verbose = false;
 
         this.nativeHost.connect();

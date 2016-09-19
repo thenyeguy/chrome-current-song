@@ -1,15 +1,19 @@
 /// <reference path='dispatcher.ts' />
 /// <reference path='lastfm.ts' />
+/// <reference path='settings.ts' />
 
 interface Window { currentSongApi: CurrentSongApi; }
 
 class CurrentSongApi {
     private dispatcher: Dispatcher;
     private lastfm: LastFmApi;
+    private settings: SettingsManager;
 
     constructor() {
         this.lastfm = new LastFmApi();
-        this.dispatcher = new Dispatcher();
+        this.settings = new SettingsManager();
+
+        this.dispatcher = new Dispatcher(this.settings);
     }
 
     get verbose(): boolean {
