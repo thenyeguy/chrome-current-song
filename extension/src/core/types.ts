@@ -66,6 +66,15 @@ class TrackState {
     }
 }
 
+class PlayerProperties {
+    constructor(public name: string, public allowScrobbling: boolean) {}
+
+    public static fromJson(obj: any): PlayerProperties {
+        return new PlayerProperties(obj.name || "",
+                                    obj.allowScrobbling || false);
+    }
+}
+
 class PlayerState {
     constructor(public source: string, public track: Track,
                 public state: TrackState) {}

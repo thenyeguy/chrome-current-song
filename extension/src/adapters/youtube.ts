@@ -5,6 +5,7 @@
 
 class YoutubeAdapter implements Adapter {
     name = "YouTube";
+    enableScrobbling = false;
 
     private lastUpdate: number;
     private currentTime: number;

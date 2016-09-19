@@ -4,6 +4,7 @@
 
 class GpmAdapter implements Adapter {
     name = "Google Play Music";
+    enableScrobbling = true;
 
     constructor() {}
 

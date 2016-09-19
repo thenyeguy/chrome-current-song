@@ -5,6 +5,7 @@
 
 class SoundcloudAdapter implements Adapter {
     name = "SoundCloud";
+    enableScrobbling = false;
 
     constructor() {}
 

@@ -8,6 +8,7 @@ enum InternalPlayerState {
 class Player {
     id: string;
     name: string;
+    properties: PlayerProperties;
     track: Track;
     state: TrackState;
     lastActive: number;  // timestamp
@@ -30,8 +31,9 @@ class Player {
         return new PlayerState(this.name, this.track, this.state);
     }
 
-    public setName(name: string) {
-        this.name = name;
+    public setProperties(properties: PlayerProperties) {
+        this.name = properties.name;
+        this.properties = properties;
     }
 
     public updateTrack(track: Track) {

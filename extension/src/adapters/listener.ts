@@ -17,7 +17,11 @@ class Listener {
       this.port = chrome.runtime.connect(null, {
           name: Math.random().toString(36).substr(2),
       });
-      this.port.postMessage({ "name": this.adapter.name });
+
+      let properties = new PlayerProperties(this.adapter.name,
+                                            this.adapter.enableScrobbling);
+      this.port.postMessage({ "properties": properties });
+
       this.lastTrack = new Track("", "", "", "");
       this.lastState = new TrackState(0, 0, false);
       this.verbose = false;

@@ -1,5 +1,6 @@
 interface Adapter {
   name: string;
+  enableScrobbling: boolean;
 
   getTitle(): string;
   getArtist(): string;

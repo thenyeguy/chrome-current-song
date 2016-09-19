@@ -40,9 +40,9 @@ class Dispatcher {
         if (this.verbose) {
             console.log("Got message: %s (%s): %o", player.id, player.name, msg);
         }
-        if(msg.name) {
-            console.log("Identified connection as: " + msg.name);
-            player.setName(msg.name);
+        if(msg.properties) {
+            console.log("Identified connection as: " + msg.properties.name);
+            player.setProperties(msg.properties);
         }
         if(msg.track) {
             player.updateTrack(msg.track);
