@@ -5,7 +5,11 @@
   "description": "Shares the currently playing song to the outside world",
   "version": "0.1",
 
-  "permissions": ["nativeMessaging"],
+  "permissions": [
+    "https://ws.audioscrobbler.com/*",
+    "nativeMessaging",
+    "storage"
+  ],
 
   "commands": {
     "play_pause": {

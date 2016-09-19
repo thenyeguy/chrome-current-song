@@ -41,8 +41,10 @@
 
         <div class="option" id="scrobbling-enable">
           <label><input type="checkbox"> Enable scrobbling</label>
-          <p> Logged in as: <span class="username"></span> </p>
-          <p> <a href="#" role="button">Reauthenticate</a> </p>
+          <p class="authenticate">
+            <a href="#" role="button" id="lastfm-authenticate-btn"> Authenticate</a>
+          </p>
+          <p class="logged-in"> Logged in as: <span class="username"></span> </p>
         </div>
       </div>
 
@@ -59,6 +61,34 @@
             chips williamsburg. Marfa synth chia kombucha. Asymmetrical schlitz
             sartorial selvage, disrupt readymade typewriter swag echo park offal
             four dollar toast tousled slow-carb. </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="authenticate-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Authenticate with Last.FM</h4>
+        </div>
+        <div class="modal-body">
+          <p id="authenticate-modal-step-one">
+            We are establishing a secure connection to Last.FM. Please wait...
+          </p>
+          <p id="authenticate-modal-step-two">
+            First, you need to authorize us to use to your Last.FM account.
+            Opening a new tab to do so. Once you have done so, finish with the
+            button below.
+          </p>
+          <p id="authenticate-modal-step-three">
+            We are now acquiring your credentials. Please wait...
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary"
+                  id="authenticate-modal-finish-btn">Finish</button>
+        </div>
       </div>
     </div>
   </div>
