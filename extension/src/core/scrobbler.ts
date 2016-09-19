@@ -11,6 +11,7 @@ class Scrobbler {
     private settings: SettingsManager;
     private scrobbleState: ScrobbleState;
     private playerState: PlayerState;
+    private startTime: number;
     private listenTime: number;
     private lastUpdate: number;
 
@@ -19,6 +20,7 @@ class Scrobbler {
         this.settings = settings;
         this.scrobbleState = ScrobbleState.Waiting;
         this.playerState = null;
+        this.startTime = 0;
         this.listenTime = 0;
         this.lastUpdate = Date.now();
     }
@@ -33,6 +35,7 @@ class Scrobbler {
         } else if (!this.playerState || newState.track != this.playerState.track) {
             this.scrobbleState = ScrobbleState.Waiting;
             this.playerState = newState;
+            this.startTime = Math.floor(Date.now() / 1000);
             this.listenTime = 0;
             this.lastfm.updateNowPlaying(newState);
         } else {
@@ -64,7 +67,8 @@ class Scrobbler {
         if (!this.settings.enableScrobbling) {
             return;
         }
-        console.log("Scrobbled:", this.playerState.track);
+        this.lastfm.scrobble(this.playerState.track, this.startTime);
         this.scrobbleState = ScrobbleState.Scrobbled;
+        console.log("Scrobbled:", this.playerState.track);
     }
 }

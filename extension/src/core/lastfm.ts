@@ -106,4 +106,13 @@ class LastFmApi {
             duration: state.state.length,
         }, null);
     }
+
+    public scrobble(track: Track, timestamp: number) {
+        this.issueRequest("POST", "track.scrobble", {
+            artist: track.artist,
+            track: track.title,
+            album: track.album,
+            timestamp: timestamp,
+        }, null);
+    }
 }
