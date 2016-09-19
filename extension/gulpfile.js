@@ -49,6 +49,7 @@ gulp.task("scripts", function() {
     return gulp.src("src/**/*.ts", globOptions)
         .pipe(sourcemaps.init())
         .pipe(ts(tsProject))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest("target/"));
 });
 
