@@ -36,18 +36,20 @@ class Player {
         this.properties = properties;
     }
 
-    public updateTrack(track: Track) {
-        this.track = track;
-    }
+    public update(track: Track, state: TrackState) {
+        if (track) {
+            this.track = track;
+        }
 
-    public updateState(state: TrackState) {
-        this.state = state;
-        if (state.playing) {
-            if (this.playerState == InternalPlayerState.Stopped) {
-                this.playerState = InternalPlayerState.Playing;
+        if (state) {
+            this.state = state;
+            if (state.playing) {
+                if (this.playerState == InternalPlayerState.Stopped) {
+                    this.playerState = InternalPlayerState.Playing;
+                }
+            } else {
+                this.playerState = InternalPlayerState.Stopped;
             }
-        } else {
-            this.playerState = InternalPlayerState.Stopped;
         }
     }
 
