@@ -1,20 +1,17 @@
 /// <reference path='lastfm.ts' />
 /// <reference path='multiplexer.ts' />
 /// <reference path='native.ts' />
-/// <reference path='scrobbler.ts' />
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class Dispatcher {
     private playerMux: Multiplexer;
     private nativeHost: NativeHostAdapater;
-    private scrobbler: Scrobbler;
     public verbose: boolean;
 
     constructor(lastfm: LastFmApi, settings: SettingsManager) {
-        this.playerMux = new Multiplexer();
+        this.playerMux = new Multiplexer(lastfm, settings);
         this.nativeHost = new NativeHostAdapater();
-        this.scrobbler = new Scrobbler(lastfm, settings);
         this.verbose = false;
 
         this.nativeHost.connect();
@@ -79,7 +76,6 @@ class Dispatcher {
         this.playerMux.update();
         let state = this.getPlayerState();
         this.nativeHost.update(state);
-        this.scrobbler.update(state);
         chrome.runtime.sendMessage({ "update": true });
     }
 
@@ -96,6 +92,7 @@ class Dispatcher {
     }
 
     public getScrobbleState(): ScrobbleState {
-        return this.scrobbler.getState();
+        let activePlayer = this.playerMux.getActivePlayer();
+        return activePlayer && activePlayer.getScrobbleState();
     }
 }

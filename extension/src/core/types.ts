@@ -27,7 +27,7 @@ enum ControlType {
 }
 
 enum ScrobbleState {
-    Waiting, Scrobbled
+    Disabled, Waiting, Scrobbled
 }
 
 class Track {

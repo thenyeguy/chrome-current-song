@@ -1,17 +1,25 @@
+/// <reference path='lastfm.ts' />
 /// <reference path='player.ts' />
+/// <reference path='settings.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class Multiplexer {
     private activePlayer: Player;
     private players: {[key: string]: Player};
 
-    constructor() {
+    private lastfm: LastFmApi;
+    private settings: SettingsManager;
+
+    constructor(lastfm: LastFmApi, settings: SettingsManager) {
         this.activePlayer = null;
         this.players = {};
+
+        this.lastfm = lastfm;
+        this.settings = settings;
     }
 
     public addPlayer(port: chrome.runtime.Port) {
-        let player = new Player(port);
+        let player = new Player(port, this.lastfm, this.settings);
         this.players[player.id] = player;
     }
 
