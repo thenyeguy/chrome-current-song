@@ -53,7 +53,7 @@ function updateScrobble() {
 
 function update() {
     let playerState = window.currentSongApi.getPlayerState();
-    if (!playerState) {
+    if (!playerState || !playerState.track.title) {
         $("#nothing").show();
         $("#nowplaying").hide();
         return;
