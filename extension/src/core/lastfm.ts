@@ -99,12 +99,14 @@ class LastFmApi {
     }
 
     public updateNowPlaying(state: PlayerState) {
-        this.issueRequest("POST", "track.updateNowPlaying", {
-            artist: state.track.artist,
-            track: state.track.title,
-            album: state.track.album,
-            duration: state.state.length,
-        }, null);
+        if (state.track.title) {
+            this.issueRequest("POST", "track.updateNowPlaying", {
+                artist: state.track.artist,
+                track: state.track.title,
+                album: state.track.album,
+                duration: state.state.length,
+            }, null);
+        }
     }
 
     public scrobble(track: Track, timestamp: number) {
