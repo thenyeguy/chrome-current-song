@@ -54,21 +54,14 @@ class Dispatcher {
 
     private handleControl(control: string) {
         console.log("Got control request: " + control);
-
-        let control_type;
         if (control == "play_pause") {
-            control_type = ControlType.PlayPause;
+            this.trigger(ControlType.PlayPause);
         } else if (control == "next_song") {
-            control_type = ControlType.NextSong;
+            this.trigger(ControlType.NextSong);
         } else if (control == "prev_song") {
-            control_type = ControlType.PrevSong;
+            this.trigger(ControlType.PrevSong);
         } else {
-            return;
-        }
-
-        let player = this.playerMux.getActivePlayer();
-        if (player) {
-            player.handleControl(control_type);
+            console.log("Unknown control:", control);
         }
     }
 
