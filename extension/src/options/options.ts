@@ -3,7 +3,7 @@
 
 function drawSettings() {
     let settings =
-        chrome.extension.getBackgroundPage().currentSongApi.getSettings();
+        chrome.extension.getBackgroundPage().api.getSettings();
 
     $("#enable-scrobbling input").prop("checked", settings.enableScrobbling);
     $("#enable-scrobbling input").change(function() {
@@ -22,7 +22,7 @@ function drawSettings() {
 }
 
 $(document).ready(function() {
-    let api = chrome.extension.getBackgroundPage().currentSongApi;
+    let api = chrome.extension.getBackgroundPage().api;
     drawSettings();
 
     // Set up tab selection

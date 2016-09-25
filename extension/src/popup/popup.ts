@@ -42,8 +42,8 @@ function updateControls(playing: boolean) {
 }
 
 function updateScrobble() {
-    let enabled = window.currentSongApi.getSettings().enableScrobbling;
-    let scrobbleState = window.currentSongApi.getScrobbleState();
+    let enabled = window.api.getSettings().enableScrobbling;
+    let scrobbleState = window.api.getScrobbleState();
     if (enabled && scrobbleState == 2) {
         $("#state-scrobbled").addClass("glyphicon-ok");
     } else {
@@ -52,7 +52,7 @@ function updateScrobble() {
 }
 
 function update() {
-    let playerState = window.currentSongApi.getPlayerState();
+    let playerState = window.api.getPlayerState();
     if (!playerState || !playerState.track.title) {
         $("#nothing").show();
         $("#nowplaying").hide();
@@ -93,18 +93,18 @@ function handleMessage(msg: any) {
 
 function setUpControls() {
     $("#prev-song").click(function (event) {
-        window.currentSongApi.prevSong();
+        window.api.prevSong();
     });
     $("#play-pause").click(function (event) {
-        window.currentSongApi.playPause();
+        window.api.playPause();
     });
     $("#next-song").click(function (event) {
-        window.currentSongApi.nextSong();
+        window.api.nextSong();
     });
 }
 
 $(document).ready(function() {
-    window.currentSongApi = chrome.extension.getBackgroundPage().currentSongApi;
+    window.api = chrome.extension.getBackgroundPage().api;
     chrome.runtime.onMessage.addListener(handleMessage);
     setUpControls();
     update();

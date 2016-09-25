@@ -2,9 +2,9 @@
 /// <reference path='lastfm.ts' />
 /// <reference path='settings.ts' />
 
-interface Window { currentSongApi: CurrentSongApi; }
+interface Window { api: ExtensionApi; }
 
-class CurrentSongApi {
+class ExtensionApi {
     private dispatcher: Dispatcher;
     private lastfm: LastFmApi;
     private settings: SettingsManager;
