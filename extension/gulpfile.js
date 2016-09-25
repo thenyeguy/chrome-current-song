@@ -14,7 +14,7 @@ var globOptions = {
 var tsProject = ts.createProject({
     noEmitOnError: true,
     noExternalResolve: true,
-    target: "ES5",
+    target: "ES6",
 });
 
 gulp.task("manifest", function() {
