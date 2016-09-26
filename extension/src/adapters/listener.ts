@@ -21,7 +21,6 @@ function asSeconds(playtime: string | number): number {
 class Listener {
   private adapter: Adapter;
   private port: chrome.runtime.Port;
-  private lastState: PlayerState;
 
   public verbose: boolean;
 
@@ -31,7 +30,6 @@ class Listener {
           name: Math.random().toString(36).substr(2),
       });
       this.port.postMessage({ "properties": adapter.properties });
-      this.lastState = null;
       this.verbose = false;
   }
 
@@ -58,17 +56,13 @@ class Listener {
               artist: this.adapter.getArtist(),
               album: this.adapter.getAlbum(),
           },
-          playing: this.adapter.getPlaying(),
+          playState: this.adapter.getPlayState(),
           playtime: asSeconds(this.adapter.getPlaytime()),
           duration: asSeconds(this.adapter.getDuration()),
           artUri: this.adapter.getArtUri(),
       };
-      if (state != this.lastState) {
-          this.lastState = state;
-          msg["state"] = state;
-          if (this.verbose) { console.log("Sending message: %O", msg); }
-          this.port.postMessage(msg);
-      }
+      if (this.verbose) { console.log("Sending state: %O", state); }
+      this.port.postMessage({ "state": state });
   }
 
   private poll(timeout_ms: number) {

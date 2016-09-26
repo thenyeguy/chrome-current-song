@@ -6,10 +6,10 @@ interface Adapter {
   getTitle(): string;
   getArtist(): string;
   getAlbum(): string;
-  getArtUri(): string;
+  getPlayState(): PlaybackState;
   getPlaytime(): number | string;
   getDuration(): number | string;
-  getPlaying(): boolean;
+  getArtUri(): string;
 
   playPause(): void;
   nextSong(): void;

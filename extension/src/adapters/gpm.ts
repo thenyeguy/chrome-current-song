@@ -8,36 +8,38 @@ class GpmAdapter implements Adapter {
         allowScrobbling: true,
     };
 
-    private enable() {
-        return $("#playerSongInfo").is(":visible") || null;
-    }
-
     getTitle() {
-        return this.enable() && $("#currently-playing-title").text();
+        return $("#currently-playing-title").text();
     }
 
     getArtist() {
-        return this.enable() && $("#player-artist").text();
+        return $("#player-artist").text();
     }
 
     getAlbum() {
-        return this.enable() && $(".player-album").text();
+        return $(".player-album").text();
     }
 
-    getPlaying() {
-        return this.enable() && $("[data-id=play-pause]").hasClass("playing");
+    getPlayState() {
+        if (!$("#playerSongInfo").is(":visible")) {
+            return PlaybackState.Stopped;
+        } else if($("[data-id=play-pause]").hasClass("playing")) {
+            return PlaybackState.Playing;
+        } else {
+            return PlaybackState.Paused;
+        }
     }
 
     getPlaytime() {
-        return this.enable() && $("#time_container_current").text();
+        return $("#time_container_current").text();
     }
 
     getDuration() {
-        return this.enable() && $("#time_container_duration").text();
+        return $("#time_container_duration").text();
     }
 
     getArtUri() {
-        return this.enable() && $("#playerBarArt").attr("src");
+        return $("#playerBarArt").attr("src");
     }
 
     playPause() {

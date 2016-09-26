@@ -2,6 +2,10 @@ enum ControlType {
     PlayPause, NextSong, PrevSong,
 }
 
+enum PlaybackState {
+    Playing, Paused, Stopped,
+}
+
 enum ScrobbleState {
     Disabled, Waiting, Scrobbled,
 }
@@ -15,9 +19,9 @@ class Track {
 class PlayerState {
     player: string;
     track: Track;
+    playState: PlaybackState;
     playtime: number;
     duration: number;
-    playing: boolean;
     artUri: string;
 }
 

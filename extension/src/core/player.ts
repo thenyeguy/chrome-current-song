@@ -4,10 +4,6 @@
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
-enum InternalPlayerState {
-    Playing, Stopping, Stopped
-}
-
 class Player {
     id: string;
     name: string;
@@ -16,7 +12,7 @@ class Player {
     lastActive: number;  // timestamp
 
     private port: chrome.runtime.Port;
-    private playerState: InternalPlayerState;
+    private stopping: boolean;
     private scrobbler: Scrobbler;
 
     constructor(port: chrome.runtime.Port, lastfm: LastFmApi,
@@ -27,8 +23,12 @@ class Player {
         this.lastActive = 0;
 
         this.port = port;
-        this.playerState = InternalPlayerState.Stopped;
+        this.stopping = true;
         this.scrobbler = new Scrobbler(lastfm, settings);
+    }
+
+    public isActive(): boolean {
+        return this.state && this.state.playState == PlaybackState.Playing;
     }
 
     public getState(): PlayerState {
@@ -50,22 +50,17 @@ class Player {
 
     public update(state: PlayerState) {
         this.state = state;
-        if (state.playing) {
-            if (this.playerState == InternalPlayerState.Stopped) {
-                this.playerState = InternalPlayerState.Playing;
-            }
-        } else {
-            this.playerState = InternalPlayerState.Stopped;
+        if (this.stopping && this.state.playState != PlaybackState.Playing) {
+            this.stopping = false;
         }
-
         if (this.properties.allowScrobbling) {
             this.scrobbler.update(this.getState());
         }
     }
 
     public stop() {
-        if (this.playerState == InternalPlayerState.Playing) {
-            this.playerState = InternalPlayerState.Stopping;
+        if (this.isActive() && !this.stopping) {
+            this.stopping = true;
             this.handleControl(ControlType.PlayPause);
         }
     }

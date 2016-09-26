@@ -44,7 +44,7 @@ class Dispatcher {
         if(msg.state) {
             player.update(msg.state);
             let activePlayer = this.playerMux.getActivePlayer();
-            if (activePlayer && player != activePlayer && player.state.playing) {
+            if (activePlayer && player != activePlayer && player.isActive()) {
                 // Try to take control.
                 activePlayer.stop();
             }

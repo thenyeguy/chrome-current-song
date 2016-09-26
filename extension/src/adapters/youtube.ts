@@ -30,9 +30,10 @@ class YoutubeAdapter implements Adapter {
         return "";
     }
 
-    getPlaying() {
+    getPlayState() {
         // The button has the label for the action it will perform it clicked.
-        return $(".ytp-play-button").attr("aria-label") === "Pause";
+        return $(".ytp-play-button").attr("aria-label") === "Pause" ?
+            PlaybackState.Playing : PlaybackState.Paused;
     }
 
     getPlaytime() {
@@ -40,7 +41,7 @@ class YoutubeAdapter implements Adapter {
         // then it doesn't update the currently playing time. Instead, we will
         // estimate the player time by updating it ourselves.
         if ($(".html5-video-player").hasClass("ytp-autohide")) {
-            if (this.getPlaying) {
+            if (this.getPlayState() == PlaybackState.Playing) {
                 this.currentTime += (Date.now() - this.lastUpdate) / 1000;
             }
         } else {

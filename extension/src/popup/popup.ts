@@ -29,8 +29,8 @@ function drawPlaybar(playtime: number, duration: number) {
     $("#playbar .progress-bar").css("width", String(width)+"%");
 }
 
-function updateControls(playing: boolean) {
-    if (playing) {
+function updateControls(playState: PlaybackState) {
+    if (playState == 0) {  // PlaybackState.Playing
         $("#controls").removeClass("visible");
         $("#play-pause").removeClass("glyphicon-play");
         $("#play-pause").addClass("glyphicon-pause");
@@ -70,7 +70,7 @@ function update() {
         $("#state-playtime").text(formatTime(playerState.playtime));
         $("#state-duration").text(formatTime(playerState.duration));
         drawPlaybar(playerState.playtime, playerState.duration);
-        updateControls(playerState.playing);
+        updateControls(playerState.playState);
     }
 
     updateScrobble();

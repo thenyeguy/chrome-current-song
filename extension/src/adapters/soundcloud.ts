@@ -21,8 +21,9 @@ class SoundcloudAdapter implements Adapter {
         return "";
     }
 
-    getPlaying() {
-        return $("button.playControl").hasClass("playing");
+    getPlayState() {
+        return $("button.playControl").hasClass("playing") ?
+            PlaybackState.Playing : PlaybackState.Paused;
     }
 
     getPlaytime() {
