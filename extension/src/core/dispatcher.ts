@@ -24,11 +24,13 @@ class Dispatcher {
         this.playerMux.addPlayer(port);
         port.onMessage.addListener(this.handleMessage.bind(this));
         port.onDisconnect.addListener(this.handleDisconnect.bind(this));
+        this.update();
     }
 
     private handleDisconnect(port: chrome.runtime.Port) {
         let player = this.playerMux.deletePlayer(port.name);
         console.log("Closed connection: %s (%s)", player.id, player.name);
+        this.update();
     }
 
     private handleMessage(msg: any, port: chrome.runtime.Port) {

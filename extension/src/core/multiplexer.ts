@@ -37,41 +37,30 @@ class Multiplexer {
     }
 
     public getActivePlayer(): Player {
-        if (this.activePlayer) {
-            return this.activePlayer;
-        }
-
-        let lastActive = 0;
-        let player = null;
-        for (let id in this.players) {
-            if (this.players[id].lastActive > lastActive) {
-                player = this.players[id];
-                lastActive = player.lastActive;
-            }
-        }
-        return player;
+        return this.activePlayer;
     }
 
     public update() {
-        // Update the active player.
-        let activeState = this.activePlayer && this.activePlayer.state;
-        if (activeState && !activeState.track.title) {
-            console.log("Active player stopped: " + this.activePlayer.name);
-            this.activePlayer = null;
-            activeState = null;
+        if (this.activePlayer && this.activePlayer.isActive()) {
+            return;
         }
 
-        if (!(this.activePlayer && this.activePlayer.isActive())) {
-            for (let id in this.players) {
-                let player = this.players[id];
-                if (player.state &&
-                    player.state.playState == PlaybackState.Playing) {
-                    console.log("Active player is now: " + player.name);
-                    this.activePlayer = player;
-                    player.lastActive = Date.now();
-                    break;
-                }
+        let lastActive = 0;
+        let newPlayer = null;
+        for (let id in this.players) {
+            let player = this.players[id];
+            if (player.isActive()) {
+                newPlayer = player;
+                break;
+            } else if (player.lastActive > lastActive) {
+                lastActive = player.lastActive;
+                newPlayer = player;
             }
+        }
+        if (newPlayer && newPlayer != this.activePlayer) {
+            console.log("Active player is now:", newPlayer.name);
+            this.activePlayer = newPlayer;
+            newPlayer.lastActive = Date.now();
         }
     }
 }
