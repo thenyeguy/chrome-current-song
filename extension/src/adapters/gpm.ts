@@ -3,10 +3,10 @@
 /// <reference path='../typings/index.d.ts' />
 
 class GpmAdapter implements Adapter {
-    name = "Google Play Music";
-    enableScrobbling = true;
-
-    constructor() {}
+    properties = {
+        name: "Google Play Music",
+        allowScrobbling: true,
+    };
 
     private enable() {
         return $("#playerSongInfo").is(":visible") || null;

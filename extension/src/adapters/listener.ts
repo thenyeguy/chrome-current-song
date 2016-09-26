@@ -17,11 +17,7 @@ class Listener {
       this.port = chrome.runtime.connect(null, {
           name: Math.random().toString(36).substr(2),
       });
-
-      let properties = new PlayerProperties(this.adapter.name,
-                                            this.adapter.enableScrobbling);
-      this.port.postMessage({ "properties": properties });
-
+      this.port.postMessage({ "properties": adapter.properties });
       this.lastTrack = new Track("", "", "", "");
       this.lastState = new TrackState(0, 0, false);
       this.verbose = false;
@@ -60,7 +56,7 @@ class Listener {
       }
 
       if (!$.isEmptyObject(msg)) {
-          msg["source"] = this.adapter.name;
+          msg["source"] = this.adapter.properties.name;
           if (this.verbose) { console.log("Sending message: %O", msg); }
           this.port.postMessage(msg);
       }
@@ -72,7 +68,7 @@ class Listener {
   }
 
   public start(verbose?: boolean) {
-      console.log("Starting %s listener...", this.adapter.name);
+      console.log("Starting %s listener...", this.adapter.properties.name);
       this.verbose = !!verbose;
       this.port.onMessage.addListener(this.handleRequest.bind(this));
       this.poll(500 /* ms */);

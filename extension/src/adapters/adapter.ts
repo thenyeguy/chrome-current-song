@@ -1,6 +1,7 @@
+/// <reference path='../core/types.ts' />
+
 interface Adapter {
-  name: string;
-  enableScrobbling: boolean;
+  properties: PlayerProperties;
 
   getTitle(): string;
   getArtist(): string;

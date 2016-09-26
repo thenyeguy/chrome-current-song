@@ -4,8 +4,10 @@
 
 
 class YoutubeAdapter implements Adapter {
-    name = "YouTube";
-    enableScrobbling = false;
+    properties = {
+        name: "YouTube",
+        allowScrobbling: false,
+    };
 
     private lastUpdate: number;
     private currentTime: number;

@@ -4,10 +4,10 @@
 
 
 class SoundcloudAdapter implements Adapter {
-    name = "SoundCloud";
-    enableScrobbling = false;
-
-    constructor() {}
+    properties = {
+        name: "SoundCloud",
+        allowScrobbling: false,
+    };
 
     getTitle() {
         return $(".playbackSoundBadge__title").attr("title");
