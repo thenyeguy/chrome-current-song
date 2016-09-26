@@ -1,3 +1,4 @@
+/// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class NativeHostAdapater {
@@ -27,11 +28,16 @@ class NativeHostAdapater {
         }
     }
 
-    public update(playerState: any) {
-        if (playerState) {
-            this.sendMessage({ "write": playerState })
+    public update(playerState: PlayerState) {
+        if (!playerState || playerState.playState == PlaybackState.Stopped) {
+            this.sendMessage({ clear: true });
         } else {
-            this.sendMessage({ "clear": true });
+            this.sendMessage({ write: {
+                title: playerState.track.title,
+                album: playerState.track.album,
+                artist: playerState.track.artist,
+                playing: playerState.playState == PlaybackState.Playing,
+            }});
         }
     }
 

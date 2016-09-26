@@ -32,13 +32,10 @@ def read_input():
         text_length = struct.unpack('i', text_length_bytes)[0]
         yield json.loads(sys.stdin.read(text_length).decode('utf-8'))
 
-def write(player_state):
-    track = player_state.get("track", {})
-    state = player_state.get("state", {})
-
-    title = (track.get("title", None) or "").encode("utf8")
-    artist = (track.get("artist", None) or "").encode("utf8")
-    playing = state.get("playing", True)
+def write(msg):
+    title = (msg.get("title", None) or "").encode("utf8")
+    artist = (msg.get("artist", None) or "").encode("utf8")
+    playing = msg.get("playing", True)
     state = "playing" if playing else "paused"
     if title:
         try:

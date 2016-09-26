@@ -67,8 +67,7 @@ class Dispatcher {
 
     private update() {
         this.playerMux.update();
-        let state = this.getPlayerState();
-        this.nativeHost.update(state);
+        this.nativeHost.update(this.getPlayerState());
         chrome.runtime.sendMessage({ "update": true });
     }
 
