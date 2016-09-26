@@ -29,11 +29,11 @@ class GpmAdapter implements Adapter {
     }
 
     getPlaytime() {
-        return this.enable() && toSeconds($("#time_container_current").text());
+        return this.enable() && $("#time_container_current").text();
     }
 
     getLength() {
-        return this.enable() && toSeconds($("#time_container_duration").text());
+        return this.enable() && $("#time_container_duration").text();
     }
 
     getArtUri() {

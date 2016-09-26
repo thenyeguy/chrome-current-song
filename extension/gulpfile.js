@@ -23,13 +23,14 @@ gulp.task("manifest", function() {
             "src/third_party/jquery-3.1.0.slim.js",
             "src/third_party/md5.js",
             "src/core/**.ts",
-            "src/background/main.ts"
+            "src/background/main.ts",
         ], globOptions))
         .pipe(manifest.content("src/adapters/adapters.json", [
             "src/third_party/jquery-3.1.0.slim.js",
             "src/adapters/adapter.ts",
             "src/adapters/listener.ts",
-            "src/core/types.ts"
+            "src/core/types.ts",
+            "src/core/utils.ts",
         ], globOptions))
         .pipe(manifest.options("options/options.html"))
         .pipe(manifest.popup("popup/popup.html"))

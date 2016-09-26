@@ -1,5 +1,6 @@
 /// <reference path='adapter.ts' />
 /// <reference path='listener.ts' />
+/// <reference path='../core/utils.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 
@@ -43,14 +44,14 @@ class YoutubeAdapter implements Adapter {
                 this.currentTime += (Date.now() - this.lastUpdate) / 1000;
             }
         } else {
-            this.currentTime = toSeconds($(".ytp-time-current").text());
+            this.currentTime = timeToSeconds($(".ytp-time-current").text());
         }
         this.lastUpdate = Date.now();
         return Math.floor(this.currentTime);
     }
 
     getLength() {
-        return toSeconds($(".ytp-time-duration").text());
+        return $(".ytp-time-duration").text();
     }
 
     getArtUri() {

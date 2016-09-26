@@ -1,14 +1,27 @@
 /// <reference path='adapter.ts' />
 /// <reference path='../core/types.ts' />
+/// <reference path='../core/utils.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 interface Window { listener: Listener }
 
+function asSeconds(playtime: string | number): number {
+    if (playtime === null || playtime === undefined) {
+        return null;
+    }
+
+    if (typeof playtime === "number") {
+        return playtime;
+    } else {
+        return timeToSeconds(playtime);
+    }
+}
+
+
 class Listener {
   private adapter: Adapter;
   private port: chrome.runtime.Port;
-  private lastTrack: Track;
-  private lastState: TrackState;
+  private lastState: PlayerState;
 
   public verbose: boolean;
 
@@ -18,8 +31,7 @@ class Listener {
           name: Math.random().toString(36).substr(2),
       });
       this.port.postMessage({ "properties": adapter.properties });
-      this.lastTrack = new Track("", "", "", "");
-      this.lastState = new TrackState(0, 0, false);
+      this.lastState = null;
       this.verbose = false;
   }
 
@@ -39,24 +51,21 @@ class Listener {
 
   private update() {
       let msg = {}
-
-      let track = new Track(this.adapter.getTitle(), this.adapter.getArtist(),
-                            this.adapter.getAlbum(), this.adapter.getArtUri());
-      if (!this.lastTrack.equals(track)) {
-          msg["track"] = track;
-          this.lastTrack = track;
-      }
-
-      let state = new TrackState(toSeconds(this.adapter.getPlaytime()),
-                                 toSeconds(this.adapter.getLength()),
-                                 this.adapter.getPlaying());
-      if (!this.lastState.equals(state)) {
-          msg["state"] = state;
+      let state: PlayerState = {
+          player: this.adapter.properties.name,
+          track: {
+              title: this.adapter.getTitle(),
+              artist: this.adapter.getArtist(),
+              album: this.adapter.getAlbum(),
+          },
+          playing: this.adapter.getPlaying(),
+          playtime: asSeconds(this.adapter.getPlaytime()),
+          length: asSeconds(this.adapter.getLength()),
+          artUri: this.adapter.getArtUri(),
+      };
+      if (state != this.lastState) {
           this.lastState = state;
-      }
-
-      if (!$.isEmptyObject(msg)) {
-          msg["source"] = this.adapter.properties.name;
+          msg["state"] = state;
           if (this.verbose) { console.log("Sending message: %O", msg); }
           this.port.postMessage(msg);
       }

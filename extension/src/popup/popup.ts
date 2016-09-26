@@ -58,26 +58,19 @@ function update() {
         $("#nowplaying").hide();
         return;
     } else {
-      $("#nothing").hide();
-      $("#nowplaying").show();
-    }
-
-    if (playerState.track) {
         $("#nothing").hide();
         $("#nowplaying").show();
 
         $("#state-title").text(playerState.track.title);
         $("#state-artist").text(playerState.track.artist);
         $("#state-album").text(playerState.track.album);
-        $("#state-source").text(playerState.source);
-        drawArt(playerState.track.artUri);
-    }
+        $("#state-source").text(playerState.player);
+        drawArt(playerState.artUri);
 
-    if (playerState.state) {
-        $("#state-playtime").text(formatTime(playerState.state.playtime));
-        $("#state-length").text(formatTime(playerState.state.length));
-        drawPlaybar(playerState.state.playtime, playerState.state.length);
-        updateControls(playerState.state.playing);
+        $("#state-playtime").text(formatTime(playerState.playtime));
+        $("#state-length").text(formatTime(playerState.length));
+        drawPlaybar(playerState.playtime, playerState.length);
+        updateControls(playerState.playing);
     }
 
     updateScrobble();

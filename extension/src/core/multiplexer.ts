@@ -54,14 +54,17 @@ class Multiplexer {
 
     public update() {
         // Update the active player.
-        if (this.activePlayer && !this.activePlayer.track.title) {
+        let activeState = this.activePlayer && this.activePlayer.state;
+        if (activeState && !activeState.track.title) {
             console.log("Active player stopped: " + this.activePlayer.name);
             this.activePlayer = null;
+            activeState = null;
         }
-        if (!(this.activePlayer && this.activePlayer.state.playing)) {
+
+        if (!(this.activePlayer && activeState && activeState.playing)) {
             for (let id in this.players) {
                 let player = this.players[id];
-                if (player.state.playing) {
+                if (player.state && player.state.playing) {
                     console.log("Active player is now: " + player.name);
                     this.activePlayer = player;
                     player.lastActive = Date.now();

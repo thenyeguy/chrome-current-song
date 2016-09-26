@@ -41,8 +41,8 @@ class Dispatcher {
             console.log("Identified connection as: " + msg.properties.name);
             player.setProperties(msg.properties);
         }
-        if(msg.track || msg.state) {
-            player.update(msg.track, msg.state);
+        if(msg.state) {
+            player.update(msg.state);
             let activePlayer = this.playerMux.getActivePlayer();
             if (activePlayer && player != activePlayer && player.state.playing) {
                 // Try to take control.

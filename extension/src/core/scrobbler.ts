@@ -32,18 +32,19 @@ class Scrobbler {
     public update(newState: PlayerState) {
         if (newState == null) {
             // Do nothing.
-        } else if (!this.playerState || newState.track != this.playerState.track) {
+        } else if (trackEquals(newState.track,
+                               this.playerState && this.playerState.track)) {
+            let timeElapsed = Date.now() - this.lastUpdate;
+            let playtimeDiff =
+                newState.playtime - this.playerState.playtime;
+            this.listenTime += Math.min(timeElapsed, playtimeDiff);
+            this.maybeScrobble();
+        } else {
             this.scrobbleState = ScrobbleState.Waiting;
             this.playerState = newState;
             this.startTime = Math.floor(Date.now() / 1000);
             this.listenTime = 0;
             this.lastfm.updateNowPlaying(newState);
-        } else {
-            let timeElapsed = Date.now() - this.lastUpdate;
-            let playtimeDiff =
-                newState.state.playtime - this.playerState.state.playtime;
-            this.listenTime += Math.min(timeElapsed, playtimeDiff);
-            this.maybeScrobble();
         }
         this.playerState = newState;
         this.lastUpdate = Date.now();
@@ -52,10 +53,10 @@ class Scrobbler {
 
     private maybeScrobble(): boolean {
         if (this.scrobbleState == ScrobbleState.Scrobbled ||
-            this.playerState.state.length < MINIMUM_DURATION) {
+            this.playerState.length < MINIMUM_DURATION) {
             return false;
         }
-        let played = this.listenTime / this.playerState.state.length;
+        let played = this.listenTime / this.playerState.length;
         if (played > SCROBBLE_PERCENT || this.listenTime > MAXIMUM_WAIT_TIME) {
             this.scrobble();
             return true;

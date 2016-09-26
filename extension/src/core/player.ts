@@ -12,8 +12,7 @@ class Player {
     id: string;
     name: string;
     properties: PlayerProperties;
-    track: Track;
-    state: TrackState;
+    state: PlayerState;
     lastActive: number;  // timestamp
 
     private port: chrome.runtime.Port;
@@ -24,8 +23,7 @@ class Player {
                 settings: SettingsManager) {
         this.id = port.name;
         this.name = this.id;
-        this.track = new Track("", "", "", "");
-        this.state = new TrackState(0, 0, false);
+        this.state = null;
         this.lastActive = 0;
 
         this.port = port;
@@ -34,7 +32,7 @@ class Player {
     }
 
     public getState(): PlayerState {
-        return new PlayerState(this.name, this.track, this.state);
+        return this.state;
     }
 
     public getScrobbleState(): ScrobbleState {
@@ -50,20 +48,16 @@ class Player {
         this.properties = properties;
     }
 
-    public update(track: Track, state: TrackState) {
-        if (track) {
-            this.track = track;
-        }
-        if (state) {
-            this.state = state;
-            if (state.playing) {
-                if (this.playerState == InternalPlayerState.Stopped) {
-                    this.playerState = InternalPlayerState.Playing;
-                }
-            } else {
-                this.playerState = InternalPlayerState.Stopped;
+    public update(state: PlayerState) {
+        this.state = state;
+        if (state.playing) {
+            if (this.playerState == InternalPlayerState.Stopped) {
+                this.playerState = InternalPlayerState.Playing;
             }
+        } else {
+            this.playerState = InternalPlayerState.Stopped;
         }
+
         if (this.properties.allowScrobbling) {
             this.scrobbler.update(this.getState());
         }
