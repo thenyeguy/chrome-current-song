@@ -2,8 +2,7 @@
 /// <reference path='../typings/index.d.ts' />
 
 function drawSettings() {
-    let settings =
-        chrome.extension.getBackgroundPage().api.getSettings();
+    let settings = window.api.getSettings();
 
     $("#enable-scrobbling input").prop("checked", settings.enableScrobbling);
     $("#enable-scrobbling input").change(function() {
@@ -19,10 +18,15 @@ function drawSettings() {
         $("#enable-scrobbling .logged-out").show();
         $("#enable-scrobbling .logged-in").hide();
     }
+
+    for (let track of window.api.getLastFmScrobbleHistory().reverse()) {
+        let text = track.artist + " - " + track.title;
+        $("#scrobble-history").append($("<li>").text(text));
+    }
 }
 
 $(document).ready(function() {
-    let api = chrome.extension.getBackgroundPage().api;
+    window.api = chrome.extension.getBackgroundPage().api;
     drawSettings();
 
     // Set up tab selection
@@ -37,7 +41,7 @@ $(document).ready(function() {
 
     $("#lastfm-logout-btn").click(function(event) {
         event.preventDefault();
-        api.deauthorizeLastFm();
+        window.api.deauthorizeLastFm();
         drawSettings();
     });
     $("#lastfm-authenticate-btn").click(function(event) {
@@ -47,7 +51,7 @@ $(document).ready(function() {
         $("#authenticate-modal-step-one").show();
         $("#authenticate-modal-step-two").hide();
         $("#authenticate-modal-step-three").hide();
-        api.getLastFmAuthUrl(function (url) {
+        window.api.getLastFmAuthUrl(function (url) {
             chrome.tabs.create({ url: url });
             $("#authenticate-modal-step-one").hide();
             $("#authenticate-modal-step-two").show();
@@ -60,7 +64,7 @@ $(document).ready(function() {
         $("#authenticate-modal-step-one").hide();
         $("#authenticate-modal-step-two").hide();
         $("#authenticate-modal-step-three").show();
-        api.getLastFmAuthSession(function (username) {
+        window.api.getLastFmAuthSession(function (username) {
             drawSettings();
             $("#authenticate-modal").modal("hide");
         });

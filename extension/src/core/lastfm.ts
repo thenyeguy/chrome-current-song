@@ -1,3 +1,4 @@
+/// <reference path='ringbuffer.ts' />
 /// <reference path='settings.ts' />
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
@@ -10,9 +11,14 @@ class LastFmApi {
     private settings: SettingsManager;
     private session_token: string;
 
+    static SCROBBLE_HISTORY_SIZE = 10;
+    private scobbleHistory: Ringbuffer<Track>;
+
     constructor(settings: SettingsManager) {
         this.settings = settings;
         this.session_token = null;
+        this.scobbleHistory =
+            new Ringbuffer<Track>(LastFmApi.SCROBBLE_HISTORY_SIZE);
     }
 
     private signRequest(request: any) {
@@ -110,11 +116,16 @@ class LastFmApi {
     }
 
     public scrobble(track: Track, timestamp: number) {
+        this.scobbleHistory.push(track);
         this.issueRequest("POST", "track.scrobble", {
             artist: track.artist,
             track: track.title,
             album: track.album,
             timestamp: timestamp,
         }, null);
+    }
+
+    public getScrobbleHistory(): Track[] {
+        return [...this.scobbleHistory];
     }
 }

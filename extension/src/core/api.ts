@@ -55,6 +55,10 @@ class ExtensionApi {
         this.lastfm.getAuthSession(callback);
     }
 
+    public getLastFmScrobbleHistory(): Track[] {
+        return this.lastfm.getScrobbleHistory();
+    }
+
     public deauthorizeLastFm() {
         this.lastfm.deauthorize();
     }
