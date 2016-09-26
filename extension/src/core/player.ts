@@ -49,11 +49,13 @@ class Player {
     }
 
     public update(state: PlayerState) {
-        this.state = state;
-        if (this.stopping && this.state.playState != PlaybackState.Playing) {
-            this.stopping = false;
-        }
-        if (this.properties.allowScrobbling) {
+        if (state.track.title == "" || state.playState == PlaybackState.Stopped) {
+            this.state = null;
+        } else {
+            this.state = state;
+            if (this.stopping && this.state.playState != PlaybackState.Playing) {
+                this.stopping = false;
+            }
             this.scrobbler.update(this.getState());
         }
     }

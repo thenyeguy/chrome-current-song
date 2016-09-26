@@ -52,7 +52,7 @@ class Multiplexer {
             if (player.isActive()) {
                 newPlayer = player;
                 break;
-            } else if (player.lastActive > lastActive) {
+            } else if (player.lastActive > lastActive && player.getState()) {
                 lastActive = player.lastActive;
                 newPlayer = player;
             }
