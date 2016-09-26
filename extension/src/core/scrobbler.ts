@@ -53,10 +53,10 @@ class Scrobbler {
 
     private maybeScrobble(): boolean {
         if (this.scrobbleState == ScrobbleState.Scrobbled ||
-            this.playerState.length < MINIMUM_DURATION) {
+            this.playerState.duration < MINIMUM_DURATION) {
             return false;
         }
-        let played = this.listenTime / this.playerState.length;
+        let played = this.listenTime / this.playerState.duration;
         if (played > SCROBBLE_PERCENT || this.listenTime > MAXIMUM_WAIT_TIME) {
             this.scrobble();
             return true;

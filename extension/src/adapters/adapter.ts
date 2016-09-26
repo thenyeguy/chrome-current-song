@@ -8,7 +8,7 @@ interface Adapter {
   getAlbum(): string;
   getArtUri(): string;
   getPlaytime(): number | string;
-  getLength(): number | string;
+  getDuration(): number | string;
   getPlaying(): boolean;
 
   playPause(): void;

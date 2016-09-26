@@ -16,7 +16,7 @@ class PlayerState {
     player: string;
     track: Track;
     playtime: number;
-    length: number;
+    duration: number;
     playing: boolean;
     artUri: string;
 }

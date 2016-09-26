@@ -22,10 +22,10 @@ function drawArt(artUri: string) {
     }
 }
 
-function drawPlaybar(playtime: number, length: number) {
-    let width = 100 * playtime / length;
+function drawPlaybar(playtime: number, duration: number) {
+    let width = 100 * playtime / duration;
     $("#playbar .progress-bar").attr("aria-valuenow", playtime);
-    $("#playbar .progress-bar").attr("aria-valuemax", length);
+    $("#playbar .progress-bar").attr("aria-valuemax", duration);
     $("#playbar .progress-bar").css("width", String(width)+"%");
 }
 
@@ -68,8 +68,8 @@ function update() {
         drawArt(playerState.artUri);
 
         $("#state-playtime").text(formatTime(playerState.playtime));
-        $("#state-length").text(formatTime(playerState.length));
-        drawPlaybar(playerState.playtime, playerState.length);
+        $("#state-duration").text(formatTime(playerState.duration));
+        drawPlaybar(playerState.playtime, playerState.duration);
         updateControls(playerState.playing);
     }
 

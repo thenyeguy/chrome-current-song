@@ -104,7 +104,7 @@ class LastFmApi {
                 artist: state.track.artist,
                 track: state.track.title,
                 album: state.track.album,
-                duration: state.length,
+                duration: state.duration,
             }, null);
         }
     }

@@ -50,7 +50,7 @@ class YoutubeAdapter implements Adapter {
         return Math.floor(this.currentTime);
     }
 
-    getLength() {
+    getDuration() {
         return $(".ytp-time-duration").text();
     }
 

@@ -60,7 +60,7 @@ class Listener {
           },
           playing: this.adapter.getPlaying(),
           playtime: asSeconds(this.adapter.getPlaytime()),
-          length: asSeconds(this.adapter.getLength()),
+          duration: asSeconds(this.adapter.getDuration()),
           artUri: this.adapter.getArtUri(),
       };
       if (state != this.lastState) {

@@ -32,7 +32,7 @@ class GpmAdapter implements Adapter {
         return this.enable() && $("#time_container_current").text();
     }
 
-    getLength() {
+    getDuration() {
         return this.enable() && $("#time_container_duration").text();
     }
 

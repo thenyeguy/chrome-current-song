@@ -30,7 +30,7 @@ class SoundcloudAdapter implements Adapter {
         return value && Math.floor(parseInt(value) / 1000);
     }
 
-    getLength() {
+    getDuration() {
         let value = $(".playbackTimeline__progressWrapper").attr("aria-valuemax");
         return value && Math.floor(parseInt(value) / 1000);
     }
