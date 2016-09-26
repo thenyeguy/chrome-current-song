@@ -69,6 +69,5 @@ class Scrobbler {
         }
         this.lastfm.scrobble(this.playerState.track, this.startTime);
         this.scrobbleState = ScrobbleState.Scrobbled;
-        console.log("Scrobbled:", this.playerState.track);
     }
 }
