@@ -56,7 +56,9 @@ class Player {
             if (this.stopping && this.state.playState != PlaybackState.Playing) {
                 this.stopping = false;
             }
-            this.scrobbler.update(this.getState());
+            if (this.properties.allowScrobbling) {
+                this.scrobbler.update(this.getState());
+            }
         }
     }
 
