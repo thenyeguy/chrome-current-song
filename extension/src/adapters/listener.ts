@@ -52,9 +52,9 @@ class Listener {
       let state: PlayerState = {
           player: this.adapter.properties.name,
           track: {
-              title: this.adapter.getTitle(),
-              artist: this.adapter.getArtist(),
-              album: this.adapter.getAlbum(),
+              title: this.adapter.getTitle().trim(),
+              artist: this.adapter.getArtist().trim(),
+              album: this.adapter.getAlbum().trim(),
           },
           playState: this.adapter.getPlayState(),
           playtime: asSeconds(this.adapter.getPlaytime()),

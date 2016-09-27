@@ -8,6 +8,10 @@
     "script": "soundcloud.ts"
   },
   {
+    "matches": "*://play.spotify.com/*",
+    "script": "spotify.ts"
+  },
+  {
     "matches": "*://*.youtube.com/*",
     "script": "youtube.ts"
   }
