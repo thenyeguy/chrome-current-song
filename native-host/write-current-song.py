@@ -24,11 +24,13 @@ Track = collections.namedtuple("Track", ["title", "artist", "state"])
 
 def json_to_track(message):
     """Unpacks a JSON message into a Track tuple."""
-    title = (message.get("title", None) or "").encode("utf8")
-    artist = (message.get("artist", None) or "").encode("utf8")
-    playing = message.get("playing", True)
-    state = "playing" if playing else "paused"
-    return Track(title.strip(), artist.strip(), state)
+    if message:
+        title = (message.get("title", None) or "").encode("utf8")
+        artist = (message.get("artist", None) or "").encode("utf8")
+        playing = message.get("playing", True)
+        state = "playing" if playing else "paused"
+        return Track(title.strip(), artist.strip(), state)
+    return None
 
 
 class ChromeIo(object):
@@ -47,7 +49,7 @@ class ChromeIo(object):
 
     def log(self, s):
         """Sends the provided string |s| to the chrome extension."""
-        self._send_message(dict(type="log", value=s))
+        self._send_message(dict(log=s))
 
     def read(self):
         """Reads JSON messages from the Chrome extension."""
@@ -97,7 +99,7 @@ class SongServer(object):
         Args:
             track: A parsed Track object.
         """
-        if track.title:
+        if track:
             try:
                 with open(self._output, "w") as f:
                     f.write("{}\n{}\n{}\n".format(track.title, track.artist,
@@ -126,19 +128,18 @@ def main(args):
     io.log("Writing to: {}".format(args.output))
     try:
         for message in io.read():
-            if "echo" in message:
-                io.log(message["echo"])
-            elif "write" in message:
-                server.update(json_to_track(message["write"]))
-            elif "clear" in message:
-                if message["clear"]:
-                    server.clear()
+            if "track" in message:
+                server.update(json_to_track(message["track"]))
+            else:
+                io.log("Unsupported message: {}".format(message))
     except Exception as e:
         io.log("Fatal exception: {}".format(e))
         return 1
     except KeyboardInterrupt:
         pass
-    io.log("Exiting native host...")
+    finally:
+        server.clear()
+        io.log("Exiting native host...")
     return 0
 
 

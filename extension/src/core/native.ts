@@ -12,11 +12,12 @@ class NativeHostAdapater {
     public handleDisconnect() {
         console.log("Native host disconnected.");
         this.native_port = null;
+        setTimeout(this.connect.bind(this), 5000);
     }
 
     public handleMessage(msg: any) {
-        if(msg.type === "log") {
-            console.log("[%s]: %s", NativeHostAdapater.NATIVE_HOST, msg.value);
+        if(msg.log) {
+            console.log("[%s]: %s", NativeHostAdapater.NATIVE_HOST, msg.log);
         } else {
             console.log("Native host sent unknown message: %O", msg);
         }
@@ -30,9 +31,9 @@ class NativeHostAdapater {
 
     public update(playerState: PlayerState) {
         if (!playerState || playerState.playState == PlaybackState.Stopped) {
-            this.sendMessage({ clear: true });
+            this.sendMessage({ track: null });
         } else {
-            this.sendMessage({ write: {
+            this.sendMessage({ track: {
                 title: playerState.track.title,
                 album: playerState.track.album,
                 artist: playerState.track.artist,
