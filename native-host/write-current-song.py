@@ -4,8 +4,10 @@ import argparse
 import collections
 import json
 import os
+import socket
 import struct
 import sys
+import threading
 
 arg_parser = argparse.ArgumentParser()
 arg_parser.add_argument(
@@ -17,7 +19,7 @@ arg_parser.add_argument(
     "--output",
     type=str,
     default=os.path.join(os.environ["HOME"], ".currentsong"),
-    help="The output file to write song data to.")
+    help="The output file to serve song data on.")
 
 Track = collections.namedtuple("Track", ["title", "artist", "state"])
 
@@ -80,18 +82,63 @@ class ConsoleIo(object):
                 print >> sys.stderr, "Invalid JSON:", e
 
 
-class SongServer(object):
-    """Serves song data to a file."""
+class TrackServer(object):
+    """Serves track data via unix socket."""
 
     def __init__(self, output, io):
         """Creates a new server writing to output.
 
         Args:
-            output: A filename to write output to.
+            output: A filename to serve output on.
             io: An IO object for logging errors.
         """
         self._output = output
         self._io = io
+        self._track = None
+
+        self._thread = None
+        self._sock = None
+        self._serving = False
+
+    def __enter__(self):
+        self.open()
+        return self
+
+    def __exit__(self, *args):
+        self.close()
+
+    def open(self):
+        """Opens a new socket connection and begins listening."""
+        self._cleanup()
+        self._sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+        self._sock.bind(self._output)
+        self._sock.listen(1)
+        self._sock.settimeout(0.5)
+        self._thread = threading.Thread(target=self.listen)
+        self._thread.start()
+
+    def close(self):
+        """Closes down our socket connection."""
+        self._serving = False
+        if self._thread:
+            self._thread.join()
+            self._thread = None
+        self._cleanup()
+
+    def listen(self):
+        """Listens for incoming connections, serving track data."""
+        self._serving = True
+        while self._serving:
+            try:
+                conn, _ = self._sock.accept()
+                track = self._track  # Save to local to avoid race conditions
+                if track:
+                    result = "{}\t{}\t{}".format(track.title, track.artist,
+                                                 track.state)
+                    conn.send(result)
+                conn.close()
+            except Exception:
+                pass
 
     def update(self, track):
         """Updates the current track information.
@@ -99,21 +146,13 @@ class SongServer(object):
         Args:
             track: A parsed Track object.
         """
-        if track:
-            try:
-                with open(self._output, "w") as f:
-                    f.write("{}\n{}\n{}\n".format(track.title, track.artist,
-                                                  track.state))
-            except Exception as e:
-                self._io.log("Write song failed: " + str(e))
-        else:
-            self.clear()
+        self._track = track
 
-    def clear(self):
-        """Clears the current track information."""
+    def _cleanup(self):
+        """Clears our output socket file."""
         try:
             os.remove(self._output)
-        except Exception:
+        except OSError:
             pass
 
 
@@ -122,24 +161,22 @@ def main(args):
         io = ChromeIo()
     else:
         io = ConsoleIo()
-    server = SongServer(args.output, io)
 
     io.log("Starting native host for {}...".format(args.mode))
     io.log("Writing to: {}".format(args.output))
     try:
-        for message in io.read():
-            if "track" in message:
-                server.update(json_to_track(message["track"]))
-            else:
-                io.log("Unsupported message: {}".format(message))
+        with TrackServer(args.output, io) as server:
+            for message in io.read():
+                if "track" in message:
+                    server.update(json_to_track(message["track"]))
+                else:
+                    io.log("Unsupported message: {}".format(message))
     except Exception as e:
         io.log("Fatal exception: {}".format(e))
         return 1
     except KeyboardInterrupt:
         pass
-    finally:
-        server.clear()
-        io.log("Exiting native host...")
+    io.log("Exiting native host...")
     return 0
 
 
