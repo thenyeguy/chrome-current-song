@@ -29,8 +29,7 @@ def json_to_track(message):
     if message:
         title = (message.get("title", None) or "").encode("utf8")
         artist = (message.get("artist", None) or "").encode("utf8")
-        playing = message.get("playing", True)
-        state = "playing" if playing else "paused"
+        state = (message.get("playing", None) or "").encode("utf8")
         return Track(title.strip(), artist.strip(), state)
     return None
 

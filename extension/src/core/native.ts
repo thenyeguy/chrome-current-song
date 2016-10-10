@@ -37,7 +37,7 @@ class NativeHostAdapater {
                 title: playerState.track.title,
                 album: playerState.track.album,
                 artist: playerState.track.artist,
-                playing: playerState.playState == PlaybackState.Playing,
+                playing: PlaybackState[playerState.playState].toLowerCase(),
             }});
         }
     }
