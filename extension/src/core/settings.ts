@@ -7,7 +7,7 @@ class SettingsManager {
     private _lastFmAuthUser = "";
 
     constructor() {
-        chrome.storage.onChanged.addListener(this.handleChange);
+        chrome.storage.onChanged.addListener(this.handleChange.bind(this));
         this.loadSettings();
     }
 
