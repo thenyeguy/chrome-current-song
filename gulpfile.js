@@ -68,7 +68,7 @@ gulp.task("package", ["build"], function() {
     return gulp.src(["target/", "!*.crx"])
         .pipe(crx({
             filename: "extension.crx",
-            privateKey: fs.readFileSync("../key.pem", "utf-8"),
+            privateKey: fs.readFileSync("key.pem", "utf-8"),
         }))
         .pipe(gulp.dest("target/"));
 });
