@@ -1,5 +1,9 @@
 [
   {
+    "matches": "*://*.bandcamp.com/*",
+    "script": "bandcamp.ts"
+  },
+  {
     "matches": "*://play.google.com/music/*",
     "script": "gpm.ts"
   },
