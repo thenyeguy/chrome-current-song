@@ -17,6 +17,14 @@ function asSeconds(playtime: string | number): number {
     }
 }
 
+function trimmed(str: string): string {
+    if (str) {
+        return str.trim();
+    } else {
+        return null;
+    }
+}
+
 
 class Listener {
   private adapter: Adapter;
@@ -52,9 +60,9 @@ class Listener {
       let state: PlayerState = {
           player: this.adapter.properties.name,
           track: {
-              title: this.adapter.getTitle().trim(),
-              artist: this.adapter.getArtist().trim(),
-              album: this.adapter.getAlbum().trim(),
+              title: trimmed(this.adapter.getTitle()),
+              artist: trimmed(this.adapter.getArtist()),
+              album: trimmed(this.adapter.getAlbum()),
           },
           playState: this.adapter.getPlayState(),
           playtime: asSeconds(this.adapter.getPlaytime()),
