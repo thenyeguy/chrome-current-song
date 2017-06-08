@@ -13,7 +13,8 @@ class SettingsManager {
 
     private handleChange(changes: any, area: string) {
         for (let key in changes) {
-            let value = changes[key];
+            let change = changes[key];
+            let value = change.newValue;
             if (key == "settings.enable_scrobbling") {
                 this._enableScrobbling = value;
             } else if (key == "settings.last_fm.auth_token") {
