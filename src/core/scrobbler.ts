@@ -65,9 +65,6 @@ class Scrobbler {
     }
 
     private scrobble() {
-        if (!this.settings.enableScrobbling) {
-            return;
-        }
         this.lastfm.scrobble(this.playerState.track, this.startTime);
         this.scrobbleState = ScrobbleState.Scrobbled;
     }

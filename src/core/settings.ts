@@ -1,8 +1,6 @@
 /// <reference path='../typings/index.d.ts' />
 
 class SettingsManager {
-    private _enableScrobbling = false;
-
     private _lastFmAuthToken = "";
     private _lastFmAuthUser = "";
 
@@ -15,9 +13,7 @@ class SettingsManager {
         for (let key in changes) {
             let change = changes[key];
             let value = change.newValue;
-            if (key == "settings.enable_scrobbling") {
-                this._enableScrobbling = value;
-            } else if (key == "settings.last_fm.auth_token") {
+            if (key == "settings.last_fm.auth_token") {
                 this._lastFmAuthToken = value;
             } else if (key == "settings.last_fm.auth_user") {
                 this._lastFmAuthUser = value;
@@ -40,14 +36,6 @@ class SettingsManager {
         } else {
             chrome.storage.sync.remove(field);
         }
-    }
-
-    get enableScrobbling(): boolean {
-        return this._enableScrobbling;
-    }
-    set enableScrobbling(value: boolean) {
-        this._enableScrobbling = value;
-        this.write("settings.enable_scrobbling", value);
     }
 
     get lastFmAuthToken(): string {

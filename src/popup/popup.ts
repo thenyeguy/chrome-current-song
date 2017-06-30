@@ -42,9 +42,8 @@ function updateControls(playState: PlaybackState) {
 }
 
 function updateScrobble() {
-    let enabled = window.api.getSettings().enableScrobbling;
     let scrobbleState = window.api.getScrobbleState();
-    if (enabled && scrobbleState == 2) {
+    if (scrobbleState == 2) {
         $("#state-scrobbled").addClass("glyphicon-ok");
     } else {
         $("#state-scrobbled").removeClass("glyphicon-ok");

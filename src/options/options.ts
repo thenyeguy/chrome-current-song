@@ -4,19 +4,13 @@
 function drawSettings() {
     let settings = window.api.getSettings();
 
-    $("#enable-scrobbling input").prop("checked", settings.enableScrobbling);
-    $("#enable-scrobbling input").change(function() {
-        settings.enableScrobbling = this.checked;
-    });
-
     if (settings.lastFmAuthUser) {
-        $("#enable-scrobbling .authenticate").hide();
-        $("#enable-scrobbling .logged-out").hide();
-        $("#enable-scrobbling .logged-in").show();
-        $("#enable-scrobbling .username").text(settings.lastFmAuthUser);
+        $("#lastfm .logged-out").hide();
+        $("#lastfm .logged-in").show();
+        $("#lastfm .username").text(settings.lastFmAuthUser);
     } else {
-        $("#enable-scrobbling .logged-out").show();
-        $("#enable-scrobbling .logged-in").hide();
+        $("#lastfm .logged-out").show();
+        $("#lastfm .logged-in").hide();
     }
 
     for (let track of window.api.getLastFmScrobbleHistory().reverse()) {
