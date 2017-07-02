@@ -12,7 +12,7 @@ var globOptions = {
 
 var tsProject = ts.createProject({
     noEmitOnError: true,
-    noExternalResolve: true,
+    noResolve: true,
     target: "ES6",
 });
 
@@ -56,7 +56,7 @@ gulp.task("third_party", function() {
 gulp.task("scripts", function() {
     return gulp.src("src/**/*.ts", globOptions)
         .pipe(sourcemaps.init())
-        .pipe(ts(tsProject))
+        .pipe(tsProject())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest("target/"));
 });
