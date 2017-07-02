@@ -4,7 +4,7 @@
   "name": "Current song",
   "description": "Shares the currently playing song to the outside world",
   "icons": { "128": "static/icon.png" },
-  "version": "0.1.1",
+  "version": "0.1.2",
 
   "permissions": [
     "https://ws.audioscrobbler.com/*",
