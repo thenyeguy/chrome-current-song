@@ -61,7 +61,12 @@ gulp.task("scripts", function() {
         .pipe(gulp.dest("target/"));
 });
 
-gulp.task("build", ["manifest", "options", "popup", "scripts", "third_party"]);
+gulp.task("static", function() {
+    return gulp.src("src/static/**", globOptions)
+        .pipe(gulp.dest("target/"));
+});
+
+gulp.task("build", ["manifest", "options", "popup", "scripts", "static", "third_party"]);
 
 gulp.task("clean", function() {
     del.sync("target/");
