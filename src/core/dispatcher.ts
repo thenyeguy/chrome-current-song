@@ -39,11 +39,11 @@ class Dispatcher {
         let player = this.playerMux.getPlayer(id);
         console.debug("Got message: %s (%s): %o", player.id, player.name, msg);
 
-        if(msg.properties) {
+        if (msg.properties) {
             console.log("Identified connection as: " + msg.properties.name);
             player.setProperties(msg.properties);
         }
-        if(msg.state) {
+        if (msg.state) {
             player.update(msg.state);
             let activePlayer = this.playerMux.getActivePlayer();
             if (activePlayer && player != activePlayer && player.isActive()) {

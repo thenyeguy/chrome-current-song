@@ -6,10 +6,10 @@ function timeToSeconds(time: string): number {
     }
 
     let match = time.match(/(\d+):(\d+)/);
-    if(match && match.length === 3) {
+    if (match && match.length === 3) {
         let minutes = parseInt(match[1]);
         let seconds = parseInt(match[2]);
-        return 60*minutes + seconds;
+        return 60 * minutes + seconds;
     }
 
     let intValue = parseInt(time);
@@ -28,6 +28,6 @@ function trackEquals(left: Track, right: Track) {
         return false;
     }
     return left.title == right.title &&
-           left.artist == right.artist &&
-           left.album == right.album;
+        left.artist == right.artist &&
+        left.album == right.album;
 }

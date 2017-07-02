@@ -16,7 +16,7 @@ class NativeHostAdapater {
     }
 
     public handleMessage(msg: any) {
-        if(msg.log) {
+        if (msg.log) {
             console.log("[%s]: %s", NativeHostAdapater.NATIVE_HOST, msg.log);
         } else {
             console.error("Native host sent unknown message: %O", msg);
@@ -33,12 +33,14 @@ class NativeHostAdapater {
         if (!playerState || playerState.playState == PlaybackState.Stopped) {
             this.sendMessage({ track: null });
         } else {
-            this.sendMessage({ track: {
-                title: playerState.track.title,
-                album: playerState.track.album,
-                artist: playerState.track.artist,
-                playing: PlaybackState[playerState.playState].toLowerCase(),
-            }});
+            this.sendMessage({
+                track: {
+                    title: playerState.track.title,
+                    album: playerState.track.album,
+                    artist: playerState.track.artist,
+                    playing: PlaybackState[playerState.playState].toLowerCase(),
+                }
+            });
         }
     }
 

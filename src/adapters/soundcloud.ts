@@ -40,7 +40,7 @@ class SoundcloudAdapter implements Adapter {
         let container = $(".playControls .playbackSoundBadge .sc-artwork span");
         let css = container && container.css("background-image");
         let uri = css && css.replace(/.*\s?url\([\'\"]?/, '')
-                            .replace(/[\'\"]?\).*/, '');
+            .replace(/[\'\"]?\).*/, '');
         return uri;
     }
 

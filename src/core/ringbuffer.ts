@@ -44,6 +44,7 @@ class Ringbuffer<T> implements Iterable<T> {
                 if (pos >= ringbuffer.end) {
                     return {
                         done: true,
+                        value: null,
                     }
                 } else {
                     let i = pos % ringbuffer.size;

@@ -1,17 +1,17 @@
 /// <reference path='../core/types.ts' />
 
 interface Adapter {
-  properties: PlayerProperties;
+    properties: PlayerProperties;
 
-  getTitle(): string;
-  getArtist(): string;
-  getAlbum(): string;
-  getPlayState(): PlaybackState;
-  getPlaytime(): number | string;
-  getDuration(): number | string;
-  getArtUri(): string;
+    getTitle(): string;
+    getArtist(): string;
+    getAlbum(): string;
+    getPlayState(): PlaybackState;
+    getPlaytime(): number | string;
+    getDuration(): number | string;
+    getArtUri(): string;
 
-  playPause(): void;
-  nextSong(): void;
-  prevSong(): void;
+    playPause(): void;
+    nextSong(): void;
+    prevSong(): void;
 }

@@ -26,7 +26,7 @@ function drawPlaybar(playtime: number, duration: number) {
     let width = 100 * playtime / duration;
     $("#playbar .progress-bar").attr("aria-valuenow", playtime);
     $("#playbar .progress-bar").attr("aria-valuemax", duration);
-    $("#playbar .progress-bar").css("width", String(width)+"%");
+    $("#playbar .progress-bar").css("width", String(width) + "%");
 }
 
 function updateControls(playState: PlaybackState) {
@@ -84,13 +84,13 @@ function handleMessage(msg: any) {
 }
 
 function setUpControls() {
-    $("#prev-song").click(function (event) {
+    $("#prev-song").click(function(event) {
         window.api.prevSong();
     });
-    $("#play-pause").click(function (event) {
+    $("#play-pause").click(function(event) {
         window.api.playPause();
     });
-    $("#next-song").click(function (event) {
+    $("#next-song").click(function(event) {
         window.api.nextSong();
     });
 }

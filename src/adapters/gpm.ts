@@ -23,7 +23,7 @@ class GpmAdapter implements Adapter {
     getPlayState() {
         if (!$("#playerSongInfo").is(":visible")) {
             return PlaybackState.Stopped;
-        } else if($("[data-id=play-pause]").hasClass("playing")) {
+        } else if ($("[data-id=play-pause]").hasClass("playing")) {
             return PlaybackState.Playing;
         } else {
             return PlaybackState.Paused;

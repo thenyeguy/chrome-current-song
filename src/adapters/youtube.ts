@@ -63,9 +63,9 @@ class YoutubeAdapter implements Adapter {
         $(".ytp-play-button").click();
     }
 
-    nextSong() {}
+    nextSong() { }
 
-    prevSong() {}
+    prevSong() { }
 }
 
 $(document).ready(function() {

@@ -5,7 +5,7 @@
 
 class Multiplexer {
     private activePlayer: Player;
-    private players: {[key: string]: Player};
+    private players: { [key: string]: Player };
 
     private lastfm: LastFmApi;
     private settings: SettingsManager;

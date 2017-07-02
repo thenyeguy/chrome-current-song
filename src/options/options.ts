@@ -24,7 +24,7 @@ $(document).ready(function() {
     drawSettings();
 
     // Set up tab selection
-    $("#option-tabs a").click(function (event) {
+    $("#option-tabs a").click(function(event) {
         event.preventDefault();
         $(this).tab("show");
 
@@ -45,7 +45,7 @@ $(document).ready(function() {
         $("#authenticate-modal-step-one").show();
         $("#authenticate-modal-step-two").hide();
         $("#authenticate-modal-step-three").hide();
-        window.api.getLastFmAuthUrl(function (url) {
+        window.api.getLastFmAuthUrl(function(url) {
             chrome.tabs.create({ url: url });
             $("#authenticate-modal-step-one").hide();
             $("#authenticate-modal-step-two").show();
@@ -58,7 +58,7 @@ $(document).ready(function() {
         $("#authenticate-modal-step-one").hide();
         $("#authenticate-modal-step-two").hide();
         $("#authenticate-modal-step-three").show();
-        window.api.getLastFmAuthSession(function (username) {
+        window.api.getLastFmAuthSession(function(username) {
             drawSettings();
             $("#authenticate-modal").modal("hide");
         });

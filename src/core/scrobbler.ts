@@ -3,7 +3,7 @@
 
 let SCROBBLE_PERCENT: number = 0.5;
 let MINIMUM_DURATION: number = 30;  // 30 seconds
-let MAXIMUM_WAIT_TIME: number = 4*60;  // 4 minutes
+let MAXIMUM_WAIT_TIME: number = 4 * 60;  // 4 minutes
 
 class Scrobbler {
     private lastfm: LastFmApi;
@@ -30,7 +30,7 @@ class Scrobbler {
         if (newState == null) {
             // Do nothing.
         } else if (trackEquals(newState.track,
-                               this.playerState && this.playerState.track)) {
+            this.playerState && this.playerState.track)) {
             this.maybeScrobble(newState);
         } else {
             this.reset(newState);

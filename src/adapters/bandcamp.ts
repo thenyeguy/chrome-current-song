@@ -23,7 +23,7 @@ class BandcampAdapter implements Adapter {
     getPlayState() {
         if ($(".inline_player").length == 0) {
             return PlaybackState.Stopped;
-        } else if($(".playbutton").hasClass("playing")) {
+        } else if ($(".playbutton").hasClass("playing")) {
             return PlaybackState.Playing;
         } else {
             return PlaybackState.Paused;

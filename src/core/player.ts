@@ -14,7 +14,7 @@ class Player {
     private stopping: boolean;
 
     constructor(port: chrome.runtime.Port, lastfm: LastFmApi,
-                settings: SettingsManager) {
+        settings: SettingsManager) {
         this.id = port.name;
         this.name = this.id;
         this.state = null;

@@ -51,7 +51,7 @@ class LastFmApi {
     }
 
     private issueRequest(http_method: string, method: string, params: any,
-                         callback: (any) => void) {
+        callback: (any) => void) {
         let request = this.buildRequest(method, params);
         let xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function() {
@@ -74,7 +74,7 @@ class LastFmApi {
     }
 
     private getAuthToken(callback: (string) => void) {
-        this.issueRequest("GET", "auth.getToken", {}, (result:any) => {
+        this.issueRequest("GET", "auth.getToken", {}, (result: any) => {
             let token = result.token || null;
             this.session_token = token;
             callback && callback(token);
