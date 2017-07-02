@@ -39,22 +39,22 @@ class Scrobbler {
 
     public update(newState: PlayerState) {
         if (newState == null) {
-            // Do nothing.
+            this.reset();
         } else if (trackEquals(newState.track,
             this.playerState && this.playerState.track)) {
             this.maybeScrobble(newState);
         } else {
-            this.reset(newState);
+            this.lastfm.updateNowPlaying(newState);
+            this.reset();
         }
         this.playerState = newState;
         this.lastUpdate = Date.now();
     }
 
-    private reset(newState: PlayerState) {
+    private reset() {
         this.scrobbleState = ScrobbleState.Waiting;
         this.startTime = Math.floor(Date.now() / 1000);
         this.listenTime = 0;
-        this.lastfm.updateNowPlaying(newState);
 
         chrome.browserAction.setBadgeText({ text: "" });
     }
