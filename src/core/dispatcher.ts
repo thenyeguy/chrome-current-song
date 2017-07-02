@@ -13,7 +13,7 @@ class Dispatcher {
     constructor(lastfm: LastFmApi, settings: SettingsManager) {
         this.playerMux = new Multiplexer(lastfm, settings);
         this.nativeHost = new NativeHostAdapater();
-        this.scrobbler = new Scrobbler(lastfm, settings);
+        this.scrobbler = new Scrobbler(lastfm);
 
         this.nativeHost.connect();
         chrome.commands.onCommand.addListener(this.handleControl.bind(this));

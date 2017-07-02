@@ -1,5 +1,4 @@
 /// <reference path='lastfm.ts' />
-/// <reference path='settings.ts' />
 /// <reference path='types.ts' />
 
 let SCROBBLE_PERCENT: number = 0.5;
@@ -8,16 +7,14 @@ let MAXIMUM_WAIT_TIME: number = 4*60;  // 4 minutes
 
 class Scrobbler {
     private lastfm: LastFmApi;
-    private settings: SettingsManager;
     private scrobbleState: ScrobbleState;
     private playerState: PlayerState;
     private startTime: number;
     private listenTime: number;
     private lastUpdate: number;
 
-    constructor(lastfm: LastFmApi, settings: SettingsManager) {
+    constructor(lastfm: LastFmApi) {
         this.lastfm = lastfm;
-        this.settings = settings;
         this.scrobbleState = ScrobbleState.Waiting;
         this.playerState = null;
         this.startTime = 0;
