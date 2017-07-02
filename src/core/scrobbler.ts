@@ -81,11 +81,17 @@ class Scrobbler {
 
     private scrobble() {
         let track = this.playerState.track;
-        this.lastfm.scrobble(track, this.startTime);
         this.scrobbleState = ScrobbleState.Scrobbled;
-
-        this.scrobbleHistory.push(track);
-        chrome.browserAction.setBadgeText({ text: "✓" });
-        chrome.browserAction.setBadgeBackgroundColor({ color: "#689655" });
+        this.lastfm.scrobble(track, this.startTime, (success: boolean) => {
+            console.log("Success: " + success);
+            this.scrobbleHistory.push(track);
+            if (success) {
+                chrome.browserAction.setBadgeText({ text: "✓" });
+                chrome.browserAction.setBadgeBackgroundColor({ color: "#689655" });
+            } else {
+                chrome.browserAction.setBadgeText({ text: "✖" });
+                chrome.browserAction.setBadgeBackgroundColor({ color: "#a54c4c" });
+            }
+        });
     }
 }

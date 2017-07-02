@@ -110,12 +110,15 @@ class LastFmApi {
         }
     }
 
-    public scrobble(track: Track, timestamp: number) {
+    public scrobble(track: Track, timestamp: number, callback: (boolean) => void) {
         this.issueRequest("POST", "track.scrobble", {
             artist: track.artist,
             track: track.title,
             album: track.album,
             timestamp: timestamp,
-        }, null);
+        }, (result: any) => {
+            console.log(result);
+            callback && callback(Object.keys(result).length > 0);
+        });
     }
 }
