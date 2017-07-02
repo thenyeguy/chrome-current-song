@@ -10,7 +10,7 @@ class NativeHostAdapater {
     }
 
     public handleDisconnect() {
-        console.log("Native host disconnected.");
+        console.error("Native host disconnected.");
         this.native_port = null;
         setTimeout(this.connect.bind(this), 5000);
     }
@@ -19,7 +19,7 @@ class NativeHostAdapater {
         if(msg.log) {
             console.log("[%s]: %s", NativeHostAdapater.NATIVE_HOST, msg.log);
         } else {
-            console.log("Native host sent unknown message: %O", msg);
+            console.error("Native host sent unknown message: %O", msg);
         }
     }
 

@@ -15,14 +15,6 @@ class ExtensionApi {
         this.dispatcher = new Dispatcher(this.lastfm, this.settings);
     }
 
-    get verbose(): boolean {
-        return this.dispatcher.verbose;
-    }
-
-    set verbose(value: boolean) {
-        this.dispatcher.verbose = value;
-    }
-
     public getSettings(): SettingsManager {
         return this.settings;
     }

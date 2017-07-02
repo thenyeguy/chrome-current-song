@@ -7,12 +7,10 @@
 class Dispatcher {
     private playerMux: Multiplexer;
     private nativeHost: NativeHostAdapater;
-    public verbose: boolean;
 
     constructor(lastfm: LastFmApi, settings: SettingsManager) {
         this.playerMux = new Multiplexer(lastfm, settings);
         this.nativeHost = new NativeHostAdapater();
-        this.verbose = false;
 
         this.nativeHost.connect();
         chrome.commands.onCommand.addListener(this.handleControl.bind(this));
@@ -36,9 +34,8 @@ class Dispatcher {
     private handleMessage(msg: any, port: chrome.runtime.Port) {
         let id = port.name;
         let player = this.playerMux.getPlayer(id);
-        if (this.verbose) {
-            console.log("Got message: %s (%s): %o", player.id, player.name, msg);
-        }
+        console.debug("Got message: %s (%s): %o", player.id, player.name, msg);
+
         if(msg.properties) {
             console.log("Identified connection as: " + msg.properties.name);
             player.setProperties(msg.properties);
@@ -63,7 +60,7 @@ class Dispatcher {
         } else if (control == "prev_song") {
             this.trigger(ControlType.PrevSong);
         } else {
-            console.log("Unknown control:", control);
+            console.error("Unknown control:", control);
         }
     }
 

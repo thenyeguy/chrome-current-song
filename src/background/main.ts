@@ -2,6 +2,6 @@
 /// <reference path='../typings/index.d.ts' />
 
 $(document).ready(function() {
-    console.log("Starting extension...");
+    console.info("Starting extension...");
     window.api = new ExtensionApi();
 });

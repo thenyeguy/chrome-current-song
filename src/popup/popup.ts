@@ -79,7 +79,7 @@ function handleMessage(msg: any) {
     if (msg.update) {
         update();
     } else {
-        console.log("Unknown message: %O", msg);
+        console.error("Unknown message: %O", msg);
     }
 }
 

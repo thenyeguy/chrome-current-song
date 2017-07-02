@@ -24,7 +24,7 @@ class SettingsManager {
     private loadSettings() {
         chrome.storage.sync.get(null, (items) => {
             this.handleChange(items, "");
-            console.log("Loaded settings.");
+            console.debug("Loaded settings.");
         });
     }
 

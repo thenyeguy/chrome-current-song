@@ -30,19 +30,16 @@ class Listener {
     private adapter: Adapter;
     private port: chrome.runtime.Port;
 
-    public verbose: boolean;
-
     constructor(adapter: Adapter) {
         this.adapter = adapter;
         this.port = chrome.runtime.connect(null, {
             name: Math.random().toString(36).substr(2),
         });
         this.port.postMessage({ "properties": adapter.properties });
-        this.verbose = false;
     }
 
     private handleRequest(request: any) {
-        if (this.verbose) { console.log("Got request: %O", request); }
+        console.debug("Got request: %O", request);
 
         if (request.type == "control") {
             if (request.control == ControlType.PlayPause) {
@@ -69,7 +66,7 @@ class Listener {
             duration: asSeconds(this.adapter.getDuration()),
             artUri: this.adapter.getArtUri(),
         };
-        if (this.verbose) { console.log("Sending state: %O", state); }
+        console.debug("Sending state: %O", state);
         this.port.postMessage({ "state": state });
     }
 
@@ -78,9 +75,8 @@ class Listener {
         setTimeout(this.poll.bind(this, timeout_ms), timeout_ms);
     }
 
-    public start(verbose?: boolean) {
-        console.log("Starting %s listener...", this.adapter.properties.name);
-        this.verbose = !!verbose;
+    public start() {
+        console.info("Starting %s listener...", this.adapter.properties.name);
         this.port.onMessage.addListener(this.handleRequest.bind(this));
         this.poll(500 /* ms */);
     }

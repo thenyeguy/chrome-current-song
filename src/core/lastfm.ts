@@ -59,7 +59,7 @@ class LastFmApi {
                 if (xhr.status === 200) {
                     callback && callback(JSON.parse(xhr.responseText));
                 } else {
-                    console.log("Request failure:", xhr.responseText);
+                    console.error("Request failure:", xhr.responseText);
                     callback && callback({});
                 }
             }
