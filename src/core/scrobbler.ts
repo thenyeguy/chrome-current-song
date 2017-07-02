@@ -34,38 +34,49 @@ class Scrobbler {
             // Do nothing.
         } else if (trackEquals(newState.track,
                                this.playerState && this.playerState.track)) {
-            let timeElapsed = Date.now() - this.lastUpdate;
-            let playtimeDiff =
-                newState.playtime - this.playerState.playtime;
-            this.listenTime += Math.min(timeElapsed, playtimeDiff);
-            this.maybeScrobble();
+            this.maybeScrobble(newState);
         } else {
-            this.scrobbleState = ScrobbleState.Waiting;
-            this.playerState = newState;
-            this.startTime = Math.floor(Date.now() / 1000);
-            this.listenTime = 0;
-            this.lastfm.updateNowPlaying(newState);
+            this.reset(newState);
         }
         this.playerState = newState;
         this.lastUpdate = Date.now();
 
     }
 
-    private maybeScrobble(): boolean {
+    private reset(newState: PlayerState) {
+        this.scrobbleState = ScrobbleState.Waiting;
+        this.startTime = Math.floor(Date.now() / 1000);
+        this.listenTime = 0;
+        this.lastfm.updateNowPlaying(newState);
+
+        chrome.browserAction.setBadgeText({ text: "" });
+    }
+
+    private maybeScrobble(newState: PlayerState): boolean {
+        let timeElapsed = Date.now() - this.lastUpdate;
+        let playtimeDiff =
+            newState.playtime - this.playerState.playtime;
+        this.listenTime += Math.min(timeElapsed, playtimeDiff);
+
         if (this.scrobbleState == ScrobbleState.Scrobbled ||
             this.playerState.duration < MINIMUM_DURATION) {
             return false;
         }
+
         let played = this.listenTime / this.playerState.duration;
         if (played > SCROBBLE_PERCENT || this.listenTime > MAXIMUM_WAIT_TIME) {
             this.scrobble();
             return true;
         }
+
         return false;
     }
 
     private scrobble() {
         this.lastfm.scrobble(this.playerState.track, this.startTime);
         this.scrobbleState = ScrobbleState.Scrobbled;
+
+        chrome.browserAction.setBadgeText({ text: "✓" });
+        chrome.browserAction.setBadgeBackgroundColor({ color: "#689655" });
     }
 }
