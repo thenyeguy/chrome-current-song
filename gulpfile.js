@@ -1,4 +1,3 @@
-var crx = require("gulp-crx-pack");
 var del = require("del");
 var gulp = require("gulp");
 var fs = require("fs");
@@ -63,15 +62,6 @@ gulp.task("scripts", function() {
 });
 
 gulp.task("build", ["manifest", "options", "popup", "scripts", "third_party"]);
-
-gulp.task("package", ["build"], function() {
-    return gulp.src(["target/", "!*.crx"])
-        .pipe(crx({
-            filename: "extension.crx",
-            privateKey: fs.readFileSync("key.pem", "utf-8"),
-        }))
-        .pipe(gulp.dest("target/"));
-});
 
 gulp.task("clean", function() {
     del.sync("target/");
