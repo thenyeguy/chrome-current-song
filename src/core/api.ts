@@ -39,16 +39,17 @@ class ExtensionApi {
         this.dispatcher.trigger(ControlType.PrevSong);
     }
 
+    public getScrobbleHistory(): Track[] {
+        return this.dispatcher.getScrobbleHistory();
+    }
+
+
     public getLastFmAuthUrl(callback: (string) => void) {
         this.lastfm.getAuthUrl(callback);
     }
 
     public getLastFmAuthSession(callback: (string) => void) {
         this.lastfm.getAuthSession(callback);
-    }
-
-    public getLastFmScrobbleHistory(): Track[] {
-        return this.lastfm.getScrobbleHistory();
     }
 
     public deauthorizeLastFm() {

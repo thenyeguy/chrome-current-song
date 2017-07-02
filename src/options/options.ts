@@ -13,7 +13,7 @@ function drawSettings() {
         $("#lastfm .logged-in").hide();
     }
 
-    for (let track of window.api.getLastFmScrobbleHistory().reverse()) {
+    for (let track of window.api.getScrobbleHistory().reverse()) {
         let text = track.artist + " - " + track.title;
         $("#scrobble-history").append($("<li>").text(text));
     }

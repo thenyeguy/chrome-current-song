@@ -95,4 +95,7 @@ class Dispatcher {
         }
     }
 
+    public getScrobbleHistory(): Track[] {
+        return this.scrobbler.getScrobbleHistory();
+    }
 }

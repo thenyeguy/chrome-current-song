@@ -1,5 +1,6 @@
 /// <reference path='lastfm.ts' />
 /// <reference path='types.ts' />
+/// <reference path='utils.ts' />
 
 let SCROBBLE_PERCENT: number = 0.5;
 let MINIMUM_DURATION: number = 30;  // 30 seconds
@@ -13,6 +14,9 @@ class Scrobbler {
     private listenTime: number;
     private lastUpdate: number;
 
+    static SCROBBLE_HISTORY_SIZE = 10;
+    private scrobbleHistory: Ringbuffer<Track>;
+
     constructor(lastfm: LastFmApi) {
         this.lastfm = lastfm;
         this.scrobbleState = ScrobbleState.Waiting;
@@ -20,10 +24,17 @@ class Scrobbler {
         this.startTime = 0;
         this.listenTime = 0;
         this.lastUpdate = Date.now();
+
+        this.scrobbleHistory =
+            new Ringbuffer<Track>(Scrobbler.SCROBBLE_HISTORY_SIZE);
     }
 
     public getState(): ScrobbleState {
         return this.scrobbleState;
+    }
+
+    public getScrobbleHistory(): Track[] {
+        return [...this.scrobbleHistory];
     }
 
     public update(newState: PlayerState) {
@@ -37,7 +48,6 @@ class Scrobbler {
         }
         this.playerState = newState;
         this.lastUpdate = Date.now();
-
     }
 
     private reset(newState: PlayerState) {
@@ -70,9 +80,11 @@ class Scrobbler {
     }
 
     private scrobble() {
-        this.lastfm.scrobble(this.playerState.track, this.startTime);
+        let track = this.playerState.track;
+        this.lastfm.scrobble(track, this.startTime);
         this.scrobbleState = ScrobbleState.Scrobbled;
 
+        this.scrobbleHistory.push(track);
         chrome.browserAction.setBadgeText({ text: "✓" });
         chrome.browserAction.setBadgeBackgroundColor({ color: "#689655" });
     }
