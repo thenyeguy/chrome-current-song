@@ -1,5 +1,4 @@
 /// <reference path='lastfm.ts' />
-/// <reference path='scrobbler.ts' />
 /// <reference path='settings.ts' />
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
@@ -13,7 +12,6 @@ class Player {
 
     private port: chrome.runtime.Port;
     private stopping: boolean;
-    private scrobbler: Scrobbler;
 
     constructor(port: chrome.runtime.Port, lastfm: LastFmApi,
                 settings: SettingsManager) {
@@ -24,7 +22,6 @@ class Player {
 
         this.port = port;
         this.stopping = true;
-        this.scrobbler = new Scrobbler(lastfm, settings);
     }
 
     public isActive(): boolean {
@@ -33,14 +30,6 @@ class Player {
 
     public getState(): PlayerState {
         return this.state;
-    }
-
-    public getScrobbleState(): ScrobbleState {
-        if (this.properties.allowScrobbling) {
-            return this.scrobbler.getState();
-        } else {
-            return ScrobbleState.Disabled;
-        }
     }
 
     public setProperties(properties: PlayerProperties) {
@@ -55,9 +44,6 @@ class Player {
             this.state = state;
             if (this.stopping && this.state.playState != PlaybackState.Playing) {
                 this.stopping = false;
-            }
-            if (this.properties.allowScrobbling) {
-                this.scrobbler.update(this.getState());
             }
         }
     }
