@@ -69,8 +69,16 @@ class Dispatcher {
 
     private update() {
         this.playerMux.update();
-        this.nativeHost.update(this.getPlayerState());
-        this.scrobbler.update(this.getPlayerState());
+        let player = this.playerMux.getActivePlayer();
+        let state = player && player.getState();
+
+        this.nativeHost.update(state);
+        if (player && player.properties.allowScrobbling) {
+            this.scrobbler.update(state)
+        } else {
+            this.scrobbler.update(null)
+        }
+
         chrome.runtime.sendMessage({ "update": true });
     }
 
