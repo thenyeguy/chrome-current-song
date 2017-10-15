@@ -19,7 +19,7 @@ class YoutubeAdapter implements Adapter {
     }
 
     getTitle() {
-        return $("#eow-title").text();
+        return $("#info .title").text();
     }
 
     getArtist() {
