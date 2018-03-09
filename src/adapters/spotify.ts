@@ -9,11 +9,11 @@ class SpotifyAdapter implements Adapter {
     };
 
     getTitle() {
-        return $("#app-player").contents().find("#track-name").text();
+        return $(".track-info__name").text();
     }
 
     getArtist() {
-        return $("#app-player").contents().find("#track-artist").text();
+        return $(".track-info__artists").text();
     }
 
     getAlbum() {
@@ -21,7 +21,7 @@ class SpotifyAdapter implements Adapter {
     }
 
     getPlayState() {
-        if ($("#app-player").contents().find("#play-pause").hasClass("playing")) {
+        if ($('.spoticon-pause-16')) {
             return PlaybackState.Playing;
         } else {
             return PlaybackState.Paused;
@@ -29,30 +29,30 @@ class SpotifyAdapter implements Adapter {
     }
 
     getPlaytime() {
-        return $("#app-player").contents().find("#track-current").text();
+        return $(".playback-bar__progress-time:first-child").text();
     }
 
     getDuration() {
-        return $("#app-player").contents().find("#track-length").text();
+        return $(".playback-bar__progress-time:last-child").text();
     }
 
     getArtUri() {
-        let backgroundStyle = $("#app-player").contents()
-            .find(".sp-image-img").css("background-image");
+        let backgroundStyle = $(".now-playing-bar .cover-art-image")
+            .css("background-image");
         let backgroundUrl = /^url\((['"]?)(.*)\1\)$/.exec(backgroundStyle);
         return backgroundUrl ? backgroundUrl[2] : "";
     }
 
     playPause() {
-        $("#app-player").contents().find("#play-pause").click();
+        $('.spoticon-pause-16, .spoticon-play-16').click()
     }
 
     nextSong() {
-        $("#app-player").contents().find("#next").click();
+        $(".spoticon-skip-forward-16").click();
     }
 
     prevSong() {
-        $("#app-player").contents().find("#previous").click();
+        $(".spoticon-skip-back-16").click();
     }
 }
 

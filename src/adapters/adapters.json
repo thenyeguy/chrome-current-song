@@ -12,7 +12,7 @@
     "script": "soundcloud.ts"
   },
   {
-    "matches": "*://play.spotify.com/*",
+    "matches": "*://*.spotify.com/*",
     "script": "spotify.ts"
   },
   {
