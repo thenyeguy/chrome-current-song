@@ -1,21 +1,17 @@
 /// <reference path='lastfm.ts' />
 /// <reference path='multiplexer.ts' />
-/// <reference path='native.ts' />
 /// <reference path='scrobbler.ts' />
 /// <reference path='types.ts' />
 /// <reference path='../typings/index.d.ts' />
 
 class Dispatcher {
     private playerMux: Multiplexer;
-    private nativeHost: NativeHostAdapater;
     private scrobbler: Scrobbler;
 
     constructor(lastfm: LastFmApi, settings: SettingsManager) {
         this.playerMux = new Multiplexer(lastfm, settings);
-        this.nativeHost = new NativeHostAdapater();
         this.scrobbler = new Scrobbler(lastfm);
 
-        this.nativeHost.connect();
         chrome.commands.onCommand.addListener(this.handleControl.bind(this));
         chrome.runtime.onConnect.addListener(this.handleConnect.bind(this));
     }
@@ -72,7 +68,6 @@ class Dispatcher {
         let player = this.playerMux.getActivePlayer();
         let state = player && player.getState();
 
-        this.nativeHost.update(state);
         if (player && player.properties.allowScrobbling) {
             this.scrobbler.update(state)
         } else {

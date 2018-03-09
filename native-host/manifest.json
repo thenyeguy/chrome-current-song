@@ -1,9 +1,0 @@
-{
-  "name": "com.michaelnye.chrome_current_song.write_song",
-  "description": "Chrome Current Song native host",
-  "path": "/Users/mnye/Files/Programming/chrome-current-song/native-host/write-current-song.py",
-  "type": "stdio",
-  "allowed_origins": [
-    "chrome-extension://ipkcebpfejpajgidpeeoieedgciikhch/"
-  ]
-}
